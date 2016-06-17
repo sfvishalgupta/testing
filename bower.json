@@ -1,0 +1,23 @@
+{
+  "name": "Phaser_3d_BOX",
+  "homepage": "https://github.com/sfvishalgupta/testing",
+  "authors": [
+    "Vishal Gupta <vishal.gupta@sourcefuse.com>"
+  ],
+  "description": "",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "phaser": "^2.4.9",
+    "phaser.2.2.2.box2d.min": "https://raw.githubusercontent.com/photonstorm/phaser-examples/master/examples/_site/phaser/phaser.2.2.2.box2d.min.js"
+  }
+}
