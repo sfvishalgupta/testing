@@ -1,14 +1,33 @@
-class Angle extends Phaser.Sprite
+class Angle extends Phaser.Button
 {
 	constructor(game,config,lines,color){
 		var cx = game.world.centerX,
 			cy = game.world.centerY;
 		super(game,cx,cy);
+		
 		this.config = config;
 		this.oLines = lines;
 		this.color = color;
 		this.game = game;
+		this.triggeredLine = this.config.triggeredLine;
+		this._lineWidth = 2;
 		this._draw();
+		this._addLabel();
+	}
+
+	triggerDisable()
+	{
+		this.alpha = 1;
+	}
+	enbaleTriggerClick()
+	{
+		this.alpha = 0.5;
+		setTimeout(this.triggerDisable.bind(this),2000);
+	}
+
+	update()
+	{
+		this.textLabel.angle = -this.angle;
 	}
 
 	_draw()
@@ -34,15 +53,40 @@ class Angle extends Phaser.Sprite
 			from = Phaser.Point.subtract(pts1,inter),
 			to = Phaser.Point.subtract(pts2,inter),
 			startAngle = Phaser.Point.angle(from,new Phaser.Point()),
-			endAngle = Phaser.Point.angle(to,new Phaser.Point());
+			endAngle = Phaser.Point.angle(to,new Phaser.Point()),
+			max = oAngle.interactive ? 50 : 45,
+			initX = inter.x*global_config.scale,
+			initY = inter.y*global_config.scale;
 
-		var graphics1 = new Phaser.Graphics(game, inter.x*global_config.scale, inter.y*global_config.scale);
-		graphics1.clear();
-		graphics1.beginFill(this.color);
-		for(var i=0;i<50;i++){
-			graphics1.arc(0,0, i, startAngle,endAngle, false);
+		this.graphics = new Phaser.Graphics(game, initX, initY);
+		this.graphics.clear();
+		this.graphics.beginFill(this.color);
+
+		for(var i=0;i<max;i++){
+			this.graphics.arc(0,0, i, startAngle,endAngle, false);
 		}
-		graphics1.endFill(); 
-		this.addChild(graphics1);
+		this.graphics.endFill(); 
+		this.addChild(this.graphics);
+	}
+
+	_addLabel()
+	{
+		var label = "x",
+			game = this.game,
+			oAngle = this.config,
+			ranges = oAngle.value.range,
+			random = 0,
+			style = {fill:'#FF0000',font: "bold 16px Arial"},
+			x = 0,
+			y = 0
+
+		if(!oAngle.interactive){
+			random = ranges[Math.floor(Math.random()*ranges.length)];
+			label = random;
+		}
+
+		this.textLabel = new Phaser.Text(game,x/2,y/2,label,style);
+		this.textLabel.anchor.set(0.5,0.5);
+		this.addChild(this.textLabel);
 	}
 }

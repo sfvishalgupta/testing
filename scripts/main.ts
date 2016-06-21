@@ -58,19 +58,21 @@ class MainState
 	    /** Addng Angles */
 	    for(var i in level.angles){
 	    	var oAngle = level.angles[i],
-	    		color = 0xcccccc;
+	    		color = 0xcccccc,
+	    		range = [];
 
-	    	if(oAngle.interactive == "true"){
+	    	if(oAngle.interactive){
 	    		color = 0x00FF00;
 	    		this.oLines[oAngle.triggeredLine].updateLineTriggered(color);
-	    		
-	    	}else{
-
 	    	}
+
 	    	var ang = new Angle(game,oAngle,this.oLines,color);
 	    	game.add.existing(ang);
     		this.rotatingElements.push(ang);
-	    	
+
+    		if(oAngle.interactive){
+				ang.onInputUp.add(this._onAngleClick.bind(this));
+    		}
 	    }
 
 		// Adding Gate
@@ -107,6 +109,7 @@ class MainState
 	    }
 
 	    this.itzi.skin.setBodyContactCallback(this.gate.skin,this._gameComplete,this);
+
 	    this._addCogWheel();
 
 	    this.cursor = this.input.keyboard.createCursorKeys();
@@ -139,6 +142,13 @@ class MainState
 		 //this.game.debug.box2dWorld();
 	}
 
+	_onAngleClick(oAngle)
+	{
+		console.log("interactive click");
+		this.oLines[oAngle.triggeredLine].enbaleTriggerClick();
+		oAngle.enbaleTriggerClick();
+	}
+
 	_setupGame()
 	{
 		var game = this.game;
@@ -150,6 +160,33 @@ class MainState
 	    game.physics.box2d.gravity.y = 500;
 	    game.physics.box2d.restitution = 0.1;
 	    game.physics.box2d.friction = 100;
+	}
+
+	_addCogWheel()
+	{
+		var game = this.game,
+			cx = game.world.centerX,
+	    	cy = game.world.centerY,
+	    	polygonPoints = [],
+	    	theta = 0,
+			cog_circle = new Phaser.Physics.Box2D.Body(game, null, cx, cy, 100),
+			cog = game.add.sprite(cx,cy,"cog"),
+			radius = (cog.width/2) - 26;
+
+		for (theta = 0; theta <= 2 * Math.PI; theta += 2 * Math.PI / 100) 
+		{
+        	polygonPoints.push(0 + (radius * Math.cos(theta)));
+        	polygonPoints.push(0 - (radius * Math.sin(theta)));
+        }
+
+		cog.anchor.set(0.5,0.5);
+		cog_circle.setChain(polygonPoints);
+		this.rotatingElements.push(cog);
+
+		this.smallCog = game.add.image(70,312,"cog_small");
+		this.smallCog.anchor.set(0.5,0.5);
+
+		this.itzi.skin.setBodyContactCallback(cog_circle,this._itziBoundryTouch,this);
 	}
 
 	_blueFileCollected(body1, body2, fixture1, fixture2, begin)
@@ -179,36 +216,23 @@ class MainState
 	    {
 	        return;
 	    }
-	    this.itzi.position.x = this.gate.position.x - this.gate.pivot.x;
-	    this.itzi.position.y = this.gate.position.y - this.gate.pivot.y;
 
-	    this.itzi.destroy();
-	    this.gate.openGate();
+	    if(this.gate.isOpenable){
+	    	this.itzi.position.x = this.gate.position.x - this.gate.pivot.x;
+		    this.itzi.position.y = this.gate.position.y - this.gate.pivot.y;
+
+		    this.itzi.destroy();
+		    this.gate.openGate();
+	    }
 	}
 
-	_addCogWheel()
+	_itziBoundryTouch(body1, body2, fixture1, fixture2, begin)
 	{
-		var game = this.game,
-			cx = game.world.centerX,
-	    	cy = game.world.centerY,
-	    	polygonPoints = [],
-	    	theta = 0,
-			cog_circle = new Phaser.Physics.Box2D.Body(game, null, cx, cy, 100),
-			cog = game.add.sprite(cx,cy,"cog"),
-			radius = (cog.width/2) - 26;
-
-		for (theta = 0; theta <= 2 * Math.PI; theta += 2 * Math.PI / 100) 
-		{
-        	polygonPoints.push(0 + (radius * Math.cos(theta)));
-        	polygonPoints.push(0 - (radius * Math.sin(theta)));
-        }
-
-		cog.anchor.set(0.5,0.5);
-		cog_circle.setChain(polygonPoints);
-		this.rotatingElements.push(cog);
-
-		this.smallCog = game.add.image(70,312,"cog_small");
-		this.smallCog.anchor.set(0.5,0.5);
+		if (!begin)
+	    {
+	        return;
+	    }
+	    console.log("itzi touch boundry")
 	}
 }
 

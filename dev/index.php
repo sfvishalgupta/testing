@@ -64,11 +64,15 @@ foreach($levelArr as $levels){
 		$angleObj["lineB"] = $angle['lineB'];
 		$angleObj["alternateLine"] = $angle['alternateLine'];
 		$angleObj["triggeredLine"] = $angle['triggeredLine'];
-		$angleObj["interactive"] = $angle['interactive'];
+		$angleObj["interactive"] = ($angle['interactive'] === "true");
 		$angleObj["equalAngleSymbol"] = $angle['equalAngleSymbol'];
 		$angleObj["customLabelText"] = $angle['customLabelText'];
 		foreach($angle["value"] as $key=>$value){
-			$angleObj["value"][$key] = $value;
+			if($key == "range"){
+				$angleObj["value"][$key] = explode(",",$value);
+			}else{
+				$angleObj["value"][$key] = $value;
+			}
 		}
 
 		$levelObj["angles"][] = $angleObj;

@@ -28,15 +28,13 @@ class Gate extends Phaser.Sprite
     	this.gate.animations.add('play');
     	this.gate.anchor.set(0.5,0.5);
     	this.addChild(this.gate);
-		
-		if(numFlies>0)
-		{
+		this.isOpenable = false;
+		if(numFlies>0){
 			this.createGateLight(game,numFlies);
-		}else
-		{
+		}else{
+			this.isOpenable = true;
 			this.openGate();
 		}
-		
 	}
 
 	createGateLight(game, numFlies)
@@ -74,6 +72,7 @@ class Gate extends Phaser.Sprite
 			this.lights[i].openLight();
 		}
 		if(this.collectedFlyCount == this.lights.length){
+			this.isOpenable = true;
 			this.openGate();
 		}
 	}

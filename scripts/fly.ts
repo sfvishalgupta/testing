@@ -15,6 +15,7 @@ class Fly extends Phaser.Sprite
     	var skin = new Phaser.Physics.Box2D.Body(game, null,cx, cy, 100);
     	skin.setCircle(30,x,y);
     	skin.static = true;
+    	skin.sensor = true;
     	this.skin = skin;
     	this.skin.sprite = this;
 
