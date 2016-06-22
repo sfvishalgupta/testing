@@ -12,7 +12,6 @@ class Gate extends Phaser.Sprite
     	this.pivot.x = -x;
     	this.pivot.y = -y;
 
-
     	var skin = new Phaser.Physics.Box2D.Body(game, null,cx, cy, 100);
     	skin.setCircle(30,x,y);
     	skin.static = true;
@@ -28,6 +27,7 @@ class Gate extends Phaser.Sprite
     	this.gate.animations.add('play');
     	this.gate.anchor.set(0.5,0.5);
     	this.addChild(this.gate);
+    	this.gate.angle = 90;
 		this.isOpenable = false;
 		if(numFlies>0){
 			this.createGateLight(game,numFlies);
@@ -52,7 +52,7 @@ class Gate extends Phaser.Sprite
 			y = parseInt(y.toFixed(15));
 
 			light.position.set(x,y);
-			this.addChild(light);
+			this.gate.addChild(light);
 			this.lights.push(light);
 		}
 	}
@@ -80,6 +80,7 @@ class Gate extends Phaser.Sprite
 	update()
 	{
 		this.skin.angle = this.angle;
+		this.gate.angle = -this.angle;
 	}
 }
 

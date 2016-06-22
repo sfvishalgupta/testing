@@ -53,6 +53,8 @@ foreach($levelArr as $levels){
 	    $lineObj["a"] = getXY($line["pointA"]);
 	    $lineObj["b"] = getXY($line["pointB"]);
 	    $lineObj["parallelSymbol"] = $line["parallelSymbol"] == 0 ? false : true;
+	    $lineObj["equalLengthSymbol"] = $line["equalLengthSymbol"] == 0 ? false : true;
+	    $lineObj["conveyorSpeed"] = $line["conveyorSpeed"];
 	    //$lineObj["points"] = getPointsArray($line["pointA"],$line["pointB"]);
 	    $levelObj["lines"][] = $lineObj;
 	}

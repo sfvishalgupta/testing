@@ -19,6 +19,7 @@ class Preloader
 		this.game.load.image("blueBee","assets/bee-counter-blue-only.png");
 		this.game.load.image("goldBee","assets/bee-counter-yellow-only.png");
 		this.game.load.image("colors","assets/colors.png");
+		this.game.load.image("conveyor","assets/conveyor.png");
 		
 		// Load backgrounds 
 		this.game.load.image("world01","assets/backgrounds/world01.jpg");
@@ -84,7 +85,7 @@ class MainState
 	    for(var i in level.lines){
 	    	var lineCnf = level.lines[i],
 	    		line = null;
-
+	    		
 	    	switch(lineCnf.type)
 	    	{
 	    		case "info" :
@@ -92,6 +93,9 @@ class MainState
 	    		break;
 	    		case "laser":
 	    			line = new LaserLine(game,lineCnf);
+	    		break;
+	    		case "conveyor":
+	    			line = new ConveyorLine(game,lineCnf);
 	    		break;
 	    		default:
 	    			line = new SimpleLine(game,lineCnf);
@@ -175,7 +179,7 @@ class MainState
 	    this._addCogWheel();
 
 	    this._addBeeCounter();
-
+	    
 	    this.cursor = this.input.keyboard.createCursorKeys();
 	}
 

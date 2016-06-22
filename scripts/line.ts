@@ -1,3 +1,59 @@
+class ParallelSymbol extends Phaser.Sprite
+{	
+	constructor(game,x,y,angle,color)
+	{
+		super(game,x,y);
+		this.graphics = new Phaser.Graphics(game,0,0);
+		this.draw(color);
+    	this.addChild(this.graphics);
+    	this.angle = 180+angle;
+	}
+
+	draw(color)
+	{
+		this.color = color;
+		var lineWidth = 2,
+			width = 12;
+		var graphics = this.graphics;
+		graphics.clear();
+		graphics.beginFill(this.color);
+    	graphics.lineStyle(lineWidth, this.color);
+    	graphics.moveTo(0,0);
+    	graphics.lineTo(width,width);
+    	graphics.moveTo(0,0);
+    	graphics.lineTo(width,-width);
+    	graphics.endFill();
+	}
+}
+
+class ConveyorSprite extends Phaser.Sprite
+{
+	constructor(game,x,y,len)
+	{
+		super(game,x,y);
+		this.len = len;
+		this.pad = new Phaser.Sprite(game,0,0,"conveyor");
+		this.addChild(this.pad);
+		var graphics = new Phaser.Graphics(game,0,0);
+		graphics.clear();
+		graphics.beginFill(0x0000FF);
+    	graphics.drawRect(0,0,len,5);
+    	graphics.endFill();
+    	this.addChild(graphics);
+    	this.pad.mask = graphics;
+    	this.pad.anchor.set(0.5,0.5);
+	}
+	update()
+	{
+		
+		this.pad.x += 1;
+		if(this.pad.x > this.len){
+			this.pad.x = 0;
+		}
+	}
+}
+
+
 class Line extends Phaser.Sprite
 {
 	constructor(game,config)
@@ -13,6 +69,9 @@ class Line extends Phaser.Sprite
 		this.name = config.id;
 		this._updateLine();;
 		this.anchor.set(0.5,0.5);
+		if(config.parallelSymbol){
+			this._addParallelSymbol();
+		}
 	}
 
 	reset()
@@ -37,6 +96,10 @@ class Line extends Phaser.Sprite
     	graphics.lineTo(config.a.x,config.a.y);
     	graphics.endFill();
     	this.addChild(this.graphics);
+
+    	if(config.parallelSymbol){
+			this.symbol.draw(this._color);
+		}
 	}
 
 	drawBody()
@@ -55,6 +118,9 @@ class Line extends Phaser.Sprite
 	update()
 	{
 		this.skin.angle = this.angle;
+		if(this.config.parallelSymbol){
+			//this.symbol.angle +=1;
+		}
 	}
 
 	updateLineTriggered(color)
@@ -86,6 +152,19 @@ class Line extends Phaser.Sprite
 		config.b.x *= scale;
 		config.b.y *= scale;
 		this.config = config;
+	}
+
+	_addParallelSymbol()
+	{
+		var game = this.game,
+			config = this.config,
+			x = (config.b.x+config.a.x)/2,
+			y = (config.b.y+config.a.y)/2,
+			line = new Phaser.Line(config.a.x,config.a.y, config.b.x, config.b.y),
+			angle = Phaser.Math.radToDeg(line.angle),
+			symbol = new ParallelSymbol(game,x,y,angle,this._color);
+		this.symbol = symbol;
+		this.addChild(symbol);
 	}
 }
 
@@ -158,5 +237,44 @@ class LaserLine extends Line
 	{
 		super.update();
 		this.updateLaserGraphics();
+	}
+}
+
+class ConveyorLine extends Line
+{
+	constructor(game,line)
+	{
+		super(game,line);
+	    this._speed = 1;//this.config.conveyorSpeed
+		this.addPad();
+		this.drawBody();
+		this._color = 0x00FF00;
+		//this.reset();
+	}
+
+	addPad()
+	{
+		console.log(this.config);
+		var game = this.game,
+			config = this.config,
+			cx = game.world.centerX,
+			cy = game.world.centerY,
+			line = new Phaser.Line(config.a.x,config.a.y, config.b.x, config.b.y),
+			width = Phaser.Math.distance(config.a.x,config.a.y, config.b.x, config.b.y),
+			angle = Phaser.Math.radToDeg(line.angle);
+
+		this.pad = new ConveyorSprite(game, config.a.x, config.a.y,width);
+		
+		this.addChild(this.pad);
+		this.pad.angle = angle;
+		//this.pad.anchor.set(0.5,0.5);
+
+	}
+	update(){
+		this.pad.update();
+		//this.angle +=1;
+		/*
+		
+		*/
 	}
 }
