@@ -52,9 +52,16 @@ foreach($levelArr as $levels){
 	    $lineObj['type'] = $line['@attributes']['type'];
 	    $lineObj["a"] = getXY($line["pointA"]);
 	    $lineObj["b"] = getXY($line["pointB"]);
-	    $lineObj["points"] = getPointsArray($line["pointA"],$line["pointB"]);
+	    $lineObj["parallelSymbol"] = $line["parallelSymbol"] == 0 ? false : true;
+	    //$lineObj["points"] = getPointsArray($line["pointA"],$line["pointB"]);
 	    $levelObj["lines"][] = $lineObj;
 	}
+
+	if(isset($levels["levelShape"])){
+		$levels["levelShape"]["pos"] = getXY($levels["levelShape"]["pos"]);
+		$levelObj["levelShape"][] = $levels["levelShape"];
+	}
+	
 
 	foreach($levels["angle"] as $angle){
 		$angleObj = [];
@@ -74,9 +81,10 @@ foreach($levelArr as $levels){
 				$angleObj["value"][$key] = $value;
 			}
 		}
-
 		$levelObj["angles"][] = $angleObj;
 	}
+
+
 
 	$output["levels"][$stage[0]][$stage[1]] = $levelObj;
 	

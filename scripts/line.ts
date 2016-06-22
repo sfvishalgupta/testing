@@ -11,11 +11,8 @@ class Line extends Phaser.Sprite
 		this.skin = null;
 		this.config = config;
 		this.name = config.id;
-		this._updateLine();
-		this.reset();
-		this.drawBody();
+		this._updateLine();;
 		this.anchor.set(0.5,0.5);
-		this.addChild(this.graphics);
 	}
 
 	reset()
@@ -36,9 +33,10 @@ class Line extends Phaser.Sprite
 		graphics.clear();
 		graphics.beginFill(color);
     	graphics.lineStyle(lineWidth, color);
-    	graphics.moveTo(config["points"][0],config["points"][1]);
-    	graphics.lineTo(config["points"][2],config["points"][3]);
+    	graphics.moveTo(config.b.x,config.b.y);
+    	graphics.lineTo(config.a.x,config.a.y);
     	graphics.endFill();
+    	this.addChild(this.graphics);
 	}
 
 	drawBody()
@@ -48,7 +46,9 @@ class Line extends Phaser.Sprite
 			y = this.y,
 			config = this.config,
 			body = new Phaser.Physics.Box2D.Body(game, null,x, y, 100);
-			body.setChain(config["points"]);
+			body.setChain([
+				config.b.x,config.b.y,config.a.x,config.a.y
+			]);
 			this.skin = body;
 	}
 
@@ -80,14 +80,11 @@ class Line extends Phaser.Sprite
 	_updateLine()
 	{
 		var config = this.config,
-			scale = global_config.scale;
-		for(var i in config["points"]){
-			if(i%2 == 0){
-				config["points"][i] *= scale;
-			}else{
-				config["points"][i] *= scale;
-			}
-		}
+			scale = global_config.Config.scale;
+		config.a.x *= scale;
+		config.a.y *= scale;
+		config.b.x *= scale;
+		config.b.y *= scale;
 		this.config = config;
 	}
 }
@@ -97,5 +94,69 @@ class SimpleLine extends Line
 	constructor(game,line)
 	{
 	    super(game,line);
+	    this.reset();
+		this.drawBody();
+	}
+}
+
+class InfoLine extends Line
+{
+	constructor(game,line)
+	{
+	    super(game,line);
+	    this._lineWidth = 1;
+	    this._color = 0xcccccc;
+		this.drawLine();
+	}
+	update(){}
+}
+
+class LaserLine extends Line
+{
+	constructor(game,line)
+	{
+	    super(game,line);
+	    this.laserOn = false;
+	    this._lineWidth = 1;
+	    this._color = 0xcccccc;
+	    this.laserGraphics = new Phaser.Graphics(game,0,0);
+	    this.addChild(this.laserGraphics);
+		this.drawBody();
+		this.switchLaserState();
+		this.drawLine();
+	}
+
+	switchLaserState()
+	{
+		this.laserOn = !this.laserOn;
+		if(this.laserOn){
+			this.skin.sensor = false;
+			this.laserGraphics.visible = true;
+		}else{
+			this.skin.sensor = true;
+			this.laserGraphics.visible = false;
+		}
+		setTimeout(this.switchLaserState.bind(this),3000);
+	}
+
+	updateLaserGraphics()
+	{
+		if(this.laserOn){
+			var color = Utils.getRandomElement(global_config.LaserLineColors),
+				config = this.config;
+			this.laserGraphics.clear();
+			this.laserGraphics.beginFill(color);
+    		this.laserGraphics.lineStyle(5, color);
+    		this.laserGraphics.moveTo(config.b.x,config.b.y);
+    		this.laserGraphics.lineTo(config.a.x,config.a.y);
+    		this.laserGraphics.drawCircle(config.a.x,config.a.y,5);
+    		this.laserGraphics.endFill();
+		}
+	}
+
+	update()
+	{
+		super.update();
+		this.updateLaserGraphics();
 	}
 }

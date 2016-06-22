@@ -9,6 +9,7 @@ class Angle extends Phaser.Button
 		this.oLines = lines;
 		this.color = color;
 		this.game = game;
+		this.name = config.id;
 		this.triggeredLine = this.config.triggeredLine;
 		this._lineWidth = 2;
 		this._draw();
@@ -44,29 +45,42 @@ class Angle extends Phaser.Button
 			pt2 = line2.config[aLine2[1]],
 			pts1 = new Phaser.Point(pt1.x,pt1.y),
 			pts2 = new Phaser.Point(pt2.x,pt2.y),
+			x1 = line1.config.a.x,
+			x2 = line1.config.b.x,
+			x3 = line2.config.a.x,
+			x4 = line2.config.b.x,
+			y1 = line1.config.a.y,
+			y2 = line1.config.b.y,
+			y3 = line2.config.a.y,
+			y4 = line2.config.b.y,
 			inter = Phaser.Line.intersectsPoints(
-				new Phaser.Point(line1.config.a.x,line1.config.a.y),
-				new Phaser.Point(line1.config.b.x,line1.config.b.y),
-				new Phaser.Point(line2.config.a.x,line2.config.a.y),
-				new Phaser.Point(line2.config.b.x,line2.config.b.y)
+				new Phaser.Point(x1, y1),
+				new Phaser.Point(x2, y2),
+				new Phaser.Point(x3, y3),
+				new Phaser.Point(x4, y4)
 			),
-			from = Phaser.Point.subtract(pts1,inter),
-			to = Phaser.Point.subtract(pts2,inter),
-			startAngle = Phaser.Point.angle(from,new Phaser.Point()),
-			endAngle = Phaser.Point.angle(to,new Phaser.Point()),
-			max = oAngle.interactive ? 50 : 45,
-			initX = inter.x*global_config.scale,
-			initY = inter.y*global_config.scale;
+			max = oAngle.interactive ? 50 : 45;
 
-		this.graphics = new Phaser.Graphics(game, initX, initY);
-		this.graphics.clear();
-		this.graphics.beginFill(this.color);
+		if(inter != null){
+			var from = Phaser.Point.subtract(pts1,inter),
+				to = Phaser.Point.subtract(pts2,inter),
+				startAngle = Phaser.Point.angle(from,new Phaser.Point()),
+				endAngle = Phaser.Point.angle(to,new Phaser.Point()),
+				initX = inter.x,
+				initY = inter.y;
 
-		for(var i=0;i<max;i++){
-			this.graphics.arc(0,0, i, startAngle,endAngle, false);
+			this.graphics = new Phaser.Graphics(game, initX, initY);
+			this.graphics.clear();
+			this.graphics.beginFill(this.color);
+
+			for(var i=0;i<max;i++){
+				this.graphics.arc(0,0, i, startAngle,endAngle, false);
+			}
+			this.graphics.endFill(); 
+			this.addChild(this.graphics);
+		}else{
+			//console.log(line1.config,line2.config);
 		}
-		this.graphics.endFill(); 
-		this.addChild(this.graphics);
 	}
 
 	_addLabel()
@@ -81,7 +95,7 @@ class Angle extends Phaser.Button
 			y = 0
 
 		if(!oAngle.interactive){
-			random = ranges[Math.floor(Math.random()*ranges.length)];
+			random = Utils.getRandomElement(ranges);
 			label = random;
 		}
 

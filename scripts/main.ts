@@ -1,24 +1,33 @@
-class MainState 
+class Preloader
 {
-	constructor(){
-		this.cursor = null;
-		this.rotatingElements = [];
-		this.itzi = null;
-		this.blueFlies = [];
-		this.goldFlies = [];
-		this.oLines = [];
+	constructor()
+	{
+
 	}
 
-	preload(){
-		this.game.load.json("level","constants/level.json");
+	preload()
+	{
+		var build = "build/";
+		this.game.load.json("level",build+"level.json");
+		this.game.load.json("app",build+"app.json");
 		
 		this.game.load.image("cog","assets/cog-main.png");
 		this.game.load.image("cog_small","assets/cog-small.png");
 		this.game.load.image("itzi","assets/itzi.png");
 		this.game.load.image("texture","assets/line_texture.jpg");
+		this.game.load.image("beeCounter","assets/counter-bee-bg.png");
+		this.game.load.image("blueBee","assets/bee-counter-blue-only.png");
+		this.game.load.image("goldBee","assets/bee-counter-yellow-only.png");
+		this.game.load.image("colors","assets/colors.png");
 		
 		// Load backgrounds 
 		this.game.load.image("world01","assets/backgrounds/world01.jpg");
+		this.game.load.image("world02","assets/backgrounds/world02.jpg");
+		this.game.load.image("world03","assets/backgrounds/world03.jpg");
+		this.game.load.image("world04","assets/backgrounds/world04.jpg");
+		this.game.load.image("world05","assets/backgrounds/world05.jpg");
+		this.game.load.image("world06","assets/backgrounds/world06.jpg");
+		
 
 		this.game.load.spritesheet('blueFly','assets/blue_fly.jpg', 53, 40);
 		this.game.load.spritesheet('goldFly','assets/gold_fly.jpg', 53, 40);
@@ -29,6 +38,36 @@ class MainState
 		this.game.load.spritesheet("GateLight","assets/gate_light.png",31, 32);
 	}
 
+	create()
+	{
+		global_config = Utils.merge_objects(global_config,this.game.cache.getJSON('app'));
+		/*
+		var bmd = this.game.make.bitmapData(200, 20);
+		bmd.draw("colors",0,0);
+		bmd.update();
+		for(var i=0;i<10;i++){
+			var color = bmd.getPixelRGB(20*i, 5);
+			global_config.LaserLineColors = 
+			console.log(Phaser.Color.RGBtoString(color.r,color.g,color.b,color.a));
+		}
+		*/
+		this.game.state.add("Play", new MainState(),true);
+	}
+}
+
+class MainState 
+{
+	constructor(){
+		this.cursor = null;
+		this.rotatingElements = [];
+		this.itzi = null;
+		this.blueFlies = [];
+		this.goldFlies = [];
+		this.oLines = [];
+		this.blueBeeCollected = 0;
+		this.goldBeeCollected = 0;
+	}
+
 	create() 
 	{
 		var allLevels = this.game.cache.getJSON('level')["levels"],
@@ -37,16 +76,30 @@ class MainState
 			game = this.game,
 			blueFlyLength = typeof level.blueFlies != "undefined" ? level.blueFlies.length : 0;
 
-		game.add.image(0,0,"world01");
+		game.add.image(0,0,global_config.world);
+
 	    this._setupGame();
 		
 		 /** Adding Lines */
 	    for(var i in level.lines){
 	    	var lineCnf = level.lines[i],
-	    		line = new SimpleLine(game,lineCnf);
+	    		line = null;
 
+	    	switch(lineCnf.type)
+	    	{
+	    		case "info" :
+	    			line = new InfoLine(game,lineCnf);
+	    		break;
+	    		case "laser":
+	    			line = new LaserLine(game,lineCnf);
+	    		break;
+	    		default:
+	    			line = new SimpleLine(game,lineCnf);
+	    		break;
+	    	}
+
+	    	this.oLines[lineCnf.id] = line;
     		this.rotatingElements.push(line);
-    		this.oLines[lineCnf.id] = line;
 
     		if(global_config.debug){
 	    		var text = new DebugText(game, lineCnf, lineCnf.id);
@@ -57,12 +110,13 @@ class MainState
 
 	    /** Addng Angles */
 	    for(var i in level.angles){
+
 	    	var oAngle = level.angles[i],
-	    		color = 0xcccccc,
+	    		color = global_config.Config.angleDefaultColor,
 	    		range = [];
 
 	    	if(oAngle.interactive){
-	    		color = 0x00FF00;
+	    		color = Utils.getRandomElement(global_config.AngleColors);
 	    		this.oLines[oAngle.triggeredLine].updateLineTriggered(color);
 	    	}
 
@@ -74,6 +128,13 @@ class MainState
 				ang.onInputUp.add(this._onAngleClick.bind(this));
     		}
 	    }
+
+	    for(var i in level.levelShape){
+	    	var levelShape = new LevelShape(game,level.levelShape[i]);
+	    	this.add.existing(levelShape);
+	    	this.rotatingElements.push(levelShape);
+	    }
+
 
 		// Adding Gate
 		this.gate = new Gate(game,level.gate, blueFlyLength);
@@ -105,12 +166,15 @@ class MainState
 	    }
 
 	    for(var i in this.oLines){
+	    	//if(i == "line12" || i == "line27" || i == "line28")
 	    	game.add.existing(this.oLines[i]);
 	    }
 
 	    this.itzi.skin.setBodyContactCallback(this.gate.skin,this._gameComplete,this);
 
 	    this._addCogWheel();
+
+	    this._addBeeCounter();
 
 	    this.cursor = this.input.keyboard.createCursorKeys();
 	}
@@ -195,6 +259,8 @@ class MainState
 	    {
 	        return;
 	    }
+	    this.blueBeeCollected++;
+	    this.blueBeeCounter.updateBeeCollected(this.blueBeeCollected);
 	    body2.sprite.destroy();
 	    body2.destroy();
 	    this.gate.collectFile();
@@ -206,6 +272,8 @@ class MainState
 	    {
 	        return;
 	    }
+	    this.goldBeeCollected ++;
+	    this.goldBeeCounter.updateBeeCollected(this.goldBeeCollected);
 	    body2.sprite.destroy();
 	    body2.destroy();
 	}
@@ -234,36 +302,29 @@ class MainState
 	    }
 	    console.log("itzi touch boundry")
 	}
-}
 
-function getQueryParams(){
-	var match,
-		queryParams = {},
-		pl = /\+/g,  // Regex for replacing addition symbol with a space
-		search = /([^&=]+)=?([^&]*)/g,
-		decode = function (s) {
-			return decodeURIComponent(s.replace(pl, " "));
-		},
-		query = window.location.search.substring(1);
-		while (match = search.exec(query)) {
-			queryParams[decode(match[1])] = decode(match[2]);
-		}
-	return queryParams;
-}
+	_addBeeCounter()
+	{
+		var game = this.game;
 
-function getLevel(level){
-	if(level.length<2){
-		level = "0"+level;
+		this.blueBeeCounter = new BlueBeeCounter(game,640,70);
+		this.blueBeeCounter.setTotalBeeCount(this.blueFlies.length);
+		this.add.existing(this.blueBeeCounter);
+
+		this.goldBeeCounter = new GoldBeeCounter(game,640,130);
+		this.goldBeeCounter.setTotalBeeCount(this.goldFlies.length);
+		this.add.existing(this.goldBeeCounter);
 	}
-	return level;
 }
-var obj = getQueryParams(),
-	level = getLevel(obj.id),
+
+var obj = Utils.getQueryParams(),
+	level = Utils.getLevel(obj.id),
+	stage = 2,
 	global_config = {
-		scale : 2.7,
-		stage : "S1",
+		stage : "S"+stage,
 		level : "L"+level,
+		world : "world0"+stage,
 		debug : false
 	};
 
-new Phaser.Game(800, 600, Phaser.CANVAS, 'container', new MainState());
+new Phaser.Game(800, 600, Phaser.CANVAS, 'container', new Preloader());
