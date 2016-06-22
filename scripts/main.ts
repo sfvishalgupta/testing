@@ -318,8 +318,8 @@ class MainState
 }
 
 var obj = Utils.getQueryParams(),
-	level = Utils.getLevel(obj.id),
-	stage = 2,
+	level = Utils.getLevel(obj.level),
+	stage = obj.stage || 1,
 	global_config = {
 		stage : "S"+stage,
 		level : "L"+level,
