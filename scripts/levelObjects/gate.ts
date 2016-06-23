@@ -4,7 +4,7 @@ class Gate extends Phaser.Sprite
 	{
 		var cx = game.world.centerX,
 			cy = game.world.centerY,
-			x = config.x*global_config.Config.scale,
+			x = config.x*global_config.Config.scale*game.isFlipped,
 			y = config.y*global_config.Config.scale; 
 		
 		super(game,cx,cy);

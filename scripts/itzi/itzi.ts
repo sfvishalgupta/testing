@@ -4,7 +4,7 @@ class Itzi extends Phaser.Sprite
 	{
 		var cx = game.world.centerX,
 			cy = game.world.centerY,
-			x = cx + config.x*global_config.Config.scale,
+			x = cx + config.x*global_config.Config.scale*game.isFlipped,
 			y = cy + config.y*global_config.Config.scale;
 		super(game,x,y,"itzi");
 

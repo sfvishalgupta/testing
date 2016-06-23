@@ -1,8 +1,11 @@
 class BeeCounter extends Phaser.Sprite
 {
-	constructor(game,x,y)
+	constructor(game,cnf)
 	{
-		super(game,x,y,"beeCounter");
+		super(game,cnf.x,cnf.y,cnf.frame);
+		if(cnf.frameName){
+			this.frameName = cnf.frameName;
+		}
 		this.game = game;
 		this.totalBee = 0;
 		this.collectedBee = 0;
@@ -42,18 +45,20 @@ class BeeCounter extends Phaser.Sprite
 
 class BlueBeeCounter extends BeeCounter
 {
-	constructor(game,x,y)
+	constructor(game)
 	{
-		super(game,x,y);
+		var cnf = global_config.Images.BlueBeeCounter;
+		super(game,cnf);
 		this.addBeeImage("blueBee");
 	}
 }
 
 class GoldBeeCounter extends BeeCounter
 {
-	constructor(game,x,y)
+	constructor(game)
 	{
-		super(game,x,y);
+		var cnf = global_config.Images.GoldBeeCounter;
+		super(game,cnf);
 		this.addBeeImage("goldBee");
 	}
 }

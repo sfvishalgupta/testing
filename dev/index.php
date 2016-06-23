@@ -56,6 +56,13 @@ foreach($levelArr as $levels){
 	    $lineObj["equalLengthSymbol"] = $line["equalLengthSymbol"] == 0 ? false : true;
 	    $lineObj["conveyorSpeed"] = $line["conveyorSpeed"];
 	    //$lineObj["points"] = getPointsArray($line["pointA"],$line["pointB"]);
+	    if($lineObj["type"] == "laser"){
+	    	$time = getXY($line["laserTimes"]);
+	    	$lineObj["laserTimes"]["onTime"] = $time["x"];
+	    	$lineObj["laserTimes"]["offTime"] = $time["y"];
+	    	$lineObj["laserDelay"] = intval($line["laserDelay"]);
+
+	    }
 	    $levelObj["lines"][] = $lineObj;
 	}
 

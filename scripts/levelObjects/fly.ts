@@ -4,7 +4,7 @@ class Fly extends Phaser.Sprite
 	{
 		var cx = game.world.centerX,
 			cy = game.world.centerY,
-			x = x*global_config.Config.scale,
+			x = x*global_config.Config.scale*game.isFlipped,
 			y = y*global_config.Config.scale;
 
 		super(game,cx,cy);

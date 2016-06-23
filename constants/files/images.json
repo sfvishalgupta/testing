@@ -10,6 +10,36 @@
 		"LineTexture" : {
 			"frame" : "texture",
 			"frameName" : ""
+		},
+		"HealthBar" : {
+			"frame" : "healthBar",
+			"frameName" : "",
+			"x"	: 10,
+			"y" : 10
+		},
+		"Energy" : {
+			"frame" : "energy",
+			"frameName" : "",
+			"x"	: 40,
+			"y" : 4
+		},
+		"Timer" : {
+			"frame" : "timer",
+			"frameName" : "",
+			"x"	: 605,
+			"y" : 10
+		},
+		"BlueBeeCounter" : {
+			"frame" : "beeCounter",
+			"frameName" : "",
+			"x"	: 630,
+			"y" : 70
+		},
+		"GoldBeeCounter" : {
+			"frame" : "beeCounter",
+			"frameName" : "",
+			"x"	: 630,
+			"y" : 130
 		}
 	}
 }

@@ -257,7 +257,7 @@
         </fuzzi>
     </level>
     <level>
-        <name>S1_L04</name>
+        <name>S1_L05</name>
         <gravity>0,0.2</gravity>
         <time>300</time>
         <angleWheelInputStep>5</angleWheelInputStep>
@@ -342,7 +342,7 @@
         </fuzzi>
     </level>
     <level>
-        <name>S1_L05</name>
+        <name>S1_L04</name>
         <gravity>0,0.2</gravity>
         <time>300</time>
         <angleWheelInputStep>5</angleWheelInputStep>
@@ -1072,7 +1072,7 @@
         </fuzzi>
     </level>
     <level>
-        <name>S1_L12</name>
+        <name>S1_L13</name>
         <gravity>0,0.2</gravity>
         <time>300</time>
         <angleWheelInputStep>5</angleWheelInputStep>
@@ -1182,7 +1182,7 @@
         </fuzzi>
     </level>
     <level>
-        <name>S1_L13</name>
+        <name>S1_L14</name>
         <gravity>0,0.2</gravity>
         <time>300</time>
         <angleWheelInputStep>5</angleWheelInputStep>
@@ -1321,7 +1321,7 @@
         </fuzzi>
     </level>
     <level>
-        <name>S1_L14</name>
+        <name>S1_L12</name>
         <gravity>0,0.2</gravity>
         <time>300</time>
         <angleWheelInputStep>5</angleWheelInputStep>
