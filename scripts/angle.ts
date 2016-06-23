@@ -1,4 +1,4 @@
-class Angle extends Phaser.Button
+class Angle extends Phaser.Sprite
 {
 	constructor(game,config,lines,color){
 		var cx = game.world.centerX,
@@ -10,33 +10,52 @@ class Angle extends Phaser.Button
 		this.color = color;
 		this.game = game;
 		this.name = config.id;
-		this.triggeredLine = this.config.triggeredLine;
+		this.angleValue = "50";
+		this.triggeredLine = null;
 		this._lineWidth = 2;
-		this._draw();
-		this._addLabel();
-	}
+		this.isInterctive = this.config.interactive;
+		console.log(this.config);
+		if(this.config.triggeredLine){
+			this.triggeredLine = lines[this.config.triggeredLine];
+		}
 
-	triggerDisable()
-	{
-		this.alpha = 1;
-	}
-	enbaleTriggerClick()
-	{
-		this.alpha = 0.5;
-		setTimeout(this.triggerDisable.bind(this),2000);
+		// Childrens
+		this.graphics = null;
+		this.textLabel = null;
+		this.interactiveTextBox = null;
+		this.graphicsButton = null;
+
+		this.addGraphics();
 	}
 
 	update()
 	{
-		this.textLabel.angle = -this.angle;
+		if(this.textLabel){
+			this.textLabel.angle = -this.angle;
+		}
+		if(this.interactiveTextBox){
+			this.interactiveTextBox.angle = -this.angle;	
+		}
 	}
 
-	_draw()
+	drawGraphics(startAngle,endAngle,radius)
+	{
+		var game = this.game;
+		this.graphics = new Phaser.Graphics(game, 0, 0);
+		this.graphics.clear();
+		this.graphics.beginFill(this.color);
+
+		for(var i=0;i<radius;i++){
+			this.graphics.arc(0,0, i, startAngle,endAngle, false);
+		}
+		this.graphics.endFill(); 
+		this.graphicsButton.addChild(this.graphics);
+	}
+
+	addGraphics()
 	{
 		var oAngle = this.config,
 			game = this.game,
-			cx = game.world.centerX,
-			cy = game.world.centerY,
 			aLine1 = oAngle.lineA.split("."),
 			aLine2 = oAngle.lineB.split("."),
 			line1 = this.oLines[aLine1[0]],
@@ -45,62 +64,117 @@ class Angle extends Phaser.Button
 			pt2 = line2.config[aLine2[1]],
 			pts1 = new Phaser.Point(pt1.x,pt1.y),
 			pts2 = new Phaser.Point(pt2.x,pt2.y),
-			x1 = line1.config.a.x,
-			x2 = line1.config.b.x,
-			x3 = line2.config.a.x,
-			x4 = line2.config.b.x,
-			y1 = line1.config.a.y,
-			y2 = line1.config.b.y,
-			y3 = line2.config.a.y,
-			y4 = line2.config.b.y,
-			inter = Phaser.Line.intersectsPoints(
-				new Phaser.Point(x1, y1),
-				new Phaser.Point(x2, y2),
-				new Phaser.Point(x3, y3),
-				new Phaser.Point(x4, y4)
-			),
-			max = oAngle.interactive ? 50 : 45;
+			radius = oAngle.interactive ? 50 : 45,
+			inter = Utils.getIntersactionPoint(line1,line2);
 
 		if(inter != null){
 			var from = Phaser.Point.subtract(pts1,inter),
 				to = Phaser.Point.subtract(pts2,inter),
 				startAngle = Phaser.Point.angle(from,new Phaser.Point()),
-				endAngle = Phaser.Point.angle(to,new Phaser.Point()),
-				initX = inter.x,
-				initY = inter.y;
+				endAngle = Phaser.Point.angle(to,new Phaser.Point());
 
-			this.graphics = new Phaser.Graphics(game, initX, initY);
-			this.graphics.clear();
-			this.graphics.beginFill(this.color);
+			startAngle = startAngle < 0 ? 2*3.14 + startAngle : startAngle;
+			endAngle = endAngle < 0 ? 2*3.14 + endAngle : endAngle;
 
-			for(var i=0;i<max;i++){
-				this.graphics.arc(0,0, i, startAngle,endAngle, false);
+			if(this.isInterctive){
+				this.graphicsButton = new Phaser.Button(game,inter.x, inter.y);
+				this.enableButton();
+			}else{
+				this.graphicsButton = new Phaser.Sprite(game,inter.x, inter.y);
 			}
-			this.graphics.endFill(); 
-			this.addChild(this.graphics);
-		}else{
-			//console.log(line1.config,line2.config);
+			this.addChild(this.graphicsButton);
+			this.drawGraphics(startAngle, endAngle, radius);
+
+			this.addLabel(startAngle,endAngle,inter);
+			this.addTextBox();
 		}
 	}
 
-	_addLabel()
+	enableButton()
 	{
-		var label = "x",
-			game = this.game,
+		this.graphicsButton.inputEnabled = true;
+		this.graphicsButton.input.useHandCursor = true;
+		this.graphicsButton.onInputOver.add(function(){
+			if(this.textLabel.visible){
+				this.graphicsButton.alpha = 0.5;
+			}
+		}.bind(this));
+		this.graphicsButton.onInputOut.add(function(){
+			if(this.textLabel.visible){
+				this.graphicsButton.alpha = 1;
+			}
+		}.bind(this));
+		this.graphicsButton.onInputUp.add(function(){
+			if(this.textLabel.visible){
+				this.interactiveTextBox.visible = true;
+				this.interactiveTextBox.text = this.textLabel.text;
+				this.textLabel.visible = false;
+			}else{
+				this.interactiveTextBox.visible = false;
+				this.textLabel.visible = true;
+			}
+		}.bind(this));
+	}
+
+	addLabel(a1,a2,inter)
+	{
+		var game = this.game,
 			oAngle = this.config,
-			ranges = oAngle.value.range,
-			random = 0,
-			style = {fill:'#FF0000',font: "bold 16px Arial"},
-			x = 0,
-			y = 0
+			style = {fill:'#FF0000',font: "bold 20px Arial"},
+			pos = Utils.getRadialPosition(inter,a1,a2);
 
-		if(!oAngle.interactive){
-			random = Utils.getRandomElement(ranges);
-			label = random;
-		}
-
-		this.textLabel = new Phaser.Text(game,x/2,y/2,label,style);
+		this.textLabel = new Phaser.Text(game,pos.x,pos.y,this.angleValue,style);
 		this.textLabel.anchor.set(0.5,0.5);
 		this.addChild(this.textLabel);
+		this.textBoxPos = pos;
+	}
+
+	addTextBox()
+	{
+		if(this.isInterctive){
+			var pos = this.textBoxPos,
+				game = this.game;
+			this.interactiveTextBox = new InteractiveTextBox(this.game,pos,this.color);
+			this.addChild(this.interactiveTextBox);
+			this.interactiveTextBox.visible = false;
+
+			game.input.keyboard.onDownCallback = function(e){
+				if(this.interactiveTextBox.visible && e.which>47 && e.which < 58)
+				{
+					e.preventDefault();
+					var codeValue = Utils.getKeycodeValue(e.which);
+					this.dispatchKeyboardClick(codeValue);
+				}else if(this.interactiveTextBox.visible && e.which == 8){
+					e.preventDefault();
+					this.dispatchKeyboardClick(-1);
+				}else if(this.interactiveTextBox.visible && e.which == 13){
+					e.preventDefault();
+					this.interactiveTextBox.visible = false;
+					this.textLabel.text = this.interactiveTextBox.text;
+					this.textLabel.visible = true;
+					this.graphicsButton.alpha = 1;
+					this.game.onAngleEnterPress.dispatch(this.interactiveTextBox.text);
+				}
+    		}.bind(this);
+
+    		game.onAngleEnterPress.add(function(e){
+    			this.alpha = 0.5;
+    			this.triggeredLine.alpha = 0.5;
+				this.triggeredLine.skin.sensor = true;
+    			setTimeout(function(){
+    				this.alpha = 1;	
+    				this.triggeredLine.alpha = 1;
+					this.triggeredLine.skin.sensor = false;	
+    			}.bind(this),global_config.Config.disableLineTime);
+    		},this);
+		}
+	}
+
+	dispatchKeyboardClick(code)
+	{
+		if(this.interactiveTextBox.visible)
+		{
+			this.interactiveTextBox.updateText(code);
+		}
 	}
 }

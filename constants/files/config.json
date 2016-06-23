@@ -2,6 +2,9 @@
 	"Config" : {
 		"angleDefaultColor" : "0x9F9F9F",
 		"shapeDefaultColor" : "0x9F9F9F",
-		"scale" : 2.7
+		"scale" : 2.7,
+		"lineWidth" : 3,
+		"angleTextboxRadius" : 30,
+		"disableLineTime" : 3000
 	}
 }

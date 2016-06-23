@@ -1,4 +1,4 @@
-class Preloader
+class Boot
 {
 	constructor()
 	{
@@ -7,39 +7,61 @@ class Preloader
 
 	preload()
 	{
-		var build = "build/";
-		this.game.load.json("level",build+"level.json");
-		this.game.load.json("app",build+"app.json");
-		
-		this.game.load.image("cog","assets/cog-main.png");
-		this.game.load.image("cog_small","assets/cog-small.png");
-		this.game.load.image("itzi","assets/itzi.png");
-		this.game.load.image("texture","assets/line_texture.jpg");
-		this.game.load.image("beeCounter","assets/counter-bee-bg.png");
-		this.game.load.image("blueBee","assets/bee-counter-blue-only.png");
-		this.game.load.image("goldBee","assets/bee-counter-yellow-only.png");
-		this.game.load.image("colors","assets/colors.png");
-		this.game.load.image("conveyor","assets/conveyor.png");
-		
-		// Load backgrounds 
-		this.game.load.image("world01","assets/backgrounds/world01.jpg");
-		this.game.load.image("world02","assets/backgrounds/world02.jpg");
-		this.game.load.image("world03","assets/backgrounds/world03.jpg");
-		this.game.load.image("world04","assets/backgrounds/world04.jpg");
-		this.game.load.image("world05","assets/backgrounds/world05.jpg");
-		this.game.load.image("world06","assets/backgrounds/world06.jpg");
-		
-
-		this.game.load.spritesheet('blueFly','assets/blue_fly.jpg', 53, 40);
-		this.game.load.spritesheet('goldFly','assets/gold_fly.jpg', 53, 40);
-
-		this.game.load.spritesheet("gate","assets/gate_texture.png",61, 62);
-		this.game.load.spritesheet("gateTwirl","assets/gate_twirl_texture.png",52, 52);
-		this.game.load.spritesheet("GateLightAnim","assets/gate_light_anim.png",17, 17);
-		this.game.load.spritesheet("GateLight","assets/gate_light.png",31, 32);
+		this.game.load.spritesheet('preloader-img','assets/MH_loading.png',120,140);
 	}
 
 	create()
+	{
+		var game = this.game,
+			cx = game.world.centerX,
+			cy = game.world.centerY;
+
+		game.preloader = game.add.sprite(cx,cy,"preloader-img");
+		game.preloader.anchor.set(0.5,0.5);
+		game.load.onFileComplete.add(function(progress, cacheKey, success, totalLoaded, totalFiles){
+            var frame = Math.floor(progress/(100/7));
+            if(frame != game.preloader.frame){
+                   game.preloader.frame ++;
+            }
+            if(game.load.totalQueuedFiles() === 0){
+                game.preloader.frame = 6;
+                this.startPlay();
+            }
+        }, this);
+
+		var build = "build/";
+		game.load.json("level",build+"level.json");
+		game.load.json("app",build+"app.json");
+		
+		game.load.image("cog","assets/cog-main.png");
+		game.load.image("cog_small","assets/cog-small.png");
+		game.load.image("itzi","assets/itzi.png");
+		game.load.image("texture","assets/line_texture.jpg");
+		game.load.image("beeCounter","assets/counter-bee-bg.png");
+		game.load.image("blueBee","assets/bee-counter-blue-only.png");
+		game.load.image("goldBee","assets/bee-counter-yellow-only.png");
+		game.load.image("colors","assets/colors.png");
+		game.load.image("conveyor","assets/conveyor.png");
+		
+		// Load backgrounds 
+		game.load.image("world01","assets/backgrounds/world01.jpg");
+		game.load.image("world02","assets/backgrounds/world02.jpg");
+		game.load.image("world03","assets/backgrounds/world03.jpg");
+		game.load.image("world04","assets/backgrounds/world04.jpg");
+		game.load.image("world05","assets/backgrounds/world05.jpg");
+		game.load.image("world06","assets/backgrounds/world06.jpg");
+
+		game.load.spritesheet('blueFly','assets/blue_fly.jpg', 53, 40);
+		game.load.spritesheet('goldFly','assets/gold_fly.jpg', 53, 40);
+
+		game.load.spritesheet("gate","assets/gate_texture.png",61, 62);
+		game.load.spritesheet("gateTwirl","assets/gate_twirl_texture.png",52, 52);
+		game.load.spritesheet("GateLightAnim","assets/gate_light_anim.png",17, 17);
+		game.load.spritesheet("GateLight","assets/gate_light.png",31, 32);
+		game.load.start();
+	}
+
+	startPlay()
 	{
 		global_config = Utils.merge_objects(global_config,this.game.cache.getJSON('app'));
 		/*
@@ -52,9 +74,11 @@ class Preloader
 			console.log(Phaser.Color.RGBtoString(color.r,color.g,color.b,color.a));
 		}
 		*/
+		this.game.onAngleEnterPress = new Phaser.Signal();
 		this.game.state.add("Play", new MainState(),true);
 	}
 }
+
 
 class MainState 
 {
@@ -75,6 +99,7 @@ class MainState
 			stage = allLevels[global_config.stage],
 			level = stage[global_config.level],
 			game = this.game,
+			interactiveColor = Utils.getRandomElement(global_config.AngleColors),
 			blueFlyLength = typeof level.blueFlies != "undefined" ? level.blueFlies.length : 0;
 
 		game.add.image(0,0,global_config.world);
@@ -114,23 +139,18 @@ class MainState
 
 	    /** Addng Angles */
 	    for(var i in level.angles){
-
 	    	var oAngle = level.angles[i],
 	    		color = global_config.Config.angleDefaultColor,
 	    		range = [];
 
 	    	if(oAngle.interactive){
-	    		color = Utils.getRandomElement(global_config.AngleColors);
-	    		this.oLines[oAngle.triggeredLine].updateLineTriggered(color);
+	    		this.oLines[oAngle.triggeredLine].updateLineTriggered(interactiveColor);
+	    		color = interactiveColor;
 	    	}
 
 	    	var ang = new Angle(game,oAngle,this.oLines,color);
 	    	game.add.existing(ang);
     		this.rotatingElements.push(ang);
-
-    		if(oAngle.interactive){
-				ang.onInputUp.add(this._onAngleClick.bind(this));
-    		}
 	    }
 
 	    for(var i in level.levelShape){
@@ -208,13 +228,6 @@ class MainState
 	render() 
 	{
 		 //this.game.debug.box2dWorld();
-	}
-
-	_onAngleClick(oAngle)
-	{
-		console.log("interactive click");
-		this.oLines[oAngle.triggeredLine].enbaleTriggerClick();
-		oAngle.enbaleTriggerClick();
 	}
 
 	_setupGame()
@@ -331,4 +344,4 @@ var obj = Utils.getQueryParams(),
 		debug : false
 	};
 
-new Phaser.Game(800, 600, Phaser.CANVAS, 'container', new Preloader());
+new Phaser.Game(800, 600, Phaser.CANVAS, 'container', new Boot());

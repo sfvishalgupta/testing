@@ -26,6 +26,30 @@ class ParallelSymbol extends Phaser.Sprite
 	}
 }
 
+class ImageLine extends Phaser.Sprite
+{
+	constructor(game,x,y,len,cnfImage)
+	{
+		super(game,x,y);
+		this.len = len;
+		this.pad = new Phaser.Sprite(game,0,0,cnfImage.frame);
+		this.pad.scale.set(4,4);
+		if(cnfImage.frameName){
+			this.pad.frameName = cnfImage.frameName;
+		}
+		
+		var graphics = new Phaser.Graphics(game,0,0);
+		graphics.clear();
+		graphics.beginFill(0x0000FF);
+    	graphics.drawRect(0,0,len,global_config.Config.lineWidth);
+    	graphics.endFill();
+    	this.addChild(graphics);
+    	this.addChild(this.pad);
+    	this.pad.mask = graphics;
+    	this.pad.anchor.set(0.5,0.5);
+	}
+}
+
 class ConveyorSprite extends Phaser.Sprite
 {
 	constructor(game,x,y,len)
@@ -45,14 +69,12 @@ class ConveyorSprite extends Phaser.Sprite
 	}
 	update()
 	{
-		
 		this.pad.x += 1;
 		if(this.pad.x > this.len){
 			this.pad.x = 0;
 		}
 	}
 }
-
 
 class Line extends Phaser.Sprite
 {
@@ -76,8 +98,21 @@ class Line extends Phaser.Sprite
 
 	reset()
 	{
-		this._lineWidth = 2;
-		this.drawLine();
+		this._lineWidth = global_config.Config.lineWidth;
+		this.drawImageLine();
+	}
+
+	drawImageLine()
+	{
+		var game = this.game,
+			config = this.config,
+			cnfImage = global_config.Images.LineTexture,
+			width = Utils.getDistanceBetweenPoints(config.a.x,config.a.y, config.b.x, config.b.y),
+			angle = Utils.getLineAngle(config.a.x,config.a.y, config.b.x, config.b.y);
+
+		this.imageBody = new ImageLine(game, config.a.x, config.a.y,width,cnfImage);
+		this.imageBody.angle = angle;
+		this.addChild(this.imageBody);
 	}
 
 	drawLine()
@@ -88,7 +123,6 @@ class Line extends Phaser.Sprite
 			color = this._color,
 			lineWidth = this._lineWidth;
 
-		graphics.key = "texture";
 		graphics.clear();
 		graphics.beginFill(color);
     	graphics.lineStyle(lineWidth, color);
@@ -127,20 +161,8 @@ class Line extends Phaser.Sprite
 	{
 		this.canTriggerd = true;
 		this._color = color;
+		this.removeChild(this.imageBody);
 		this.drawLine();
-	}
-	
-	triggerDisable()
-	{
-		this.alpha = 1;
-		this.skin.sensor = false;
-	}
-
-	enbaleTriggerClick()
-	{
-		this.alpha = 0.5;
-		this.skin.sensor = true;
-		setTimeout(this.triggerDisable.bind(this),2000);
 	}
 
 	_updateLine()
@@ -254,7 +276,6 @@ class ConveyorLine extends Line
 
 	addPad()
 	{
-		console.log(this.config);
 		var game = this.game,
 			config = this.config,
 			cx = game.world.centerX,

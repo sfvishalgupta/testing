@@ -72,7 +72,7 @@ foreach($levelArr as $levels){
 		$angleObj["lineA"] = $angle['lineA'];
 		$angleObj["lineB"] = $angle['lineB'];
 		$angleObj["alternateLine"] = $angle['alternateLine'];
-		$angleObj["triggeredLine"] = $angle['triggeredLine'];
+		$angleObj["triggeredLine"] = $angle['triggeredLine'] == "null" ? null : $angle["triggeredLine"] ;
 		$angleObj["interactive"] = ($angle['interactive'] === "true");
 		$angleObj["equalAngleSymbol"] = $angle['equalAngleSymbol'];
 		$angleObj["customLabelText"] = $angle['customLabelText'];

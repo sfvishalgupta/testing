@@ -1,0 +1,15 @@
+{
+	"Images" : {
+		"NormalLIne" : {
+			"frame" : ""
+		},
+		"ConveyorLine" : {
+			"frame" : "conveyor",
+			"frameName" : ""
+		},
+		"LineTexture" : {
+			"frame" : "texture",
+			"frameName" : ""
+		}
+	}
+}

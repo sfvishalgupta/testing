@@ -39,4 +39,58 @@ class Utils
 		}
 		return obj3;
 	}
+
+	static getDistanceBetweenPoints(x1,y1,x2,y2)
+	{
+		return Phaser.Math.distance(x1, y1, x2, y2);
+	}
+
+	static getLineAngle(x1,y1,x2,y2)
+	{
+		var line = new Phaser.Line(x1, y1, x2, y2);
+		return Phaser.Math.radToDeg(line.angle);
+	}
+
+	static getRadialPosition(init, angle1, angle2){
+		var a1 = Phaser.Math.radToDeg(angle1),
+			a2 = Phaser.Math.radToDeg(angle2),
+			diff = (a1-a2)/2,
+			angle = a1 + Math.abs(diff),
+			radius = global_config.Config.angleTextboxRadius,
+			x = init.x + radius*Math.sin(angle),
+			y = init.y + radius*Math.cos(angle);
+
+		if(diff < 0){
+			return {x:x,y:y};
+		}
+		return {x:x,y:-y};
+	}
+
+	static getIntersactionPoint(line1, line2)
+	{
+		var x1 = line1.config.a.x,
+			x2 = line1.config.b.x,
+			x3 = line2.config.a.x,
+			x4 = line2.config.b.x,
+			y1 = line1.config.a.y,
+			y2 = line1.config.b.y,
+			y3 = line2.config.a.y,
+			y4 = line2.config.b.y,
+			inter = Phaser.Line.intersectsPoints(
+				new Phaser.Point(x1, y1),
+				new Phaser.Point(x2, y2),
+				new Phaser.Point(x3, y3),
+				new Phaser.Point(x4, y4)
+			)
+		return inter;
+	}
+
+	static getKeycodeValue(code)
+	{
+		return code%48;
+	}
+
+	static getHashColor(color){
+		return "#"+color.substring(2,color.length);
+	}
 }
