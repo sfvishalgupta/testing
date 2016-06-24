@@ -11,6 +11,10 @@
 			"frame" : "texture",
 			"frameName" : ""
 		},
+		"SpikeBall" : {
+			"frame" : "spike",
+			"frameName" : ""	
+		},
 		"HealthBar" : {
 			"frame" : "healthBar",
 			"frameName" : "",

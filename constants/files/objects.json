@@ -1,0 +1,12 @@
+{
+	"Objects" : {
+		"SpikeBall" : {
+			"Type_Still" : "still",
+			"Type_Line" : "line",
+			"Type_Circle" : "circle"
+		},
+		"Line" : {
+
+		}
+	}
+}

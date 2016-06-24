@@ -33,12 +33,24 @@ class BootState
 		game.load.json("level",build+"level.json");
 		game.load.json("app",build+"app.json");
 		
+		// Level Objects
+		game.load.image("conveyor",		"assets/level_object/conveyor.png");
+		game.load.image("spike",		"assets/level_object/spike_textured.png");
+
+		game.load.spritesheet("gate",		"assets/level_object/gate_texture.png",61, 62);
+		game.load.spritesheet("GateLight",	"assets/level_object/gate_light.png",31, 32);
+		game.load.spritesheet("GateLightAnim","assets/level_object/gate_light_anim.png",17, 17);
+		game.load.spritesheet("gateTwirl",	"assets/level_object/gate_twirl_texture.png",52, 52);
+		game.load.spritesheet('blueFly',	'assets/level_object/blue_fly.jpg', 53, 40);
+		game.load.spritesheet('goldFly',	'assets/level_object/gold_fly.jpg', 53, 40);
+
+
+		// Canvas Objects
 		game.load.image("beeCounter",	"assets/counter-bee-bg.png");
 		game.load.image("blueBee",		"assets/bee-counter-blue-only.png");
 		game.load.image("cog",			"assets/cog-main.png");
 		game.load.image("cog_small",	"assets/cog-small.png");
 		game.load.image("colors",		"assets/colors.png");
-		game.load.image("conveyor",		"assets/conveyor.png");
 		game.load.image("energy", 		"assets/health_bar_fill.png");
 		game.load.image("goldBee",		"assets/bee-counter-yellow-only.png");
 		game.load.image("healthBar",	"assets/health_bar_bg.png");
@@ -53,17 +65,6 @@ class BootState
 		game.load.image("world04",		"assets/backgrounds/world04.jpg");
 		game.load.image("world05",		"assets/backgrounds/world05.jpg");
 		game.load.image("world06",		"assets/backgrounds/world06.jpg");
-
-		// load Spritesheets
-		game.load.spritesheet("gate",		"assets/gate_texture.png",61, 62);
-		game.load.spritesheet("GateLight",	"assets/gate_light.png",31, 32);
-		game.load.spritesheet("GateLightAnim","assets/gate_light_anim.png",17, 17);
-		game.load.spritesheet("gateTwirl",	"assets/gate_twirl_texture.png",52, 52);
-		game.load.spritesheet('blueFly',	'assets/blue_fly.jpg', 53, 40);
-		game.load.spritesheet('goldFly',	'assets/gold_fly.jpg', 53, 40);
-
-
-		
 
 		game.load.start();
 	}

@@ -14,7 +14,6 @@ class Angle extends Phaser.Sprite
 		this.triggeredLine = null;
 		this._lineWidth = 2;
 		this.isInterctive = this.config.interactive;
-		console.log(this.config);
 		if(this.config.triggeredLine){
 			this.triggeredLine = lines[this.config.triggeredLine];
 		}

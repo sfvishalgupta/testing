@@ -108,8 +108,20 @@ class PlayState
 	    }
 
 	    for(var i in this.oLines){
-	    	//if(i == "line12" || i == "line27" || i == "line28")
 	    	game.add.existing(this.oLines[i]);
+	    }
+
+	    for(var i in level.spikeBall){
+	    	var config = level.spikeBall[i],
+	    		spikeBall = new SpikeBall(game, config),
+	    		spikeBallPath = new SpikeBallPath(game,config);
+
+	    	this.add.existing(spikeBallPath);
+	    	this.add.existing(spikeBall);
+	    	this.rotatingElements.push(spikeBall);
+	    	this.rotatingElements.push(spikeBall.skin);
+	    	this.rotatingElements.push(spikeBallPath);
+	    	
 	    }
 
 	    this.itzi.skin.setBodyContactCallback(this.gate.skin,this._gameComplete,this);

@@ -89,7 +89,7 @@ class Line extends Phaser.Sprite
 		this.skin = null;
 		this.config = config;
 		this.name = config.id;
-		this._updateLine();;
+		this._updateLine();
 		this.anchor.set(0.5,0.5);
 		if(config.parallelSymbol){
 			this._addParallelSymbol();
@@ -122,7 +122,6 @@ class Line extends Phaser.Sprite
 			graphics = this.graphics,
 			color = this._color,
 			lineWidth = this._lineWidth;
-
 		graphics.clear();
 		graphics.beginFill(color);
     	graphics.lineStyle(lineWidth, color);
@@ -220,24 +219,42 @@ class LaserLine extends Line
 	    this.laserOn = false;
 	    this._lineWidth = 1;
 	    this._color = 0xcccccc;
+	    this._onTime = global_config.Config.LaserLineOffTime;
+	    this._offTime = global_config.Config.LaserLineOffTime;
+	    this._initDelay = global_config.Config.LaserLineInitDelay;
 	    this.laserGraphics = new Phaser.Graphics(game,0,0);
 	    this.addChild(this.laserGraphics);
 		this.drawBody();
-		this.switchLaserState();
-		this.drawLine();
+
+		if(line.laserDelay){
+			this._initDelay = line.laserDelay;
+		}
+
+		if(line.laserTimes.onTime){
+			this._onTime = line.laserTimes.onTime;
+		}
+
+		if(line.laserTimes.onTime){
+			this._offTime = line.laserTimes.onTime;
+		}
+
+		setTimeout(this.switchLaserState.bind(this),this._initDelay);
+		//this.drawLine();
 	}
 
 	switchLaserState()
 	{
 		this.laserOn = !this.laserOn;
+
 		if(this.laserOn){
 			this.skin.sensor = false;
 			this.laserGraphics.visible = true;
+			setTimeout(this.switchLaserState.bind(this),this._offTime);
 		}else{
 			this.skin.sensor = true;
 			this.laserGraphics.visible = false;
+			setTimeout(this.switchLaserState.bind(this),this._onTime);
 		}
-		setTimeout(this.switchLaserState.bind(this),3000);
 	}
 
 	updateLaserGraphics()

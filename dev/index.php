@@ -93,6 +93,30 @@ foreach($levelArr as $levels){
 		$levelObj["angles"][] = $angleObj;
 	}
 
+	if($levels["spikeball"]["pos"]){
+		$levels["spikeball"] = [$levels["spikeball"]];
+	}
+
+	foreach ($levels["spikeball"] as $spike) {
+		$spikeObj = [];
+		$spikeObj["pos"] = getXY($spike["pos"]);
+		$spikeObj["initPos"] = intval($spike["initPos"]);
+		$spikeObj["moveSpeed"] = floatVal($spike["moveSpeed"]);
+		$spikeObj["type"] = $spike["path"]["type"];
+		$spikeObj["path"]["pos"] = getXY($spike["path"]["pos"]);
+		if($spike["path"]["a"]){
+			$spikeObj["path"]["a"] = getXY($spike["path"]["a"]);
+			$spikeObj["path"]["b"] = getXY($spike["path"]["b"]);
+		}
+		if($spike["path"]["pathRadius"]){
+			$spikeObj["path"]["pathRadius"] = intval($spike["path"]["pathRadius"]);
+			$spikeObj["path"]["pathArcStart"] = intval($spike["path"]["pathArcStart"]);
+			$spikeObj["path"]["pathArcEnd"] = intval($spike["path"]["pathArcEnd"]);
+
+		}
+		$spikeObj["path"]["flipWithLevel"] = $spike["path"]["flipWithLevel"] == "false" ? false:true;
+		$levelObj["spikeBall"][] = $spikeObj;
+	}
 
 
 	$output["levels"][$stage[0]][$stage[1]] = $levelObj;
