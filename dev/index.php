@@ -52,8 +52,8 @@ foreach($levelArr as $levels){
 	    $lineObj['type'] = $line['@attributes']['type'];
 	    $lineObj["a"] = getXY($line["pointA"]);
 	    $lineObj["b"] = getXY($line["pointB"]);
-	    $lineObj["parallelSymbol"] = $line["parallelSymbol"] == 0 ? false : true;
-	    $lineObj["equalLengthSymbol"] = $line["equalLengthSymbol"] == 0 ? false : true;
+	    $lineObj["parallelSymbol"] = intval($line["parallelSymbol"]);
+	    $lineObj["equalLengthSymbol"] = intval($line["equalLengthSymbol"]);
 	    $lineObj["conveyorSpeed"] = $line["conveyorSpeed"];
 	    //$lineObj["points"] = getPointsArray($line["pointA"],$line["pointB"]);
 	    if($lineObj["type"] == "laser"){
@@ -71,6 +71,15 @@ foreach($levelArr as $levels){
 		$levelObj["levelShape"][] = $levels["levelShape"];
 	}
 	
+	if($levels["angle"]['@attributes'])
+	{
+		$levels["angle"] = [$levels["angle"]];
+	}
+
+	if($stage[0] == 'S3'&& $stage[1] == "L09"){
+		//print_r($levels["angle"]);
+		//die;
+	}
 
 	foreach($levels["angle"] as $angle){
 		$angleObj = [];

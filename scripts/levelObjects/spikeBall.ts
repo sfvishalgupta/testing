@@ -19,13 +19,7 @@ class SpikeBallPath extends Phaser.Sprite
 		}
 		this.addChild(this.graphics);
 	}
-	setConfig()
-	{
-		var game = this.game,
-			path = this.config.path;
-		
-		
-	}
+	
 	drawLine()
 	{
 		var game = this.game,

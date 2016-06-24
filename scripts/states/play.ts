@@ -280,3 +280,8 @@ class PlayState
 		this.add.existing(this.timer);
 	}
 }
+
+// 3 4 equal sign
+// parallel 2
+// equalLengthSymbol 2
+//3 9 spring
