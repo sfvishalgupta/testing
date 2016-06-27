@@ -4,7 +4,7 @@ class BeeCounter extends Phaser.Sprite
 	{
 		super(game,cnf.x,cnf.y,cnf.frame);
 		if(cnf.frameName){
-			this.frameName = cnf.frameName;
+			this.frame = cnf.frameName;
 		}
 		this.game = game;
 		this.totalBee = 0;

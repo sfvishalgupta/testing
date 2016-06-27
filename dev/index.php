@@ -127,6 +127,17 @@ foreach($levelArr as $levels){
 		$levelObj["spikeBall"][] = $spikeObj;
 	}
 
+	if($levels["springPad"]["pos"]){
+		$levels["springPad"] = [$levels["springPad"]];
+	}
+
+	foreach($levels["springPad"] as $pad){
+		$springObj = [];
+		$springObj["pos"] = getXY($pad["pos"]);
+		$springObj["angle"] = intVal($pad["angle"]);
+		$springObj["power"] = intVal($pad["power"]);
+		$levelObj["springPad"][] = $springObj;
+	}
 
 	$output["levels"][$stage[0]][$stage[1]] = $levelObj;
 	

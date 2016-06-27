@@ -43,6 +43,7 @@ class BootState
 		game.load.spritesheet("gateTwirl",	"assets/level_object/gate_twirl_texture.png",52, 52);
 		game.load.spritesheet('blueFly',	'assets/level_object/blue_fly.jpg', 53, 40);
 		game.load.spritesheet('goldFly',	'assets/level_object/gold_fly.jpg', 53, 40);
+		game.load.spritesheet('springPad',	'assets/level_object/spring_pad_textured.png', 67, 67);
 
 
 		// Canvas Objects
@@ -58,6 +59,15 @@ class BootState
 		game.load.image("texture",		"assets/line_texture.jpg");
 		game.load.image("timer",		"assets/timer.png");
 
+		game.load.image("game_pause",		"assets/button-pause-up.png");
+		game.load.image("game_pause_down",	"assets/button-pause-down.png");
+
+		game.load.image("game_help",		"assets/button-help-up.png");
+		game.load.image("game_help_down",	"assets/button-help-down.png");
+
+		game.load.image("game_replay",		"assets/button-replay-up.png");
+		game.load.image("game_replay_down",	"assets/button-replay-down.png");
+
 		// Load backgrounds 
 		game.load.image("world01",		"assets/backgrounds/world01.jpg");
 		game.load.image("world02",		"assets/backgrounds/world02.jpg");
@@ -65,12 +75,30 @@ class BootState
 		game.load.image("world04",		"assets/backgrounds/world04.jpg");
 		game.load.image("world05",		"assets/backgrounds/world05.jpg");
 		game.load.image("world06",		"assets/backgrounds/world06.jpg");
+		
+		// Menu Objects 
+		game.load.spritesheet("clock_open", 	"assets/menu/20-clock-open.jpg",187,547);
+		game.load.spritesheet("clock_close", 	"assets/menu/20-clock-closed.jpg",187,547);
+		game.load.spritesheet("menu_lock", 	"assets/menu/20-level-button-lock.jpg",82,103);
+		game.load.spritesheet("menu_down", 	"assets/menu/20-level-button-down.jpg",82,103);
+		game.load.spritesheet("menu_up", 	"assets/menu/20-level-button-up.jpg",82,103);
 
+		// Game Scripts
+		game.load.script('Utils',build+"utils.js");
+		
 		game.load.start();
 	}
 
 	startPlay()
 	{
+		var obj = Utils.getQueryParams(),
+			level = Utils.getLevel(obj.level),
+			stage = obj.stage || 1;
+
+		global_config.stage = "S"+stage;
+		global_config.level = "L"+level;
+		global_config.world = "world0"+stage;
+		
 		global_config = Utils.merge_objects(global_config,this.game.cache.getJSON('app'));
 		/*
 		var bmd = this.game.make.bitmapData(200, 20);
@@ -83,18 +111,15 @@ class BootState
 		}
 		*/
 		this.game.onAngleEnterPress = new Phaser.Signal();
-		this.game.state.add("Play", new PlayState(),true);
+		if(global_config.init_screen == 1){
+			this.game.state.add("Menu", new MenuState(),true);
+		}else if(global_config.init_screen == 2){
+			this.game.state.add("Play", new PlayState(global_config.level,global_config.stage),true);
+		}
 	}
 }
-
-var obj = Utils.getQueryParams(),
-	level = Utils.getLevel(obj.level),
-	stage = obj.stage || 1,
-	global_config = {
-		stage : "S"+stage,
-		level : "L"+level,
-		world : "world0"+stage,
-		debug : false
-	};
-
+var global_config = {
+	debug:false,
+	init_screen : 1
+};
 new Phaser.Game(800, 600, Phaser.CANVAS, 'container', new BootState());

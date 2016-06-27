@@ -7,6 +7,10 @@
 		},
 		"Line" : {
 
+		},
+		"SelectBtn" : {
+			"State_Open" : "menu-state-open",
+			"State_Lock" : "menu-state-lock"
 		}
 	}
 }

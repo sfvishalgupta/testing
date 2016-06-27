@@ -92,7 +92,7 @@ class SpikeBall extends Phaser.Sprite
 			ball = new Phaser.Sprite(game,0,0,image.frame);
 
 		if(image.frameName){
-			ball.frameName = image.frameName;
+			ball.frame = image.frameName;
 		}
 		ball.anchor.set(0.5,0.5);
 		//this.body.addChild(ball);

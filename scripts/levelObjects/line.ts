@@ -1,9 +1,10 @@
 class ParallelSymbol extends Phaser.Sprite
 {	
-	constructor(game,x,y,angle,color)
+	constructor(game,x,y,angle,color,count)
 	{
 		super(game,x,y);
 		this.graphics = new Phaser.Graphics(game,0,0);
+		this.count = count;
 		this.draw(color);
     	this.addChild(this.graphics);
     	this.angle = 180+angle;
@@ -18,10 +19,46 @@ class ParallelSymbol extends Phaser.Sprite
 		graphics.clear();
 		graphics.beginFill(this.color);
     	graphics.lineStyle(lineWidth, this.color);
-    	graphics.moveTo(0,0);
-    	graphics.lineTo(width,width);
-    	graphics.moveTo(0,0);
-    	graphics.lineTo(width,-width);
+
+    	for(var i=0;i<this.count;i++){
+    		graphics.moveTo(i*10,0);
+    		graphics.lineTo(width+i*10,width);
+    		graphics.lineTo(i*10,0);
+    		graphics.lineTo(width+i*10,-width);	
+    	}
+
+    	graphics.endFill();
+	}
+}
+
+class EqualSymbol extends Phaser.Sprite
+{
+	constructor(game, x, y, angle, color,count){
+		super(game,x,y);
+		this.graphics = new Phaser.Graphics(game,0,0);
+		this.count = count;
+		this.draw(color);
+    	this.addChild(this.graphics);
+    	this.angle = 180+angle;
+	}
+
+	draw(color)
+	{
+		this.color = color;
+		var lineWidth = 2,
+			width = 12;
+		var graphics = this.graphics;
+		graphics.clear();
+		graphics.beginFill(this.color);
+    	graphics.lineStyle(lineWidth, this.color);
+
+    	for(var i=0;i<this.count;i++){
+    		graphics.moveTo(0+i*10,0);
+    		graphics.lineTo(0+i*10,-width);
+    		graphics.lineTo(0+i*10,0);
+    		graphics.lineTo(0+i*10,width);	
+    	}
+
     	graphics.endFill();
 	}
 }
@@ -91,8 +128,12 @@ class Line extends Phaser.Sprite
 		this.name = config.id;
 		this._updateLine();
 		this.anchor.set(0.5,0.5);
-		if(config.parallelSymbol){
+		if(config.parallelSymbol>0){
 			this._addParallelSymbol();
+		}
+
+		if(config.equalLengthSymbol>0){
+			this._addEqualLenghtSymbol();	
 		}
 	}
 
@@ -130,8 +171,8 @@ class Line extends Phaser.Sprite
     	graphics.endFill();
     	this.addChild(this.graphics);
 
-    	if(config.parallelSymbol){
-			this.symbol.draw(this._color);
+    	if(config.parallelSymbol || config.equalLengthSymbol){
+    		this.symbol.draw(this._color);
 		}
 	}
 
@@ -151,9 +192,6 @@ class Line extends Phaser.Sprite
 	update()
 	{
 		this.skin.angle = this.angle;
-		if(this.config.parallelSymbol){
-			//this.symbol.angle +=1;
-		}
 	}
 
 	updateLineTriggered(color)
@@ -175,6 +213,21 @@ class Line extends Phaser.Sprite
 		this.config = config;
 	}
 
+	_addEqualLenghtSymbol()
+	{
+		var game = this.game,
+			config = this.config,
+			x = (config.b.x+config.a.x)/2,
+			y = (config.b.y+config.a.y)/2,
+			line = new Phaser.Line(config.a.x,config.a.y, config.b.x, config.b.y),
+			angle = Phaser.Math.radToDeg(line.angle),
+			signDiff = 40;
+
+		var symbol = new EqualSymbol(game,x,y,angle,this._color,config.equalLengthSymbol);
+		this.symbol = symbol;
+		this.addChild(symbol);
+	}
+
 	_addParallelSymbol()
 	{
 		var game = this.game,
@@ -183,7 +236,9 @@ class Line extends Phaser.Sprite
 			y = (config.b.y+config.a.y)/2,
 			line = new Phaser.Line(config.a.x,config.a.y, config.b.x, config.b.y),
 			angle = Phaser.Math.radToDeg(line.angle),
-			symbol = new ParallelSymbol(game,x,y,angle,this._color);
+			signDiff = 10;
+
+		var symbol = new ParallelSymbol(game,x,y,angle,this._color);
 		this.symbol = symbol;
 		this.addChild(symbol);
 	}
@@ -237,7 +292,7 @@ class LaserLine extends Line
 		if(line.laserTimes.onTime){
 			this._offTime = line.laserTimes.onTime;
 		}
-
+		this.symbol.alpha = 0.5;
 		setTimeout(this.switchLaserState.bind(this),this._initDelay);
 		//this.drawLine();
 	}
@@ -249,10 +304,12 @@ class LaserLine extends Line
 		if(this.laserOn){
 			this.skin.sensor = false;
 			this.laserGraphics.visible = true;
+			this.symbol.alpha = 1;
 			setTimeout(this.switchLaserState.bind(this),this._offTime);
 		}else{
 			this.skin.sensor = true;
 			this.laserGraphics.visible = false;
+			this.symbol.alpha = 0.5;
 			setTimeout(this.switchLaserState.bind(this),this._onTime);
 		}
 	}

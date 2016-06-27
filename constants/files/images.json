@@ -13,7 +13,11 @@
 		},
 		"SpikeBall" : {
 			"frame" : "spike",
-			"frameName" : ""	
+			"frameName" : ""
+		},
+		"SpringPad" : {
+			"frame" : "springPad",
+			"frameName" : ""
 		},
 		"HealthBar" : {
 			"frame" : "healthBar",
@@ -44,6 +48,48 @@
 			"frameName" : "",
 			"x"	: 630,
 			"y" : 130
+		},
+		"ClockOpen" : {
+			"frame" : "clock_open",
+			"frameName" : 0,
+			"x"	: 30,
+			"y" : 30
+		},
+		"ClockClosed" : {
+			"frame" : "clock_close",
+			"frameName" : "0",
+			"x"	: 30,
+			"y" : 30
+		},
+		"MenuUp" : {
+			"frame" : "menu_up",
+			"frameName" : 0
+		},
+		"MenuDown" : {
+			"frame" : "menu_down",
+			"frameName" : 0
+		},
+		"MenuLock" : {
+			"frame" : "menu_lock",
+			"frameName" : 0
+		},
+		"GamePause" : {
+			"frame" : "game_pause",
+			"frameDown" : "game_pause_down",
+			"x"	: 5,
+			"y" : 540
+		},
+		"GameHelp" : {
+			"frame" : "game_help",
+			"frameDown" : "game_help_down",
+			"x"	: 85,
+			"y" : 540
+		},
+		"GameReplay" : {
+			"frame" : "game_replay",
+			"frameDown" : "game_replay_down",
+			"x"	: 165,
+			"y" : 540
 		}
 	}
 }

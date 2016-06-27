@@ -6,7 +6,7 @@ class HealthBar extends Phaser.Sprite
 		super(game, config.x, config.y, config.frame);
 		if(config.frameName)
 		{
-			this.frameName = config.frameName;
+			this.frame = config.frameName;
 		}
 		this.config = config;
 		this.game = game;

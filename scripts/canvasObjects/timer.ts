@@ -5,7 +5,7 @@ class Timer extends Phaser.Sprite
 		var cnf = global_config.Images.Timer;
 		super(game,cnf.x,cnf.y,cnf.frame);
 		if(cnf.frameName){
-			this.frameName = frameName;
+			this.frame = frameName;
 		}
 	}
 }

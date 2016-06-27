@@ -18,7 +18,9 @@ module.exports = function(grunt) {
                         expand : true,
                         dest : deploydir,
                         ext : ".js",
-                        src : "**/*.ts",
+                        src : [
+                            "utils.ts"
+                        ],
                         cwd : srcdir
                     }
                 ]
@@ -88,7 +90,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask("default",[
         "merge-json",
-        "json-minify"
+        "json-minify",
+        "tsc"
     ]);
 }
 

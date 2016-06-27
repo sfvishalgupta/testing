@@ -1,6 +1,6 @@
 class PlayState 
 {
-	constructor(){
+	constructor(level,stage){
 		this.cursor = null;
 		this.rotatingElements = [];
 		this.itzi = null;
@@ -23,7 +23,7 @@ class PlayState
 
 		game.add.image(0,0,global_config.world);
 
-	    this._setupGame();
+	    this.setupGame();
 		
 		 /** Adding Lines */
 	    for(var i in level.lines){
@@ -121,7 +121,16 @@ class PlayState
 	    	this.rotatingElements.push(spikeBall);
 	    	this.rotatingElements.push(spikeBall.skin);
 	    	this.rotatingElements.push(spikeBallPath);
-	    	
+	    }
+
+	    for(var i in level.springPad){
+	    	var config = level.springPad[i],
+	    		springPad = new SpringPad(game, config);
+	    	this.add.existing(springPad);
+	    	this.rotatingElements.push(springPad);
+	    	this.rotatingElements.push(springPad.skin);
+	    	springPad.skin.sprite = springPad;
+	    	this.itzi.skin.setBodyContactCallback(springPad.skin,this.itziOnSpringPad,this);
 	    }
 
 	    this.itzi.skin.setBodyContactCallback(this.gate.skin,this._gameComplete,this);
@@ -134,6 +143,7 @@ class PlayState
 
 	    this.addTimer();
 
+	    this.addActionButtons();
 	    this.cursor = this.input.keyboard.createCursorKeys();
 	}
 
@@ -164,7 +174,7 @@ class PlayState
 		 //this.game.debug.box2dWorld();
 	}
 
-	_setupGame()
+	setupGame()
 	{
 		var game = this.game;
 		game.stage.backgroundColor = '#000000';
@@ -174,7 +184,40 @@ class PlayState
 	    //game.physics.box2d.debugDraw.joints = true;
 	    game.physics.box2d.gravity.y = 500;
 	    game.physics.box2d.restitution = 0.1;
-	    game.physics.box2d.friction = 100;
+	    game.physics.box2d.friction = 300;
+	}
+
+	addActionButtons()
+	{
+		var game = this.game,
+			pauseCnf = global_config.Images.GamePause,
+			helpCnf = global_config.Images.GameHelp,
+			replayCnf = global_config.Images.GameReplay;
+
+		this.pauseButton = new Phaser.Button(game, pauseCnf.x, pauseCnf.y, pauseCnf.frame);
+		this.pauseButton.inputEnabled = true;
+		this.pauseButton.input.useHandCursor = true;
+		this.add.existing(this.pauseButton);
+
+		this.helpButton = new Phaser.Button(game, helpCnf.x, helpCnf.y, helpCnf.frame);
+		this.helpButton.inputEnabled = true;
+		this.helpButton.input.useHandCursor = true;
+		this.add.existing(this.helpButton);
+
+		this.replayButton = new Phaser.Button(game, replayCnf.x, replayCnf.y, replayCnf.frame);
+		this.replayButton.inputEnabled = true;
+		this.replayButton.input.useHandCursor = true;
+		this.add.existing(this.replayButton);
+
+		this.pauseButton.onInputUp.add(function(event){
+			this.loadMenuScreen();
+		},this);
+	}
+
+	loadMenuScreen()
+	{
+		//this.game.state.add("Menu", new MenuState(),true);
+		window.location.reload();
 	}
 
 	_addCogWheel()
@@ -202,6 +245,16 @@ class PlayState
 		this.smallCog.anchor.set(0.5,0.5);
 
 		this.itzi.skin.setBodyContactCallback(cog_circle,this._itziBoundryTouch,this);
+	}
+
+	itziOnSpringPad(body1, body2, fixture1, fixture2, begin)
+	{
+		if (!begin)
+	    {
+	        return;
+	    }
+	    //if(body2.x + 67 == body1.x)
+	    	body2.sprite.activate();
 	}
 
 	_blueFileCollected(body1, body2, fixture1, fixture2, begin)
@@ -280,8 +333,3 @@ class PlayState
 		this.add.existing(this.timer);
 	}
 }
-
-// 3 4 equal sign
-// parallel 2
-// equalLengthSymbol 2
-//3 9 spring

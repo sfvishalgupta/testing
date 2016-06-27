@@ -94,3 +94,6 @@ class Utils
 		return "#"+color.substring(2,color.length);
 	}
 }
+
+var Phaser = Phaser || {},
+	global_config = global_config || {};
