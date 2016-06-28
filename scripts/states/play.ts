@@ -94,7 +94,7 @@ class PlayState
 	    	this.blueFlies.push(fly);
 	    	this.add.existing(fly);
 	    	this.rotatingElements.push(fly);
-	    	this.itzi.skin.setBodyContactCallback(fly.skin,this._blueFileCollected,this);
+	    	this.itzi.skin.setBodyContactCallback(fly.skin,this.blueFileCollected,this);
 	    }
 
 	    for(var i in level.goldFlies)
@@ -104,7 +104,7 @@ class PlayState
 	    	this.goldFlies.push(fly);
 	    	this.add.existing(fly);
 	    	this.rotatingElements.push(fly);
-	    	this.itzi.skin.setBodyContactCallback(fly.skin,this._goldFileCollected,this);
+	    	this.itzi.skin.setBodyContactCallback(fly.skin,this.goldFileCollected,this);
 	    }
 
 	    for(var i in this.oLines){
@@ -133,11 +133,11 @@ class PlayState
 	    	this.itzi.skin.setBodyContactCallback(springPad.skin,this.itziOnSpringPad,this);
 	    }
 
-	    this.itzi.skin.setBodyContactCallback(this.gate.skin,this._gameComplete,this);
+	    this.itzi.skin.setBodyContactCallback(this.gate.skin,this.gameComplete,this);
 
-	    this._addCogWheel();
+	    this.addCogWheel();
 
-	    this._addBeeCounter();
+	    this.addBeeCounter();
 	    
 	    this.addHealtBar();
 
@@ -167,11 +167,6 @@ class PlayState
 		}
 		this.smallCog.angle -= (angularSpeed * 20 / 3);
 		//this.itzi.angle = Math.max(Math.min(this.itzi.angle, 30), -30);
-	}
-
-	render() 
-	{
-		 //this.game.debug.box2dWorld();
 	}
 
 	setupGame()
@@ -220,7 +215,7 @@ class PlayState
 		window.location.reload();
 	}
 
-	_addCogWheel()
+	addCogWheel()
 	{
 		var game = this.game,
 			cx = game.world.centerX,
@@ -229,22 +224,30 @@ class PlayState
 	    	theta = 0,
 			cog_circle = new Phaser.Physics.Box2D.Body(game, null, cx, cy, 100),
 			cog = game.add.sprite(cx,cy,"cog"),
-			radius = (cog.width/2) - 26;
-
-		for (theta = 0; theta <= 2 * Math.PI; theta += 2 * Math.PI / 100) 
+			radius = (cog.width/2) - 25;
+		var delta = 2 * Math.PI / 80;
+		var i = 0;
+		for (theta = 0; theta <= 2 * Math.PI; theta += delta) 
 		{
-        	polygonPoints.push(0 + (radius * Math.cos(theta)));
-        	polygonPoints.push(0 - (radius * Math.sin(theta)));
+			var newTheta = theta + 0.2,
+				radius1 = radius-10,
+        		angle1 = newTheta + delta/2;
+        	polygonPoints.push((radius * Math.cos(newTheta)));
+        	polygonPoints.push((radius * Math.sin(newTheta)));
+        	
+        	polygonPoints.push((radius1 * Math.cos(angle1)));
+        	polygonPoints.push((radius1 * Math.sin(angle1)));
         }
 
 		cog.anchor.set(0.5,0.5);
 		cog_circle.setChain(polygonPoints);
 		this.rotatingElements.push(cog);
+		this.rotatingElements.push(cog_circle);
 
 		this.smallCog = game.add.image(70,312,"cog_small");
 		this.smallCog.anchor.set(0.5,0.5);
 
-		this.itzi.skin.setBodyContactCallback(cog_circle,this._itziBoundryTouch,this);
+		this.itzi.skin.setBodyContactCallback(cog_circle,this.itziBoundryTouch,this);
 	}
 
 	itziOnSpringPad(body1, body2, fixture1, fixture2, begin)
@@ -257,7 +260,7 @@ class PlayState
 	    	body2.sprite.activate();
 	}
 
-	_blueFileCollected(body1, body2, fixture1, fixture2, begin)
+	blueFileCollected(body1, body2, fixture1, fixture2, begin)
 	{
 		if (!begin)
 	    {
@@ -270,7 +273,7 @@ class PlayState
 	    this.gate.collectFile();
 	}
 
-	_goldFileCollected(body1, body2, fixture1, fixture2, begin)
+	goldFileCollected(body1, body2, fixture1, fixture2, begin)
 	{
 		if (!begin)
 	    {
@@ -282,32 +285,38 @@ class PlayState
 	    body2.destroy();
 	}
 
-	_gameComplete(body1, body2, fixture1, fixture2, begin)
+	gameComplete(body1, body2, fixture1, fixture2, begin)
 	{
-		if (!begin)
-	    {
+		if (!begin){
 	        return;
 	    }
 
 	    if(this.gate.isOpenable){
-	    	this.itzi.position.x = this.gate.position.x - this.gate.pivot.x;
-		    this.itzi.position.y = this.gate.position.y - this.gate.pivot.y;
-
-		    this.itzi.destroy();
+		    this.gate.skin.destroy();
+		    this.itzi.skin.destroy();
+		    this.game.add.tween(this.itzi).to({
+		    	x:this.gate.world.x,
+		    	y:this.gate.world.y,
+		    	rotation : "+10"
+		    },1000, Phaser.Easing.Linear.NONE, true);
+		    this.game.add.tween(this.itzi.scale).to({
+		    	x:0,
+		    	y:0
+		    },1000, Phaser.Easing.Linear.NONE, true);	    
 		    this.gate.openGate();
 	    }
 	}
 
-	_itziBoundryTouch(body1, body2, fixture1, fixture2, begin)
+	itziBoundryTouch(body1, body2, fixture1, fixture2, begin)
 	{
-		if (!begin)
-	    {
+		if (!begin){
 	        return;
 	    }
+	    this.itzi.playOuterCircleTouch();
 	    console.log("itzi touch boundry")
 	}
 
-	_addBeeCounter()
+	addBeeCounter()
 	{
 		var game = this.game;
 
@@ -331,5 +340,10 @@ class PlayState
 	{
 		this.timer = new Timer(this.game);
 		this.add.existing(this.timer);
+	}
+
+	render() 
+	{
+		 //this.game.debug.box2dWorld();
 	}
 }

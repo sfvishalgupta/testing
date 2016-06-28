@@ -37,13 +37,14 @@ class BootState
 		game.load.image("conveyor",		"assets/level_object/conveyor.png");
 		game.load.image("spike",		"assets/level_object/spike_textured.png");
 
-		game.load.spritesheet("gate",		"assets/level_object/gate_texture.png",61, 62);
-		game.load.spritesheet("GateLight",	"assets/level_object/gate_light.png",31, 32);
-		game.load.spritesheet("GateLightAnim","assets/level_object/gate_light_anim.png",17, 17);
-		game.load.spritesheet("gateTwirl",	"assets/level_object/gate_twirl_texture.png",52, 52);
-		game.load.spritesheet('blueFly',	'assets/level_object/blue_fly.jpg', 53, 40);
-		game.load.spritesheet('goldFly',	'assets/level_object/gold_fly.jpg', 53, 40);
-		game.load.spritesheet('springPad',	'assets/level_object/spring_pad_textured.png', 67, 67);
+		game.load.spritesheet("gate",					"assets/level_object/gate_texture.png",61, 62);
+		game.load.spritesheet("GateLight",				"assets/level_object/gate_light.png",31, 32);
+		game.load.spritesheet("GateLightAnim",			"assets/level_object/gate_light_anim.png",17, 17);
+		game.load.spritesheet("gateTwirl",				"assets/level_object/gate_twirl_texture.png",52, 52);
+		game.load.spritesheet('blueFly',				'assets/level_object/blue_fly.jpg', 53, 40);
+		game.load.spritesheet('goldFly',				'assets/level_object/gold_fly.jpg', 53, 40);
+		game.load.spritesheet('outerCircleParticle',	'assets/level_object/outercircle_particles.png', 77, 54);
+		game.load.spritesheet('springPad',				'assets/level_object/spring_pad_textured.png', 67, 67);
 
 
 		// Canvas Objects
@@ -84,7 +85,7 @@ class BootState
 		game.load.spritesheet("menu_up", 	"assets/menu/20-level-button-up.jpg",82,103);
 
 		// Game Scripts
-		game.load.script('Utils',build+"utils.js");
+		//game.load.script('Utils',build+"utils.js");
 		
 		game.load.start();
 	}
@@ -120,6 +121,6 @@ class BootState
 }
 var global_config = {
 	debug:false,
-	init_screen : 1
+	init_screen : 2
 };
 new Phaser.Game(800, 600, Phaser.CANVAS, 'container', new BootState());

@@ -13,7 +13,7 @@ class Gate extends Phaser.Sprite
     	this.pivot.y = -y;
 
     	var skin = new Phaser.Physics.Box2D.Body(game, null,cx, cy, 100);
-    	skin.setCircle(30,x,y);
+    	skin.setCircle(40,x,y);
     	skin.static = true;
     	this.skin = skin;
 

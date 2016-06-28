@@ -14,6 +14,43 @@ class Itzi extends Phaser.Sprite
 	    this.scale.set(0.6,0.6);
 	    this.anchor.set(0.5,0.5);
 	    this.gameEnd = false;
+
+	    var sprite1 = new Phaser.Sprite(game,0,0,global_config.Images.OuterCircleParticle.frame,4);
+	    this.anim1 = sprite1.animations.add('outerCircle');
+	    this.addChild(sprite1);
+	    sprite1.scale.set(1.5,1.5);
+	    sprite1.anchor.set(0.5,0.5);
+	    sprite1.position.x = -100;
+	    
+	    var sprite2 = new Phaser.Sprite(game,0,0,global_config.Images.OuterCircleParticle.frame,4);
+	    this.anim2 = sprite2.animations.add('outerCircle');
+	    this.addChild(sprite2);
+	    sprite2.scale.set(1.5,1.5);
+	    sprite2.rotation = Phaser.Math.degToRad(140);
+	    sprite2.position.x = 180;
+	    sprite2.position.y = 0;
+	    sprite1.visible = false;
+	    sprite2.visible = false;
+
+	    this.sprite2 = sprite2;
+	    this.sprite1 = sprite1;
+
+	    
+	    
+	}
+
+	playOuterCircleTouch()
+	{
+		this.sprite1.visible = true;
+	    this.sprite2.visible = true;
+
+		this.anim1.play(10,false);
+		this.anim2.play(10,false);
+
+		this.anim1.onComplete.add(function(){
+			this.sprite1.visible = false;
+	    	this.sprite2.visible = false;
+		}, this);
 	}
 
 	update()
@@ -22,10 +59,7 @@ class Itzi extends Phaser.Sprite
 			if(this.scale.x <=0 ){
 				this.gameEnd = false;
 				super.destroy();
-			}else{
-				var scale = this.scale.x - .005;
-				this.scale.set(scale,scale);
-				this.angle -= 10;
+				console.log("game destroy");
 			}
 		}else{
 			this.position.x = this.skin.x;

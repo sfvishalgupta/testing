@@ -10,12 +10,13 @@ class LevelShape extends Phaser.Sprite
 		super(game,cx,cy);
 
 		var graphics = new Phaser.Graphics(game,-config.size/2,-config.size/2);
-		graphics.lineStyle(1, color);
+		graphics.lineStyle(1, 0x000000);
 		graphics.beginFill(color);
 		graphics.drawRect(0, 0, config.size, config.size);
 		graphics.endFill();	
 		this.addChild(graphics);
 		this.pivot.x = -x;
 		this.pivot.y = -y;
+		this.inputEnabled = true;
 	}
 }

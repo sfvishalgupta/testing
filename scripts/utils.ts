@@ -52,18 +52,22 @@ class Utils
 	}
 
 	static getRadialPosition(init, angle1, angle2){
-		var a1 = Phaser.Math.radToDeg(angle1),
-			a2 = Phaser.Math.radToDeg(angle2),
-			diff = (a1-a2)/2,
-			angle = a1 + Math.abs(diff),
-			radius = global_config.Config.angleTextboxRadius,
+		console.log(angle1,angle2);
+		var a1 = angle1,
+			a2 = angle2,
+			diff = (Math.abs(a1) - Math.abs(a2))/2,
+			angle =  angle1 > 0 ? 3.14/2 + angle1 : angle1 ,
+			angle = angle - diff,
+			radius = 80,//global_config.Config.angleTextboxRadius,
 			x = init.x + radius*Math.sin(angle),
 			y = init.y + radius*Math.cos(angle);
+		console.log(a2 - a1,diff);
+		if(a2 - a1 > 0){
 
-		if(diff < 0){
-			return {x:x,y:y};
+		}else{
+			//return {x:x,y:-y};
 		}
-		return {x:x,y:-y};
+		return {x:x,y:y};
 	}
 
 	static getIntersactionPoint(line1, line2)
