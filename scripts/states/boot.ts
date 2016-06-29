@@ -76,6 +76,7 @@ class BootState
 		game.load.image("world04",		"assets/backgrounds/world04.jpg");
 		game.load.image("world05",		"assets/backgrounds/world05.jpg");
 		game.load.image("world06",		"assets/backgrounds/world06.jpg");
+		game.load.image("menu",			"assets/backgrounds/menu.png");
 		
 		// Menu Objects 
 		game.load.spritesheet("clock_open", 	"assets/menu/20-clock-open.jpg",187,547);
@@ -100,6 +101,10 @@ class BootState
 		global_config.level = "L"+level;
 		global_config.world = "world0"+stage;
 		
+		if(typeof local_config != "undefined"){
+			global_config = Utils.merge_objects(global_config,local_config);
+		}
+		
 		global_config = Utils.merge_objects(global_config,this.game.cache.getJSON('app'));
 		/*
 		var bmd = this.game.make.bitmapData(200, 20);
@@ -116,11 +121,13 @@ class BootState
 			this.game.state.add("Menu", new MenuState(),true);
 		}else if(global_config.init_screen == 2){
 			this.game.state.add("Play", new PlayState(global_config.level,global_config.stage),true);
+		}else if(global_config.init_screen == -1){
+			this.game.state.add("Menu", new TestState(),true);
 		}
 	}
 }
 var global_config = {
 	debug:false,
-	init_screen : 2
+	init_screen : 1
 };
 new Phaser.Game(800, 600, Phaser.CANVAS, 'container', new BootState());

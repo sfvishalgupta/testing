@@ -11,7 +11,7 @@ class MenuState
 		var game = this.game,
 			clock = global_config.Images.ClockOpen,
 			y = 500;
-		game.add.image(0,0,"world06");
+		game.add.image(0,0,"menu");
 		game.add.image(clock.x, clock.y, clock.frame, clock.frameName);
 
 		for(var i=1;i<=6;i++)

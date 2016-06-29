@@ -52,7 +52,6 @@ class Utils
 	}
 
 	static getRadialPosition(init, angle1, angle2){
-		console.log(angle1,angle2);
 		var a1 = angle1,
 			a2 = angle2,
 			diff = (Math.abs(a1) - Math.abs(a2))/2,
@@ -61,9 +60,7 @@ class Utils
 			radius = 80,//global_config.Config.angleTextboxRadius,
 			x = init.x + radius*Math.sin(angle),
 			y = init.y + radius*Math.cos(angle);
-		console.log(a2 - a1,diff);
 		if(a2 - a1 > 0){
-
 		}else{
 			//return {x:x,y:-y};
 		}

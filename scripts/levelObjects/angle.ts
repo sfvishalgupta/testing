@@ -49,6 +49,7 @@ class Angle extends Phaser.Sprite
 		}
 		this.graphics.endFill(); 
 		this.graphicsButton.addChild(this.graphics);
+		this.graphicsButton.hitArea = this.graphics.getBounds();
 	}
 
 	addGraphics()

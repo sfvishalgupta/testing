@@ -55,7 +55,9 @@ class PlayState
     			this.rotatingElements.push(text);
 	    	}
 	    }
-
+ for(var i in this.oLines){
+	    	game.add.existing(this.oLines[i]);
+	    }
 	    /** Addng Angles */
 	    for(var i in level.angles){
 	    	var oAngle = level.angles[i],
@@ -107,9 +109,7 @@ class PlayState
 	    	this.itzi.skin.setBodyContactCallback(fly.skin,this.goldFileCollected,this);
 	    }
 
-	    for(var i in this.oLines){
-	    	game.add.existing(this.oLines[i]);
-	    }
+	   
 
 	    for(var i in level.spikeBall){
 	    	var config = level.spikeBall[i],
@@ -167,6 +167,7 @@ class PlayState
 		}
 		this.smallCog.angle -= (angularSpeed * 20 / 3);
 		//this.itzi.angle = Math.max(Math.min(this.itzi.angle, 30), -30);
+		this.healthBar.setEnergy(this.itzi.health);
 	}
 
 	setupGame()
@@ -178,7 +179,7 @@ class PlayState
 	    game.physics.startSystem(Phaser.Physics.BOX2D);
 	    //game.physics.box2d.debugDraw.joints = true;
 	    game.physics.box2d.gravity.y = 500;
-	    game.physics.box2d.restitution = 0.1;
+	    game.physics.box2d.restitution = 0.1
 	    game.physics.box2d.friction = 300;
 	}
 
@@ -217,6 +218,9 @@ class PlayState
 
 	addCogWheel()
 	{
+		this.game.physics.box2d.restitution = 1.5;
+	    this.game.physics.box2d.friction = 0;
+
 		var game = this.game,
 			cx = game.world.centerX,
 	    	cy = game.world.centerY,
@@ -313,7 +317,6 @@ class PlayState
 	        return;
 	    }
 	    this.itzi.playOuterCircleTouch();
-	    console.log("itzi touch boundry")
 	}
 
 	addBeeCounter()
@@ -344,6 +347,6 @@ class PlayState
 
 	render() 
 	{
-		 //this.game.debug.box2dWorld();
+		 this.game.debug.box2dWorld();
 	}
 }
