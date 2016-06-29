@@ -35,6 +35,8 @@ class Gate extends Phaser.Sprite
 			this.isOpenable = true;
 			this.openGate();
 		}
+
+		this.game.onGameEnd.add(this.onGameEnd,this);
 	}
 
 	createGateLight(game, numFlies)
@@ -82,20 +84,10 @@ class Gate extends Phaser.Sprite
 		this.skin.angle = this.angle;
 		this.gate.angle = -this.angle;
 	}
-}
 
-class GateLight extends Phaser.Sprite
-{
-	constructor(game)
+	onGameEnd()
 	{
-		super(game,0,0, "GateLight");
-		this.maxFrame = 7;
-		this.frame = this.maxFrame -1 ;
-		this.anchor.set(0.5, 0.5);
-	}
-
-	openLight()
-	{
-		this.frame = this.maxFrame-2;
+		this.gate.animations.stop();
+		this.gateTwirl.animations.stop();
 	}
 }

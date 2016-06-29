@@ -94,6 +94,7 @@ class Angle extends Phaser.Sprite
 	{
 		this.graphicsButton.inputEnabled = true;
 		this.graphicsButton.input.useHandCursor = true;
+		//this.graphicsButton.input.pixelPerfectOver = true;
 		this.graphicsButton.onInputOver.add(function(){
 			if(this.textLabel.visible){
 				this.graphicsButton.alpha = 0.5;

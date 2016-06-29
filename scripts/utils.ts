@@ -55,9 +55,8 @@ class Utils
 		var a1 = angle1,
 			a2 = angle2,
 			diff = (Math.abs(a1) - Math.abs(a2))/2,
-			angle =  angle1 > 0 ? 3.14/2 + angle1 : angle1 ,
-			angle = angle - diff,
-			radius = 80,//global_config.Config.angleTextboxRadius,
+			angle =  (angle1 > 0 ? 3.14/2 + angle1 : angle1) - diff,
+			radius = global_config.Config.angleTextboxRadius,
 			x = init.x + radius*Math.sin(angle),
 			y = init.y + radius*Math.cos(angle);
 		if(a2 - a1 > 0){

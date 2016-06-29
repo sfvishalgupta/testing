@@ -26,6 +26,7 @@ foreach($levelArr as $levels){
 	$levelObj["gate"] = getXY($levels["goal"]["pos"]);
 	$levelObj["ranks"] = $levels["ranks"]['@attributes'];
 	$levelObj["showLevelMid"] = isset($levels["showLevelMid"]) ? $levels["showLevelMid"] : true;
+	$levelObj["time"] = $levels["time"];
 	if($levels["goldCandy"]){
 		if($levels["goldCandy"]["pos"]){
 			$levelObj["goldFlies"][] = getXY($levels["goldCandy"]["pos"]);

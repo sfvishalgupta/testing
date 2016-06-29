@@ -24,6 +24,8 @@ class Fly extends Phaser.Sprite
     	this.addChild(this.body);
     	this.body.animations.add('fly', [0, 1, 2, 3, 4], 100, true);
 		this.startFly();
+
+		this.game.onGameEnd.add(this.onGameEnd,this);
 	}
 
 	startFly()
@@ -36,22 +38,9 @@ class Fly extends Phaser.Sprite
 		this.skin.angle = this.angle;
 		this.body.angle = -this.angle;
 	}
-}
 
-class BlueFly extends Fly
-{
-	constructor(game,config)
+	onGameEnd()
 	{
-		super(game,config.x,config.y,"blueFly");
-		this.config = config;
-	}
-}
-
-class GoldFly extends Fly
-{
-	constructor(game,config)
-	{
-		super(game,config.x,config.y,"goldFly");
-		this.config = config;
+		this.body.animations.stop();
 	}
 }

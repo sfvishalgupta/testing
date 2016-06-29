@@ -1,6 +1,7 @@
-class PlayState 
+class PlayState extends Phaser.State
 {
 	constructor(level,stage){
+		super();
 		this.cursor = null;
 		this.rotatingElements = [];
 		this.itzi = null;
@@ -24,7 +25,8 @@ class PlayState
 		game.add.image(0,0,global_config.world);
 
 	    this.setupGame();
-		
+		this.gameTimeLimit = level.time*1000 || 200000;
+
 		 /** Adding Lines */
 	    for(var i in level.lines){
 	    	var lineCnf = level.lines[i],
@@ -55,9 +57,11 @@ class PlayState
     			this.rotatingElements.push(text);
 	    	}
 	    }
- for(var i in this.oLines){
+
+ 		for(var i in this.oLines){
 	    	game.add.existing(this.oLines[i]);
 	    }
+
 	    /** Addng Angles */
 	    for(var i in level.angles){
 	    	var oAngle = level.angles[i],
@@ -144,30 +148,66 @@ class PlayState
 	    this.addTimer();
 
 	    this.addActionButtons();
+
+	    this.game.onGameStart.add(function(timeLimit){
+	    	this.timeRemaining = timeLimit;
+	    	this.startClockTick();
+	    },this);
+	    
+	    this.game.onGameEnd.add(function(){
+	    	this.cursor = null;
+	    },this);
+	    
+	    this.startGame();
+
 	    this.cursor = this.input.keyboard.createCursorKeys();
 	}
 
 	update()
 	{
-		var angularSpeed = 0;
+		if(this.cursor){
+			var angularSpeed = 0;
 
-		if (this.cursor.left.isDown) {
-			angularSpeed += -1;
-		}
-		else if (this.cursor.right.isDown) {
-			angularSpeed += +1;
-		}
+			if (this.cursor.left.isDown) {
+				angularSpeed += -1;
+			}
+			else if (this.cursor.right.isDown) {
+				angularSpeed += +1;
+			}
 
-		var backupVel = this.itzi.skin.velocity.x;
-		this.itzi.skin.velocity.x = backupVel + 0.0001;
-		this.itzi.skin.velocity.x = backupVel;
+			var backupVel = this.itzi.skin.velocity.x;
+			this.itzi.skin.velocity.x = backupVel + 0.0001;
+			this.itzi.skin.velocity.x = backupVel;
 
-		for(var i in this.rotatingElements){
-			this.rotatingElements[i].angle += angularSpeed;
+			for(var i in this.rotatingElements){
+				this.rotatingElements[i].angle += angularSpeed;
+			}
+			this.smallCog.angle -= (angularSpeed * 20 / 3);
+			//this.itzi.angle = Math.max(Math.min(this.itzi.angle, 30), -30);
+			this.healthBar.setEnergy(this.itzi.health);
 		}
-		this.smallCog.angle -= (angularSpeed * 20 / 3);
-		//this.itzi.angle = Math.max(Math.min(this.itzi.angle, 30), -30);
-		this.healthBar.setEnergy(this.itzi.health);
+	}
+
+	startGame()
+	{
+		this.game.onGameStart.dispatch(this.gameTimeLimit);
+	}
+
+	startClockTick()
+	{
+		this.timeRemaining -= 1000;
+		this.game.onClockTick.dispatch(this.timeRemaining);
+		if(this.timeRemaining > 1){
+			setTimeout(this.startClockTick.bind(this),1000);
+		}else{
+			this.endGame();
+		}
+	}
+
+	endGame()
+	{
+		this.timeRemaining = -1;
+		this.game.onGameEnd.dispatch();
 	}
 
 	setupGame()
@@ -212,8 +252,8 @@ class PlayState
 
 	loadMenuScreen()
 	{
-		//this.game.state.add("Menu", new MenuState(),true);
-		window.location.reload();
+		this.game.state.add("Menu", new MenuState(),true);
+		//window.location.reload();
 	}
 
 	addCogWheel()
@@ -296,6 +336,7 @@ class PlayState
 	    }
 
 	    if(this.gate.isOpenable){
+	    	this.endGame();
 		    this.gate.skin.destroy();
 		    this.itzi.skin.destroy();
 		    this.game.add.tween(this.itzi).to({

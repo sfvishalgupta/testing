@@ -1,7 +1,8 @@
-class MenuState
+class MenuState extends Phaser.State
 {
 	constructor()
 	{
+		super();
 		this.stageBtns = [];
 		this.levelButtons = [];
 	}

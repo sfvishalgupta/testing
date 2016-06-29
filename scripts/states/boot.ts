@@ -1,8 +1,8 @@
-class BootState
+class BootState extends Phaser.State
 {
 	constructor()
 	{
-
+		super();
 	}
 
 	preload()
@@ -124,6 +124,10 @@ game.load.spritesheet('bottom_banner' , "assets/menu/20-menu-select-wood-panel-b
 		}
 		*/
 		this.game.onAngleEnterPress = new Phaser.Signal();
+		this.game.onGameStart 		= new Phaser.Signal();
+		this.game.onGameEnd 		= new Phaser.Signal();
+		this.game.onClockTick		= new Phaser.Signal();
+
 		if(global_config.init_screen == 1){
 			this.game.state.add("Menu", new MenuState(),true);
 		}else if(global_config.init_screen == 2){
@@ -133,8 +137,10 @@ game.load.spritesheet('bottom_banner' , "assets/menu/20-menu-select-wood-panel-b
 		}
 	}
 }
+
 var global_config = {
 	debug:false,
 	init_screen : 1
 };
+
 new Phaser.Game(800, 600, Phaser.CANVAS, 'container', new BootState());
