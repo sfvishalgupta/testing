@@ -2,10 +2,12 @@ class SelectButton extends Phaser.Button
 {
 	constructor(game,level){
 		var cnf = global_config.Images.MenuLock;
-		super(game,0,0,cnf.frame,cnf.frameName);
+		super(game,0,0);
 		this.game = game;
 		this.myIndex = level;
 		this.currentState = global_config.Objects.SelectBtn.State_Lock;
+		this.body = new Phaser.Image(game,0,0,cnf.frame,cnf.frameName);
+		this.addChild(this.body);
 		this.onInputOver.add(this.onHover.bind(this));
 		this.onInputOut.add(this.onOut.bind(this));
 		this.inputEnabled = true;
@@ -16,18 +18,22 @@ class SelectButton extends Phaser.Button
 	onOut()
 	{
 		if(this.currentState == global_config.Objects.SelectBtn.State_Open){
-			var cnf = global_config.Images.MenuDown;
-			this.key = cnf.frame;
-			this.frame = 0;
+			var cnf = global_config.Images.MenuDown,
+				game = this.game;
+			this.body.destroy();
+			this.body = new Phaser.Image(game,0,0,cnf.frame,cnf.frameName);
+			this.addChildAt(this.body,0);
 		}
 	}
 
 	onHover()
 	{
 		if(this.currentState == global_config.Objects.SelectBtn.State_Open){
-			var cnf = global_config.Images.MenuUp;
-			this.key = cnf.frame;
-			this.frame = 0;
+			var cnf = global_config.Images.MenuUp,
+				game = this.game;
+			this.body.destroy();
+			this.body = new Phaser.Image(game,0,0,cnf.frame,cnf.frameName);
+			this.addChildAt(this.body,0);
 		}
 	}
 
@@ -41,9 +47,11 @@ class SelectButton extends Phaser.Button
 
 	openBtn()
 	{
+		var cnf = global_config.Images.MenuDown,
+			game = this.game;
 		this.currentState = global_config.Objects.SelectBtn.State_Open;
-		var cnf = global_config.Images.MenuDown;
-		this.key = cnf.frame;
-		this.frame = 0;
+		this.body.destroy();
+		this.body = new Phaser.Image(game,0,0,cnf.frame,cnf.frameName);
+		this.addChildAt(this.body,0);
 	}
 }

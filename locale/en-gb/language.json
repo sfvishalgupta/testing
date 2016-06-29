@@ -1,0 +1,17 @@
+{
+	"Language" : {
+		"world_name_1" : "Stage 1: Basic Angle Rules",
+		"world_name_2" : "Stage 2: Angles & Parallel Lines",
+		"world_name_3" : "Stage 3: Angles in Triangles",
+		"world_name_4" : "Stage 4: Angles in Quadrilaterals",
+		"world_name_5" : "Stage 5: Angles in Polygons",
+		"world_name_6" : "Stage 6: Angles in Circles",
+
+		"title_level_select" : "Select Level",
+		"lvlbtn_best" : "BEST",
+		"lvlbtn_rank" : "RANK",
+		"worldbtn_stage" : "STAGE",
+		"lvlselect_worldscore" : "STAGE\nSCORE:",
+		"lvlselect_totalscore" : "TOTAL\nSCORE:"
+	}
+}

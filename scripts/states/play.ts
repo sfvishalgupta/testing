@@ -219,7 +219,7 @@ class PlayState
 	addCogWheel()
 	{
 		this.game.physics.box2d.restitution = 1.5;
-	    this.game.physics.box2d.friction = 0;
+	    this.game.physics.box2d.friction = 100;
 
 		var game = this.game,
 			cx = game.world.centerX,
@@ -347,6 +347,6 @@ class PlayState
 
 	render() 
 	{
-		 this.game.debug.box2dWorld();
+		 //this.game.debug.box2dWorld();
 	}
 }

@@ -5,17 +5,36 @@ class StageButton extends Phaser.Button
 		super(game,x,y);
 		this.index = txt;
 		this.game = game;
-		this.drawText();
 		this.inputEnabled = true;
 		this.input.useHandCursor = true;
+		this.defaultStyle1 = {fill:'#FFFFFF',font: "bold 18px Arial",stroke : '#000000',strokeThickness :  5};
+		this.defaultStyle2 = {fill:'#FFFFFF',font: "bold 40px Arial",stroke : '#000000',strokeThickness :  5};
+		this.drawText();
+		this.onInputOver.add(function(sprite){
+			var game = this.game,
+				style1 = this.defaultStyle1,
+				style2 = this.defaultStyle2;
+			style1.fill = style2.fill = "#FEE300";
+			this.textLabel1.setStyle(style1);
+			this.textLabel2.setStyle(style2);
+		},this);
+
+		this.onInputOut.add(function(sprite){
+			if(this.isClicked){
+				this.enableClick()
+			}else{
+				this.disableClick();
+			}
+		},this);
 	}
 
 	drawText()
 	{
 		var game = this.game,
-			style1 = {fill:'#FFFFFF',font: "bold 14px Arial",stroke : '#000000',strokeThickness :  7},
-			style2 = {fill:'#FFFFFF',font: "bold 25px Arial",stroke : '#000000',strokeThickness :  7};
-		this.textLabel1 = new Phaser.Text(game,0,0,"STAGE",style1);
+			style1 = this.defaultStyle1,
+			style2 = this.defaultStyle2,
+			txt = global_config.Language.worldbtn_stage;
+		this.textLabel1 = new Phaser.Text(game,0,0,txt,style1);
 		this.textLabel1.anchor.set(0.5,0.5);
 		this.addChild(this.textLabel1);
 
@@ -27,18 +46,22 @@ class StageButton extends Phaser.Button
 	enableClick()
 	{
 		var game = this.game,
-			style1 = {fill:'#FF0000',font: "bold 14px Arial",stroke : '#000000',strokeThickness :  7},
-			style2 = {fill:'#FF0000',font: "bold 25px Arial",stroke : '#000000',strokeThickness :  7};
+			style1 = this.defaultStyle1,
+			style2 = this.defaultStyle2;
+		style1.fill = style2.fill = "#FF0000";
 		this.textLabel1.setStyle(style1);
 		this.textLabel2.setStyle(style2);
+		this.isClicked = true;
 	}
 
 	disableClick()
 	{
 		var game = this.game,
-			style1 = {fill:'#FFFFFF',font: "bold 14px Arial",stroke : '#000000',strokeThickness :  7},
-			style2 = {fill:'#FFFFFF',font: "bold 25px Arial",stroke : '#000000',strokeThickness :  7};
+			style1 = this.defaultStyle1,
+			style2 = this.defaultStyle2;
+		style1.fill = style2.fill = "#FFFFFF";
 		this.textLabel1.setStyle(style1);
 		this.textLabel2.setStyle(style2);
+		this.isClicked = false;
 	}
 }

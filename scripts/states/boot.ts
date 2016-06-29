@@ -32,6 +32,7 @@ class BootState
 		var build = "build/";
 		game.load.json("level",build+"level.json");
 		game.load.json("app",build+"app.json");
+		game.load.json("Language","locale/en-gb/language.json");
 		
 		// Level Objects
 		game.load.image("conveyor",		"assets/level_object/conveyor.png");
@@ -78,12 +79,16 @@ class BootState
 		game.load.image("world06",		"assets/backgrounds/world06.jpg");
 		game.load.image("menu",			"assets/backgrounds/menu.png");
 		
-		// Menu Objects 
-		game.load.spritesheet("clock_open", 	"assets/menu/20-clock-open.jpg",187,547);
-		game.load.spritesheet("clock_close", 	"assets/menu/20-clock-closed.jpg",187,547);
-		game.load.spritesheet("menu_lock", 	"assets/menu/20-level-button-lock.jpg",82,103);
-		game.load.spritesheet("menu_down", 	"assets/menu/20-level-button-down.jpg",82,103);
-		game.load.spritesheet("menu_up", 	"assets/menu/20-level-button-up.jpg",82,103);
+		// Menu Images
+		game.load.image("menu_lock", 	"assets/menu/20-level-button-lock.png");
+		game.load.image("menu_down", 	"assets/menu/20-level-button-down.png");
+		game.load.image("menu_up", 	"assets/menu/20-level-button-up.png");
+		game.load.image("clock_open", 	"assets/menu/20-clock-open.png");
+		game.load.image("clock_close", 	"assets/menu/20-clock-closed.png");
+
+game.load.spritesheet('top_banner' , 	"assets/menu/20-menu-select-wood-panel-top.jpg", 521, 92);
+game.load.spritesheet('bottom_banner' , "assets/menu/20-menu-select-wood-panel-bottom.jpg", 521, 71);
+
 
 		// Game Scripts
 		//game.load.script('Utils',build+"utils.js");
@@ -106,6 +111,8 @@ class BootState
 		}
 		
 		global_config = Utils.merge_objects(global_config,this.game.cache.getJSON('app'));
+		global_config = Utils.merge_objects(global_config, this.game.cache.getJSON('Language'));
+		
 		/*
 		var bmd = this.game.make.bitmapData(200, 20);
 		bmd.draw("colors",0,0);

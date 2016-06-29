@@ -57,13 +57,13 @@
 			"frame" : "clock_open",
 			"frameName" : 0,
 			"x"	: 30,
-			"y" : 30
+			"y" : 25
 		},
 		"ClockClosed" : {
 			"frame" : "clock_close",
 			"frameName" : "0",
 			"x"	: 30,
-			"y" : 30
+			"y" : 25
 		},
 		"MenuUp" : {
 			"frame" : "menu_up",
