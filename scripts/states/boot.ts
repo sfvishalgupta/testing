@@ -49,6 +49,8 @@ class BootState extends Phaser.State
 
 
 		// Canvas Objects
+		game.load.spritesheet("side_cog_gear","assets/side_cog.png",130,137);
+		
 		game.load.image("beeCounter",	"assets/counter-bee-bg.png");
 		game.load.image("blueBee",		"assets/bee-counter-blue-only.png");
 		game.load.image("cog",			"assets/cog-main.png");
@@ -89,6 +91,44 @@ class BootState extends Phaser.State
 game.load.spritesheet('top_banner' , 	"assets/menu/20-menu-select-wood-panel-top.jpg", 521, 92);
 game.load.spritesheet('bottom_banner' , "assets/menu/20-menu-select-wood-panel-bottom.jpg", 521, 71);
 
+		game.load.image("cog_chain_long", "assets/menu/cog-chain_long.png");
+
+		//Hint Panel
+		game.load.image("hint_panel", 		"assets/hint_panel.png");
+		game.load.image("S1_L21_image",		"assets/hint/S1_L21_image.png");
+		game.load.image("S3_L22_image",		"assets/hint/S3_L22_image.png");
+		game.load.image("S4_L23_image",		"assets/hint/S4_L23_image.png");
+		game.load.image("S5_L02_image",		"assets/hint/S5_L02_image.png");
+		game.load.image("S5_L03_image",		"assets/hint/S5_L03_image.png");
+		game.load.image("S5_L08_image",		"assets/hint/S5_L08_image.png");
+		game.load.image("S5_L09_image",		"assets/hint/S5_L09_image.png");
+		game.load.image("S5_L10_image",		"assets/hint/S5_L10_image.png");
+		game.load.image("S5_L11_image",		"assets/hint/S5_L11_image.png");
+		game.load.image("S5_L12_image",		"assets/hint/S5_L12_image.png");
+		game.load.image("S5_L13_image",		"assets/hint/S5_L13_image.png");
+		game.load.image("S5_L14_image",		"assets/hint/S5_L14_image.png");
+		game.load.image("S5_L16_image",		"assets/hint/S5_L16_image.png");
+		game.load.image("S5_L17_image",		"assets/hint/S5_L17_image.png");
+		game.load.image("S5_L18_image",		"assets/hint/S5_L18_image.png");
+		game.load.image("S5_L19_image",		"assets/hint/S5_L19_image.png");
+		game.load.image("S5_L20_image",		"assets/hint/S5_L20_image.png");
+		game.load.image("S5_L21_image",		"assets/hint/S5_L21_image.png");
+		game.load.image("S5_L22_image",		"assets/hint/S5_L22_image.png");
+		game.load.image("S5_L23_image",		"assets/hint/S5_L23_image.png");
+		game.load.image("S5_L24_image",		"assets/hint/S5_L24_image.png");
+		game.load.image("S6_L07_image",		"assets/hint/S6_L07_image.png");
+		game.load.image("S6_L08_image",		"assets/hint/S6_L08_image.png");
+		game.load.image("S6_L12_image",		"assets/hint/S6_L12_image.png");
+		game.load.image("S6_L13_image",		"assets/hint/S6_L13_image.png");
+		game.load.image("S6_L15_image",		"assets/hint/S6_L15_image.png");
+		game.load.image("S6_L16_image",		"assets/hint/S6_L16_image.png");
+		game.load.image("S6_L18_image",		"assets/hint/S6_L18_image.png");
+		game.load.image("S6_L19_image",		"assets/hint/S6_L19_image.png");
+		game.load.image("S6_L20_image",		"assets/hint/S6_L20_image.png");
+		game.load.image("S6_L21_image",		"assets/hint/S6_L21_image.png");
+		game.load.image("S6_L22_image",		"assets/hint/S6_L22_image.png");
+		game.load.image("S6_L23_image",		"assets/hint/S6_L23_image.png");
+		game.load.image("S6_L24_image",		"assets/hint/S6_L24_image.png");
 
 		// Game Scripts
 		//game.load.script('Utils',build+"utils.js");
@@ -144,3 +184,6 @@ var global_config = {
 };
 
 new Phaser.Game(800, 600, Phaser.CANVAS, 'container', new BootState());
+
+//4 1 no angle shape
+// animation on low energy

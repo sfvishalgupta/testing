@@ -84,6 +84,20 @@ class PlayState extends Phaser.State
 	    	this.rotatingElements.push(levelShape);
 	    }
 
+	    for(var i in level.infoCircle){
+	    	var infoCircle = new InfoCircle(game,level.infoCircle[i]);
+	    	this.add.existing(infoCircle);
+	    	this.rotatingElements.push(infoCircle);
+	    }
+
+	    for(var i in level.annotationText){
+	    	var annotationText = new AnnotationText(game,level.annotationText[i]);
+	    	this.add.existing(annotationText);
+	    	this.rotatingElements.push(annotationText);
+	    }
+
+	    
+
 		// Adding Gate
 		this.gate = new Gate(game,level.gate, blueFlyLength);
 	    this.game.add.existing(this.gate);
@@ -125,6 +139,8 @@ class PlayState extends Phaser.State
 	    	this.rotatingElements.push(spikeBall);
 	    	this.rotatingElements.push(spikeBall.skin);
 	    	this.rotatingElements.push(spikeBallPath);
+
+	    	console.log(spikeBall);
 	    }
 
 	    for(var i in level.springPad){
@@ -160,6 +176,11 @@ class PlayState extends Phaser.State
 	    
 	    this.startGame();
 
+	    if(level.hintImageID){
+	    	var hintPanel = new HintPanel(game,level.hintImageID,level.hintTextID);
+	    	this.add.existing(hintPanel);
+	    }
+	    
 	    this.cursor = this.input.keyboard.createCursorKeys();
 	}
 
@@ -182,7 +203,7 @@ class PlayState extends Phaser.State
 			for(var i in this.rotatingElements){
 				this.rotatingElements[i].angle += angularSpeed;
 			}
-			this.smallCog.angle -= (angularSpeed * 20 / 3);
+			this.smallCog.updateAngle(angularSpeed);
 			//this.itzi.angle = Math.max(Math.min(this.itzi.angle, 30), -30);
 			this.healthBar.setEnergy(this.itzi.health);
 		}
@@ -260,7 +281,10 @@ class PlayState extends Phaser.State
 	{
 		this.game.physics.box2d.restitution = 1.5;
 	    this.game.physics.box2d.friction = 100;
-
+		
+		this.smallCog = new SideCog(this.game);
+		this.game.add.existing(this.smallCog);
+		
 		var game = this.game,
 			cx = game.world.centerX,
 	    	cy = game.world.centerY,
@@ -287,9 +311,6 @@ class PlayState extends Phaser.State
 		cog_circle.setChain(polygonPoints);
 		this.rotatingElements.push(cog);
 		this.rotatingElements.push(cog_circle);
-
-		this.smallCog = game.add.image(70,312,"cog_small");
-		this.smallCog.anchor.set(0.5,0.5);
 
 		this.itzi.skin.setBodyContactCallback(cog_circle,this.itziBoundryTouch,this);
 	}

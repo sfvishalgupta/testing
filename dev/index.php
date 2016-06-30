@@ -22,6 +22,13 @@ $levelArr = json_decode($json,true)["level"];
 foreach($levelArr as $levels){
 	$levelObj = [];
 	$stage = explode("_",$levels["name"]);
+	if(isset($levels["hintImageID"]) && !empty($levels["hintImageID"])){
+		$levelObj["hintImageID"] = $levels["hintImageID"];
+	}
+	if(isset($levels["hintTextID"]) && !empty($levels["hintTextID"])){
+		$levelObj["hintTextID"] = $levels["hintTextID"];
+	}
+	
 	$levelObj["itzi"] = getXY($levels["fuzzi"]["pos"]);
 	$levelObj["gate"] = getXY($levels["goal"]["pos"]);
 	$levelObj["ranks"] = $levels["ranks"]['@attributes'];
@@ -55,7 +62,8 @@ foreach($levelArr as $levels){
 	    $lineObj["b"] = getXY($line["pointB"]);
 	    $lineObj["parallelSymbol"] = intval($line["parallelSymbol"]);
 	    $lineObj["equalLengthSymbol"] = intval($line["equalLengthSymbol"]);
-	    $lineObj["conveyorSpeed"] = $line["conveyorSpeed"];
+	    if(isset($line["conveyorSpeed"]))
+	    	$lineObj["conveyorSpeed"] = $line["conveyorSpeed"];
 	    //$lineObj["points"] = getPointsArray($line["pointA"],$line["pointB"]);
 	    if($lineObj["type"] == "laser"){
 	    	$time = getXY($line["laserTimes"]);
@@ -72,14 +80,40 @@ foreach($levelArr as $levels){
 		$levelObj["levelShape"][] = $levels["levelShape"];
 	}
 	
-	if($levels["angle"]['@attributes'])
+	if(isset($levels["annotationText"]['pos']))
 	{
-		$levels["angle"] = [$levels["angle"]];
+		$levels["annotationText"] = [$levels["annotationText"]];
+	}
+	if(isset($levels["annotationText"])){
+		foreach ($levels["annotationText"] as $annotation) {
+			$anotationObj = [];
+			$anotationObj["pos"] = getXY($annotation["pos"]);
+			$anotationObj["text"] = $annotation["text"];
+			$levelObj["annotationText"][] = $anotationObj;
+		}	
+	}
+
+	if(isset($levels["infoCircle"]['pos']))
+	{
+		$levels["infoCircle"] = [$levels["infoCircle"]];
+	}
+	if(isset($levels["infoCircle"])){
+		foreach ($levels["infoCircle"] as $infoCircle) {
+			$infoCircleObj = [];
+			$infoCircleObj["pos"] = getXY($infoCircle["pos"]);
+			$infoCircleObj["radius"] = intval($infoCircle["radius"]);
+			$levelObj["infoCircle"][] = $infoCircleObj;
+		}	
 	}
 
 	if($stage[0] == 'S3'&& $stage[1] == "L09"){
 		//print_r($levels["angle"]);
 		//die;
+	}
+
+	if(isset($levels["angle"]['@attributes']))
+	{
+		$levels["angle"] = [$levels["angle"]];
 	}
 
 	foreach($levels["angle"] as $angle){

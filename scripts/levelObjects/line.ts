@@ -292,7 +292,7 @@ class LaserLine extends Line
 		if(line.laserTimes.onTime){
 			this._offTime = line.laserTimes.onTime;
 		}
-		this.symbol.alpha = 0.5;
+		if(this.symbol) this.symbol.alpha = 0.5;
 		setTimeout(this.switchLaserState.bind(this),this._initDelay);
 		//this.drawLine();
 	}
@@ -304,12 +304,12 @@ class LaserLine extends Line
 		if(this.laserOn){
 			this.skin.sensor = false;
 			this.laserGraphics.visible = true;
-			this.symbol.alpha = 1;
+			if(this.symbol) this.symbol.alpha = 1;
 			setTimeout(this.switchLaserState.bind(this),this._offTime);
 		}else{
 			this.skin.sensor = true;
 			this.laserGraphics.visible = false;
-			this.symbol.alpha = 0.5;
+			if(this.symbol) this.symbol.alpha = 0.5;
 			setTimeout(this.switchLaserState.bind(this),this._onTime);
 		}
 	}

@@ -95,7 +95,6 @@ class SpikeBall extends Phaser.Sprite
 			ball.frame = image.frameName;
 		}
 		ball.anchor.set(0.5,0.5);
-		//this.body.addChild(ball);
 		this.addChild(ball);
 		this.ball = ball;
 		
@@ -112,34 +111,36 @@ class SpikeBall extends Phaser.Sprite
     		var x1 = cnf.path.pos.x*global_config.Config.scale,
     			y1 = cnf.path.pos.y*global_config.Config.scale,
     			radius = cnf.path.pathRadius * global_config.Config.scale,
-    			a1 = Phaser.Math.degToRad(90-cnf.path.pathArcStart),
-    			a2 = Phaser.Math.degToRad(90-cnf.path.pathArcEnd);
-
+    			pointAngle = Phaser.Math.angleBetweenPoints(new Phaser.Point(x,y), new Phaser.Point()),
+    			a1 = Phaser.Math.degToRad(cnf.path.pathArcStart),
+    			a2 = Phaser.Math.degToRad(cnf.path.pathArcEnd);
+    		console.log(pointAngle);
     		this.ball.pivot.x = -x1;
     		this.ball.pivot.y = -y1;
     		this.skin.setCircle(19,x,y);
-    		if(a2>a1){
-    			this.startAngle = a1;
-    			this.endAngle = a2;	
-    		}else{
-    			this.startAngle = a2;
-    			this.endAngle = a1;	
-    		}
-    		cnf.moveSpeed = 2*cnf.moveSpeed;
-    		var diff = this.endAngle-this.startAngle,
-    			delta = diff/(60*cnf.moveSpeed),
-    			n = 1,
-    			tw = game.add.tween({vis:1}).to({vis:"+1"}, cnf.moveSpeed*1000, "Linear",false,0,-1);
 
-    		if((cnf.path.pathArcEnd - cnf.path.pathArcStart)%360 > 0){
-    			tw.yoyo(true);
-    		}
+    		this.startAngle = a1+pointAngle;
+    		this.endAngle = a2+pointAngle;
+    		this.ball.position.set(
+    			radius*Math.cos(this.startAngle), 
+    			-radius*Math.sin(this.endAngle)
+    		);
+    		cnf.moveSpeed = 4*cnf.moveSpeed;
+    		var diff = this.endAngle - this.startAngle,
+    			diff = diff < 0 ? diff + 2*3.14 : diff,
+    			delta = diff/(cnf.moveSpeed*60),
+    			n = 0,
+    			tw = game.add.tween({a:1}).to({a:"+2"}, cnf.moveSpeed*1000, "Linear",false,0,-1),
+    			fullCircle = (cnf.path.pathArcEnd - cnf.path.pathArcStart)%360 == 0;
+
+    		if(!fullCircle) tw.yoyo(true);
+
     		tw.onUpdateCallback(function(a,b,c){
-    			var a = this.startAngle + delta*n,
-    				x = radius*Math.sin(a),
-    				y = radius*Math.cos(a);
-    			this.ball.position.set(x,y);
-    			n = c.inReverse ? n-1 : n+1;
+    			var a = this.startAngle + n*delta,
+    				x = radius*Math.cos(a),
+    				y = radius*Math.sin(a);
+    				this.ball.position.set(x,y);
+    			n = !c.inReverse ? n+1 : n-1;
     		},this);
     		tw.start();
     	}else{
