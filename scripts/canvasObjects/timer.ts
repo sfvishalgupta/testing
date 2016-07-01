@@ -18,7 +18,7 @@ class Timer extends Phaser.Sprite
 	    },this);
 
 	    this.game.onGameEnd.add(function(){
-	    	this.counter.destroy();
+	    	this.counter.text = "0:00";
 	    },this);
 	}
 

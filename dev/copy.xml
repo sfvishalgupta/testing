@@ -48,49 +48,32 @@
 		
 		<!-- Menu Text -->
 		
-		<text name="btn_play">PLAY</text>
-		<text name="btn_help">HELP</text>
+		
 		
 		<text name="game_intro_title">Help Itzi rescue<br/>his family!</text>
 		<text name="game_intro_description">Itzi and family in their grandfather clock,<br/>Midnight chimes and it starts to rock,<br/>They try clinging on but soon start to fall,<br/>Now Itzi climbs up to rescue them all!</text>
 		
-		<text name="title_level_select">Select Level</text>
-		<text name="world_name_0">Stage 1: Basic Angle Rules</text>
-		<text name="world_name_1">Stage 2: Angles #### Parallel Lines</text>
-		<text name="world_name_2">Stage 3: Angles in Triangles</text>
-		<text name="world_name_3">Stage 4: Angles in Quadrilaterals</text>
-		<text name="world_name_4">Stage 5: Angles in Polygons</text>
-		<text name="world_name_5">Stage 6: Angles in Circles</text>
-		<text name="lvlbtn_best">BEST</text>
-		<text name="lvlbtn_rank">RANK</text>
 		
-		<text name="worldbtn_stage">STAGE</text>
+		
 		<text name="worldbtn_unlocks_at">Unlocks at</text>
 		<text name="worldbtn_points">points</text>
-		<text name="lvlselect_worldscore">STAGE<br/>SCORE:</text>
-		<text name="lvlselect_totalscore">TOTAL<br/>SCORE:</text>
 		
-		<text name="lvlintro_world">STAGE {0}</text>
-		<text name="lvlintro_level">Level {0}</text>
 		
-		<text name="btn_play_level">Start!</text>
 		<text name="exam_board_descr">This level is adapted from:</text>	
 		
 		<text name="game_paused">Game Paused!</text>
-		<text name="btn_resume">Resume</text>
-		<text name="btn_quit">Quit</text>
+		
+		
 		<text name="confirm_quit_to_mainmenu">Are you sure<br/>you want to quit?</text>
 		<text name="confirm_quit_to_levelselect">Are you sure<br/>you want to quit?</text>
 		<text name="confirm_reset">Are you sure<br/>you want to restart?</text>
 		<text name="all_progress_lost">Flies collected will be lost!</text>
-		<text name="btn_yes">Yes</text>
-		<text name="btn_no">No</text>
+		
 		
 		<text name="level_complete">Level Complete!</text>
 		<text name="lvlcompl_level_score">LEVEL SCORE:</text>
 		<text name="lvlcompl_total_score">TOTAL SCORE:</text>
-		<text name="btn_level_select">Level Select</text>
-		<text name="btn_next_level">Next Level</text>
+		
 		<text name="lvlcompl_rank">RANK</text>
 		
 		<text name="world_1_unlocked">New Stage!</text>
@@ -125,20 +108,12 @@
 		<text name="endgame_subtitle">You made it home...<br/>but did everyone else?</text>
 		<text name="endgame_levels_completed">Levels Completed: {0}/{1}</text>
 		<text name="endgame_total_score">TOTAL SCORE:</text>
-		<text name="btn_ok">OK</text>
 		
 		
-		<text name="game_completed">Game Complete!</text>
-		<text name="btn_skip">OK</text>
-		<text name="moving_to_next_world">Go to the next Stage!</text>
-		<text name="return_to_menu">Return to Menu</text>
-		<text name="level_failed">Level Failed</text>
-		<text name="level_failed_cause_damage">Itzi got fried!</text>
-		<text name="level_failed_cause_time">Time is up!</text>
-		<text name="level_failed_total_score">TOTAL SCORE:</text>
 		
-		<text name="btn_try_again">Try Again</text>
-		<text name="btn_quit_game">Quit</text>
+		
+		
+		
 		
 		
 		<!-- In-Game Text -->

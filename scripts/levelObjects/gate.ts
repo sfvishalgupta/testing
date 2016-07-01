@@ -8,6 +8,8 @@ class Gate extends Phaser.Sprite
 			y = config.y*global_config.Config.scale; 
 		
 		super(game,cx,cy);
+		this.game = game;
+		this.numFlies = numFlies;
 		this.anchor.set(0.5,0.5);
     	this.pivot.x = -x;
     	this.pivot.y = -y;
@@ -19,7 +21,7 @@ class Gate extends Phaser.Sprite
 
     	this.gateTwirl = new Phaser.Sprite(game,0,0,'gateTwirl');
     	this.gateTwirl.animations.add('play');
-    	this.gateTwirl.animations.play("play",30,true);
+    	
     	this.gateTwirl.anchor.set(0.5,0.5);
     	this.addChild(this.gateTwirl);
 
@@ -29,14 +31,9 @@ class Gate extends Phaser.Sprite
     	this.addChild(this.gate);
     	this.gate.angle = 90;
 		this.isOpenable = false;
-		if(numFlies>0){
-			this.createGateLight(game,numFlies);
-		}else{
-			this.isOpenable = true;
-			this.openGate();
-		}
 
-		this.game.onGameEnd.add(this.onGameEnd,this);
+		game.onGameStart.add(this.onGameStart,this);
+		game.onGameEnd.add(this.onGameEnd,this);
 	}
 
 	createGateLight(game, numFlies)
@@ -89,5 +86,17 @@ class Gate extends Phaser.Sprite
 	{
 		this.gate.animations.stop();
 		this.gateTwirl.animations.stop();
+	}
+
+	onGameStart()
+	{
+		var game = this.game;
+		if(this.numFlies>0){
+			this.createGateLight(game,this.numFlies);
+		}else{
+			this.isOpenable = true;
+			this.openGate();
+		}
+		this.gateTwirl.animations.play("play",30,true);
 	}
 }

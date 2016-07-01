@@ -93,6 +93,24 @@ class Utils
 	static getHashColor(color){
 		return "#"+color.substring(2,color.length);
 	}
+
+	static getStageNumber(stage)
+	{
+		return stage.substring(1,stage.length);
+	}
+
+	static getLevelNumber(level){
+		var level = level.substring(1,level.length);	
+		return parseInt(level);
+	}
+
+	static getTranslatedString(str,args)
+	{
+		for(var i in args){
+			str = str.replace("{0}",args[i]);
+		}
+		return str;	
+	}
 }
 
 var Phaser = Phaser || {},

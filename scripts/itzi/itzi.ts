@@ -11,10 +11,12 @@ class Itzi extends Phaser.Sprite
 		this.health = 100;
 		this.skin = new Phaser.Physics.Box2D.Body(game, null, x, y, 2);
 	    this.skin.setCircle(20);
-	    //this.skin.bullet = true;
+	    this.skin.bullet = true;
+	    this.skin.static = true;
 	    this.scale.set(0.6,0.6);
 	    this.anchor.set(0.5,0.5);
-	    //this.skin.kinematic= true;
+
+
 	    this.gameEnd = false;
 
 	    var sprite1 = new Phaser.Sprite(game,0,0,global_config.Images.OuterCircleParticle.frame,4);
@@ -45,6 +47,10 @@ class Itzi extends Phaser.Sprite
 	    //var force = (radius - distance) / mass;
 		//object.body.velocity.x += Math.cos(angle) * force;
 		//object.body.velocity.y += Math.sin(angle) * force;
+
+		game.onGameStart.add(function(){
+	    	this.startGame();
+	    },this);
 	}
 
 	playOuterCircleTouch()
@@ -68,7 +74,6 @@ class Itzi extends Phaser.Sprite
 			if(this.scale.x <=0 ){
 				this.gameEnd = false;
 				super.destroy();
-				console.log("game destroy");
 			}
 		}else{
 			this.position.x = this.skin.x;
@@ -80,5 +85,10 @@ class Itzi extends Phaser.Sprite
 	{
 		this.gameEnd = true;
 		this.skin.destroy();
+	}
+
+	startGame()
+	{
+		this.skin.static = false;
 	}
 }

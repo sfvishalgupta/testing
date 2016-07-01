@@ -63,7 +63,21 @@ module.exports = function(grunt) {
                     }
                 ]
             }
-        }
+        },
+        concat: {
+            options: {
+              separator: '',
+            },
+            canvas : {
+              src: [
+                'scripts/canvasObjects/healthBar.ts',
+                'scripts/canvasObjects/sideCog.ts',
+                'scripts/canvasObjects/timer.ts',
+                'scripts/canvasObjects/beeCounter.ts'
+              ],
+              dest: deploydir+'canvasObjects.ts',
+            },
+          },
     });
     
     grunt.loadNpmTasks("grunt-contrib-watch");
@@ -71,6 +85,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-json-minify');
     grunt.loadNpmTasks('grunt-merge-json');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
     grunt.event.on('watch', function(action, filepath){
         var newPath = filepath.split(path.sep).slice(1).join(path.sep);

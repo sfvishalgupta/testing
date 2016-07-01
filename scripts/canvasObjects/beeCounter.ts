@@ -62,3 +62,4 @@ class GoldBeeCounter extends BeeCounter
 		this.addBeeImage("goldBee");
 	}
 }
+

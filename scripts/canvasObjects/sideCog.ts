@@ -79,3 +79,4 @@ class SideCog extends Phaser.Sprite
 		}
 	}
 }
+

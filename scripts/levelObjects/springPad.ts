@@ -29,6 +29,7 @@ class SpringPad extends Phaser.Sprite
 
 		spring.frame = 1;
 		spring.anchor.set(0.5,0.5);
+		spring.angle = config.angle;
 		var up = spring.animations.add('up',[0,1,2,3,4,5,6,7],20);
 		spring.animations.add('down',[0,1,2,3,4,5,6,7].reverse(),20);
 		

@@ -8,6 +8,7 @@
 		"disableLineTime" : 3000,
 		"LaserLineOffTime" : 2000,
 		"LaserLineOnTime" : 2000,
-		"LaserLineInitDelay" : 0
+		"LaserLineInitDelay" : 0,
+		"PanelToggleTime" : 500
 	}
 }

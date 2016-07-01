@@ -73,25 +73,37 @@ class BootState extends Phaser.State
 		game.load.image("game_replay_down",	"assets/button-replay-down.png");
 
 		// Load backgrounds 
+		game.load.image("menu",			"assets/backgrounds/menu.png");
 		game.load.image("world01",		"assets/backgrounds/world01.jpg");
 		game.load.image("world02",		"assets/backgrounds/world02.jpg");
 		game.load.image("world03",		"assets/backgrounds/world03.jpg");
 		game.load.image("world04",		"assets/backgrounds/world04.jpg");
 		game.load.image("world05",		"assets/backgrounds/world05.jpg");
 		game.load.image("world06",		"assets/backgrounds/world06.jpg");
-		game.load.image("menu",			"assets/backgrounds/menu.png");
+
+		// Load Buttons
+		game.load.image("btn_smallup",	"assets/buttons/button-small-up.png");
 		
 		// Menu Images
-		game.load.image("menu_lock", 	"assets/menu/20-level-button-lock.png");
-		game.load.image("menu_down", 	"assets/menu/20-level-button-down.png");
-		game.load.image("menu_up", 	"assets/menu/20-level-button-up.png");
-		game.load.image("clock_open", 	"assets/menu/20-clock-open.png");
-		game.load.image("clock_close", 	"assets/menu/20-clock-closed.png");
+		game.load.image("clock_close", 		"assets/menu/clock-closed.png");
+		game.load.image("clock_open", 		"assets/menu/clock-open.png");
+		game.load.image("cog_chain", 		"assets/menu/cog-chain.png");
+		game.load.image("cog_chain_long", 	"assets/menu/cog-chain_long.png");
+		game.load.image("icon_clock", 		"assets/menu/icon-clock.png");
+		game.load.image("icon_fly_blue", 	"assets/menu/icon-fly-blue.png");
+		game.load.image("icon_fly_yellow", 	"assets/menu/icon-fly-yellow.png");
+		game.load.image("icon_thunder", 	"assets/menu/icon-thunder.png");
+		game.load.image("menu_down", 		"assets/menu/level-button-down.png");
+		game.load.image("menu_lock", 		"assets/menu/level-button-lock.png");
+		game.load.image("menu_panel", 		"assets/menu/game-panel-bg.png");
+		game.load.image("menu_up", 			"assets/menu/level-button-up.png");
+		game.load.image("over_pale_panel", 	"assets/menu/game-panel-game-over-pale-bg.png");
+		game.load.image("start_pale_panel", "assets/menu/game-panel-start-of-level-pale-bg.png");
+		game.load.image("title_chain", 		"assets/menu/title-screen-chain.png");
+		
+		game.load.spritesheet('top_banner' , 	"assets/menu/select-wood-panel-top.jpg", 521, 92);
+		game.load.spritesheet('bottom_banner' , "assets/menu/select-wood-panel-bottom.jpg", 521, 71);
 
-game.load.spritesheet('top_banner' , 	"assets/menu/20-menu-select-wood-panel-top.jpg", 521, 92);
-game.load.spritesheet('bottom_banner' , "assets/menu/20-menu-select-wood-panel-bottom.jpg", 521, 71);
-
-		game.load.image("cog_chain_long", "assets/menu/cog-chain_long.png");
 
 		//Hint Panel
 		game.load.image("hint_panel", 		"assets/hint_panel.png");
@@ -152,7 +164,7 @@ game.load.spritesheet('bottom_banner' , "assets/menu/20-menu-select-wood-panel-b
 		
 		global_config = Utils.merge_objects(global_config,this.game.cache.getJSON('app'));
 		global_config = Utils.merge_objects(global_config, this.game.cache.getJSON('Language'));
-		
+
 		/*
 		var bmd = this.game.make.bitmapData(200, 20);
 		bmd.draw("colors",0,0);

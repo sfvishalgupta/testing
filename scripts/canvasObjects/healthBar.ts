@@ -40,3 +40,4 @@ class HealthBar extends Phaser.Sprite
 		this.setEnergy(100);
 	}
 }
+
