@@ -30,7 +30,11 @@ class PlayState extends Phaser.State
 	    	this.cursor = null;
 	    },this);
 
-	    this.gameStartPanel.toggle();
+	    if(global_config.panel_show){
+	    	this.gameStartPanel.toggle();
+	    }else{
+	    	this.startGame();
+	    }
 	}
 
 	addCanvasObjects()
@@ -88,6 +92,12 @@ class PlayState extends Phaser.State
 		this.gameFailPanel = new GameFail(game,0,300);
 		game.add.existing(this.gameFailPanel);
 
+		this.gamePausedPanel = new GamePause(game,0,300);
+		game.add.existing(this.gamePausedPanel);
+
+		this.gameQuitConfirmPanel = new GameQuitConfirm(game,0,300);
+		game.add.existing(this.gameQuitConfirmPanel);
+
 		this.gameStartPanel = new GameStart(game,0,300);
 		game.add.existing(this.gameStartPanel);
 		this.gameStartPanel.startBtn.events.onInputUp.add(this.startGame,this);
@@ -135,13 +145,21 @@ class PlayState extends Phaser.State
 
 	startGame()
 	{
-		this.gameStartPanel.toggle(function(){
+		if(global_config.panel_show){
+			this.gameStartPanel.toggle(function(){
+				this.isGameRunning = true;
+				this.addLevelObjects();
+		    	this.addCanvasObjects();
+		    	this.game.onGameStart.dispatch(this.gameTimeLimit);
+		    	this.cursor = this.input.keyboard.createCursorKeys();
+			}.bind(this));
+		}else{
 			this.isGameRunning = true;
 			this.addLevelObjects();
 	    	this.addCanvasObjects();
 	    	this.game.onGameStart.dispatch(this.gameTimeLimit);
 	    	this.cursor = this.input.keyboard.createCursorKeys();
-		}.bind(this));
+		}
 	}
 
 	startClockTick()

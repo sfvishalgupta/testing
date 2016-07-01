@@ -1,8 +1,6 @@
 <copy>
 <sections>
-		
 	<section name="wrapper" >
-
 		<text name="close">Close</text>
 		<text name="yes">Yes</text>
 		<text name="no">No</text>
@@ -19,306 +17,32 @@
 		<text name="show_fullscreen_keyb_warning">true</text>
 		<text name="keyboard_active">Keyboard active</text>
 		<text name="keyboard_inactive">Keyboard inactive</text>
-		
 		<!-- define character used to separate 1000s -->
 		<text name="number_thousands_separator">,</text>
-		
 		<!-- show strapline below MH logo on loading screen -->
 		<text name="preloader_strapline_enabled">true</text>
-		
 		<!-- show 4-digit number with comma if true, e.g. 9,999 rather than 9999 -->
 		<text name="4digit_separator_enabled">true</text>
-		
 	</section>
-	
-
 	<section name="ingame" >
-		
 		<!-- Toggle whether exam ref (e.g. to EdExcel) is on or off -->
 		<text name="show_exam_ref">false</text>
-		
-		
 		<!-- Relative paths to game assets -->
 		<text name="logo_path">logos/default_logo.png</text>
 		<text name="mh_logo_path">logos/mh_logo.png</text>
 		<text name="poweredby_logo_path">logos/edexcel_large.png</text>
 		<text name="examing_board_image">logos/edexcel_small.png</text>
 		<text name="hint_images_path">data/hints/</text>
-		
-		
 		<!-- Menu Text -->
-		
-		
-		
-		<text name="game_intro_title">Help Itzi rescue<br/>his family!</text>
-		<text name="game_intro_description">Itzi and family in their grandfather clock,<br/>Midnight chimes and it starts to rock,<br/>They try clinging on but soon start to fall,<br/>Now Itzi climbs up to rescue them all!</text>
-		
-		
-		
-		<text name="worldbtn_unlocks_at">Unlocks at</text>
-		<text name="worldbtn_points">points</text>
-		
-		
-		<text name="exam_board_descr">This level is adapted from:</text>	
-		
-		<text name="game_paused">Game Paused!</text>
-		
-		
-		<text name="confirm_quit_to_mainmenu">Are you sure<br/>you want to quit?</text>
-		<text name="confirm_quit_to_levelselect">Are you sure<br/>you want to quit?</text>
-		<text name="confirm_reset">Are you sure<br/>you want to restart?</text>
-		<text name="all_progress_lost">Flies collected will be lost!</text>
-		
-		
-		<text name="level_complete">Level Complete!</text>
-		<text name="lvlcompl_level_score">LEVEL SCORE:</text>
-		<text name="lvlcompl_total_score">TOTAL SCORE:</text>
-		
-		<text name="lvlcompl_rank">RANK</text>
-		
-		<text name="world_1_unlocked">New Stage!</text>
-		<text name="world_2_unlocked">New Stage!</text>
-		<text name="world_3_unlocked">New Stage!</text>
-		<text name="world_4_unlocked">New Stage!</text>
-		<text name="world_5_unlocked">New Stage!</text>
-		
-		<text name="world_1_unlocked_subtitle">Stage 2 is unlocked!</text>
-		<text name="world_2_unlocked_subtitle">Stage 3 is unlocked!</text>
-		<text name="world_3_unlocked_subtitle">Stage 4 is unlocked!</text>
-		<text name="world_4_unlocked_subtitle">Stage 5 is unlocked!</text>
-		<text name="world_5_unlocked_subtitle">Stage 6 is unlocked!</text>
-		
-		<text name="moving_to_world_1">Get ready for<br/>Stage 2!</text>
-		<text name="moving_to_world_2">Get ready for<br/>Stage 3!</text>
-		<text name="moving_to_world_3">Get ready for<br/>Stage 4!</text>
-		<text name="moving_to_world_4">Get ready for<br/>Stage 5!</text>
-		<text name="moving_to_world_5">Get ready for<br/>Stage 6!</text>
-		
-		
-		<text name="family_title">GREAT JOB!</text>
-		<text name="family_subtitle_0">You found Pappi!</text>
-		<text name="family_subtitle_1">You saved Mumzi!</text>
-		<text name="family_subtitle_2">You rescued Unki!</text>
-		<text name="family_subtitle_3">You saved Sissi!</text>
-		<text name="family_subtitle_4">You found Grampi!</text>
-		<text name="family_subtitle_5">You rescued Tichi!</text>
-		
-		
-		<text name="endgame_title">TOP OF THE CLOCK!</text>
-		<text name="endgame_subtitle">You made it home...<br/>but did everyone else?</text>
-		<text name="endgame_levels_completed">Levels Completed: {0}/{1}</text>
-		<text name="endgame_total_score">TOTAL SCORE:</text>
-		
-		
-		
-		
-		
-		
-		
-		
-		<!-- In-Game Text -->
-		<text name="unknown_angle_symbol">?</text>
-		<text name="degrees_symbol">*</text>
-		<text name="percentage_format">{0}%</text>
-		<text name="fly_format">{0}/{1}</text>
-		<text name="hint">HINT</text>
-		
-		
-		<!-- Challenge system -->
-		<text name="medal_1">Basic angle rules</text>
-		<text name="medal_2">Angles #### parallel lines</text>
-		<text name="medal_3">Angles in triangles</text>
-		<text name="medal_4">Angles in quadrilaterals</text>
-		<text name="medal_5">Angles in polygons</text>
-		<text name="medal_6">Angles in circles</text>
-		
-		<text name="challenge_title">CHALLENGE MODE</text>
-		
-		<text name="challenge_description_1">Complete all Stage 1 levels<br/>+ beat the Target Score</text>
-		<text name="challenge_description_2">Complete all Stage 2 levels<br/>+ beat the Target Score</text>
-		<text name="challenge_description_3">Complete all Stage 3 levels<br/>+ beat the Target Score</text>
-		<text name="challenge_description_4">Complete all Stage 4 levels<br/>+ beat the Target Score</text>
-		<text name="challenge_description_5">Complete all Stage 5 levels<br/>+ beat the Target Score</text>
-		<text name="challenge_description_6">Complete all Stage 6 levels<br/>+ beat the Target Score</text>
-		
-		<text name="challenge_result_title_success">CHALLENGE PASSED!</text>
-		<text name="challenge_result_title_failed">CHALLENGE FAILED!</text>
 		<text name="challenge_result_score">Total: <font color="#FFFFFF"><score>{0}</score> points</font></text>
-		
 		<text name="challenge_target_g"><b>TARGET SCORE:</b><br/><font size="15" color="#FFFFFF"><b><score>{0}</score></b> points</font></text>
 		<text name="challenge_target_s"><b>TARGET SCORE:</b><br/><font size="15" color="#FFFFFF"><b><score>{0}</score></b> points</font></text>
 		<text name="challenge_target_b"><b>TARGET SCORE:</b><br/><font size="15" color="#FFFFFF"><b><score>{0}</score></b> points</font></text>
-		
 		<text name="challenge_failed_no_medal">Bad luck! Try again -<br/>you can do it!</text>
 		<text name="challenge_failed_wrong_medal">Almost! Try again for<br/>a higher grade!</text>
 		<text name="challenge_congrats_b">Great! You achieved <font color="#e93b3b">BRONZE</font> grade!</text>
 		<text name="challenge_congrats_s">Fantastic! You achieved <font color="#e93b3b">SILVER</font> grade!</text>
 		<text name="challenge_congrats_g">Awesome! You achieved <font color="#e93b3b">GOLD</font> grade!</text>
-		
-		
-		<!-- References to original exam papers -->
-		<text name="S1_L03">Edexcel 2011, Foundation Unit 2</text>
-		<text name="S1_L04">Edexcel 2009, Foundation Paper 1</text>
-		<text name="S1_L06">Edexcel 2010, Foundation Paper 7</text>
-		<text name="S1_L07">Edexcel 2008, Foundation Paper 2</text>
-		<text name="S1_L08">Edexcel 2011, Foundation Unit 2</text>
-		<text name="S1_L09">Edexcel 2006, Foundation Paper 11</text>
-		<text name="S1_L10">Edexcel 2011, Foundation Unit 1</text>
-		<text name="S1_L12">Edexcel 2006, Foundation Paper 11</text>
-		<text name="S1_L13">Edexcel 2007, Foundation Mock Paper,<br/>Unit 2</text>
-		<text name="S1_L15">Edexcel 2002, Foundation Mock Paper 1</text>
-		<text name="S1_L16">Edexcel 2007, Foundation Paper 2</text>
-		<text name="S1_L17">Edexcel 2010, Foundation Paper 1</text>
-		<text name="S1_L18">Edexcel 2002, Foundation Mock Paper 11</text>
-		<text name="S1_L21">Edexcel 2005, Foundation Paper 1</text>
-		<text name="S1_L22">Edexcel 2011, Foundation Unit 1</text>
-		<text name="S1_L23">Edexcel 2007, Foundation Paper 9</text>
-		
-		<text name="S2_L01">Edexcel 2009, Higher Paper 4</text>
-		<text name="S2_L02">Edexcel 2010, Higher Paper 10</text>
-		<text name="S2_L03">Edexcel 2008, Higher Paper 10</text>
-		<text name="S2_L04">Edexcel 2008, Higher Paper 4</text>
-		<text name="S2_L05">Edexcel 2010, Foundation Paper 9</text>
-		<text name="S2_L06">Edexcel 2009, Foundation Paper 1</text>
-		<text name="S2_L07">Edexcel 2009, Higher Paper 10</text>
-		<text name="S2_L08">Edexcel 2004, Intermediate Paper 3</text>
-		<text name="S2_L09">Edexcel 2008, Higher Paper 10</text>
-		<text name="S2_L10">Edexcel 2008, Higher Paper 10</text>
-		<text name="S2_L11">Edexcel 2008, Higher Practice Paper F</text>
-		<text name="S2_L12">Edexcel 2008, Higher Practice Paper D</text>
-		<text name="S2_L13">Edexcel 2008, Higher Paper 8</text>
-		<text name="S2_L16">Edexcel 2009, Higher Paper 8</text>
-		<text name="S2_L17">Edexcel 2010, Higher Mock Paper, Unit 2</text>
-		<text name="S2_L18">Edexcel 2010, Higher Practice Paper C</text>
-		<text name="S2_L19">Edexcel 2007, Intermediate Paper 16</text>
-		<text name="S2_L20">Edexcel 2010, Higher Unit 2</text>
-		<text name="S2_L21">Edexcel 2004, Intermediate Paper 9</text>
-		<text name="S2_L22">Edexcel 2011, Higher Paper 10</text>
-		<text name="S2_L23">Edexcel 2002, Higher Practice Paper 4</text>
-		<text name="S2_L24">Edexcel 2007, Foundation Paper 14</text>
-		
-		<text name="S3_L01">Edexcel 2010, Foundation Paper 2</text>
-		<text name="S3_L02">Edexcel 2004, Foundation Paper 11</text>
-		<text name="S3_L03">Edexcel 2007, Foundation Paper 10</text>
-		<text name="S3_L06">Edexcel 2000, Intermediate Paper 3</text>
-		<text name="S3_L07">Edexcel 1999, Foundation Paper 1</text>
-		<text name="S3_L08">Edexcel 2010, Foundation Paper 7</text>
-		<text name="S3_L09">Edexcel 2009, Foundation Paper 12</text>
-		<text name="S3_L10">Edexcel 2009, Higher Paper 8</text>
-		<text name="S3_L11">Edexcel 2007, Foundation Paper 10</text>
-		<text name="S3_L12">Edexcel 2008, Foundation Paper 10</text>
-		<text name="S3_L13">Edexcel 2010, Higher Practice Paper A</text>
-		<text name="S3_L14">Edexcel 2008, Higher Practice Paper C</text>
-		<text name="S3_L15">Edexcel 2010, Higher Paper 3</text>
-		<text name="S3_L16">Edexcel 2011, Foundation Unit 2</text>
-		<text name="S3_L17">Edexcel 2011, Foundation Mock Paper,<br/>Unit 1</text>
-		<text name="S3_L18">Edexcel 2008, Higher Paper 8</text>
-		<text name="S3_L19">Edexcel 2003, Intermediate Paper 9</text>
-		<text name="S3_L20">Edexcel 2008, Foundation Paper 2</text>
-		<text name="S3_L21">Edexcel 2010, Higher Paper 13</text>
-		<text name="S3_L22">Edexcel 2003, Foundation Paper 2</text>
-		<text name="S3_L23">Edexcel 2003, Intermediate Paper 3</text>
-		<text name="S3_L24">Edexcel 2002, Intermediate Paper 9</text>
-		
-		<text name="S4_L02">Edexcel 2008, Foundation Paper 12</text>
-		<text name="S4_L04">Edexcel 2008, Higher Practice Paper 4</text>
-		<text name="S4_L06">Edexcel 2011, Foundation Unit 2</text>
-		<text name="S4_L08">Edexcel 2007, Higher Practice Paper D</text>
-		<text name="S4_L09">Edexcel 2011, Foundation Paper 12</text>
-		<text name="S4_L10">Edexcel 2010, Foundation Mock Paper,<br/>Unit 10</text>
-		<text name="S4_L11">Edexcel 2002, Foundation Paper 2</text>
-		<text name="S4_L12">Edexcel 2007, Intermediate Paper 17</text>
-		<text name="S4_L21">Edexcel 2006, Intermediate Paper 4</text>
-		<text name="S4_L22">Edexcel 2004, Intermediate Paper 16</text>
-		<text name="S4_L23">Edexcel 2012, Foundation Practice Paper,<br/>Unit 1</text>
-		<text name="S4_L24">Edexcel 2008, Higher Paper 4</text>
-		
-		<text name="S5_L01">Edexcel 2006, Intermediate Paper 9</text>
-		<text name="S5_L02">Edexcel 2002, Intermediate<br/>Mock Paper 3</text>
-		<text name="S5_L03">Edexcel 2004, Intermediate Paper 3</text>
-		<text name="S5_L04">Edexcel 2002, Intermediate Paper 9</text>
-		<text name="S5_L08">Edexcel 2011, Higher Unit 2</text>
-		<text name="S5_L09">Edexcel 2005, Foundation Paper 11</text>
-		<text name="S5_L10">Edexcel 2011, Higher Unit 2</text>
-		<text name="S5_L11">Edexcel 2006, Foundation Paper 11</text>
-		<text name="S5_L12">Edexcel 2003, Intermediate Paper 4</text>
-		<text name="S5_L13">Edexcel 2001, Intermediate Paper 3</text>
-		<text name="S5_L14">Edexcel 2007, Intermediate Paper 3</text>
-		<text name="S5_L15">Edexcel 2002, Intermediate Paper 3</text>
-		<text name="S5_L16">Edexcel 2008, Higher Paper 3</text>
-		<text name="S5_L17">Edexcel 2012, Higher Practice Paper,<br/>Unit 2</text>
-		<text name="S5_L18">Edexcel 2007, Intermediate Paper 9</text>
-		<text name="S5_L19">Edexcel 2004, Intermediate Paper 9</text>
-		<text name="S5_L20">Edexcel 2003, Intermediate Paper 9</text>
-		<text name="S5_L21">Edexcel 2005, Higher Paper 10</text>
-		<text name="S5_L22">Edexcel 2000, Higher Paper 6</text>
-		<text name="S5_L23">Edexcel 2010, Higher Paper 14</text>
-		<text name="S5_L24">Edexcel 2010, Higher Mock Paper 1H</text>
-		
-		<text name="S6_L01">Edexcel 2007, Higher Mock Paper 13</text>
-		<text name="S6_L03">Edexcel 2008, Higher Paper 14</text>
-		<text name="S6_L04">Edexcel 2009, Higher Paper 13</text>
-		<text name="S6_L05">Edexcel 2008, Higher Paper 14</text>
-		<text name="S6_L06">Edexcel 2011, Higher Paper 14</text>
-		<text name="S6_L07">Edexcel 2006, Intermediate Paper 12</text>
-		<text name="S6_L08">Edexcel 2007, Higher Paper 18</text>
-		<text name="S6_L09">Edexcel 2005, Higher Paper 5</text>
-		<text name="S6_L10">Edexcel 2007, Intermediate Paper 3</text>
-		<text name="S6_L11">Edexcel 2004, Higher Paper 5</text>
-		<text name="S6_L12">Edexcel 2003, Higher Paper 5</text>
-		<text name="S6_L13">Edexcel 2010, Higher Practice Paper B</text>
-		<text name="S6_L14">Edexcel 2008, Higher Practice Paper D</text>
-		<text name="S6_L15">Edexcel 2011, Higher Unit 1</text>
-		<text name="S6_L16">Edexcel 2002, Higher Paper 5</text>
-		<text name="S6_L17">Edexcel 2003, Higher Paper 19</text>
-		<text name="S6_L18">Edexcel 2009, Higher Paper 3</text>
-		<text name="S6_L19">Edexcel 2005, Higher Paper 3</text>
-		<text name="S6_L20">Edexcel 2011, Higher Paper 10</text>
-		<text name="S6_L21">Edexcel 2001, Higher Paper 5</text>
-		<text name="S6_L22">Edexcel 2000, Higher Paper 5</text>
-		<text name="S6_L23">Edexcel 2002, Higher Paper 5</text>
-		<text name="S6_L24">Edexcel 2004, Higher Paper 10</text>
-		
-		
-		<!-- Hint panel text strings -->
-		<text name="S1_L21_hint">This shape has 4 lines of symmetry</text>
-		<text name="S3_L22_hint">These shapes are a regular hexagon, squares and equilateral triangles</text>
-		<text name="S4_L23_hint">This shape is a quadrilateral inside a rectangle; it has 2 lines of symmetry</text>
-		<text name="S5_L02_hint">This shape is a regular hexagon</text>
-		<text name="S5_L03_hint">This shape is a regular pentagon</text>
-		<text name="S5_L08_hint">These are 4 sides of a regular polygon</text>
-		<text name="S5_L09_hint">This shape is a regular decagon</text>
-		<text name="S5_L10_hint">These are 3 sides of a regular polygon</text>
-		<text name="S5_L11_hint">This shape is a regular hexagon</text>
-		<text name="S5_L12_hint">This shape is part of a regular octagon</text>
-		<text name="S5_L13_hint">This shape is a regular hexagon</text>
-		<text name="S5_L14_hint">These 10 points are equally spaced around the circle</text>
-		<text name="S5_L16_hint">This shape is part of a regular 10-sided polygon</text>
-		<text name="S5_L17_hint">These shapes are a regular pentagon and a regular octagon</text>
-		<text name="S5_L18_hint">This shape is part of a regular polygon</text>
-		<text name="S5_L19_hint">This shape is a regular pentagon</text>
-		<text name="S5_L20_hint">This shape is a regular octagon</text>
-		<text name="S5_L21_hint">This shape is a regular octagon</text>
-		<text name="S5_L22_hint">This shape is a regular nonagon</text>
-		<text name="S5_L23_hint">These are two exterior angles of the same regular polygon</text>
-		<text name="S5_L24_hint">These shapes are an equilateral triangle and two regular pentagons</text>
-		<text name="S6_L07_hint">AB is a tangent to the circle at the point A</text>
-		<text name="S6_L08_hint">PQR is a tangent to the circle</text>
-		<text name="S6_L12_hint">PR is a tangent to the circle at the point Q</text>
-		<text name="S6_L13_hint">The tangents to the circle at P and Q intersect at point T</text>
-		<text name="S6_L15_hint">TP is a tangent to the circle. AOT is a straight line.</text>
-		<text name="S6_L16_hint">RT is a tangent to the circle at R</text>
-		<text name="S6_L18_hint">ABC is a tangent to the circle</text>
-		<text name="S6_L19_hint">PQ and PR are tangents to the circle</text>
-		<text name="S6_L20_hint">BA is a tangent to the circle</text>
-		<text name="S6_L21_hint">The tangent drawn from A touches the circle at B</text>
-		<text name="S6_L22_hint">PQ is a tangent to the circle at Q</text>
-		<text name="S6_L23_hint">AB is a diameter of the circle</text>
-		<text name="S6_L24_hint">PQ and PR are tangents to the circle from point P</text>
-		
 	</section>
-
 </sections>
-
-
 </copy>

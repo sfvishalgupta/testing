@@ -22,8 +22,6 @@ class BasePanel extends Phaser.Sprite
 		this.position.x = game.world.centerX;
 		this.position.y = -y;
 		this.isVisible = false;
-
-
 	}
 
 	drawSkin()

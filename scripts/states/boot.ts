@@ -192,7 +192,8 @@ class BootState extends Phaser.State
 
 var global_config = {
 	debug:false,
-	init_screen : 1
+	init_screen : 1,
+	panel_show : false
 };
 
 new Phaser.Game(800, 600, Phaser.CANVAS, 'container', new BootState());
