@@ -1,0 +1,7 @@
+{
+	"GameEndType" :{
+		"Itzy_fried" : "mh-awt-itzi-fried",
+		"Times_UP" : "mh-awt-time-up",
+		"Fly_Collected" : "mh-awt-fly-collected"
+	}
+}

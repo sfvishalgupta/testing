@@ -33,6 +33,7 @@ class BootState extends Phaser.State
 		game.load.json("level",build+"level.json");
 		game.load.json("app",build+"app.json");
 		game.load.json("Language","locale/en-gb/language.json");
+		game.load.json("gameData","dev/api.php");
 		
 		// Level Objects
 		game.load.image("conveyor",		"assets/level_object/conveyor.png");
@@ -85,6 +86,7 @@ class BootState extends Phaser.State
 		game.load.image("btn_smallup",	"assets/buttons/button-small-up.png");
 		
 		// Menu Images
+		game.load.image("lock_close", 		"assets/menu/lock.png");
 		game.load.image("clock_close", 		"assets/menu/clock-closed.png");
 		game.load.image("clock_open", 		"assets/menu/clock-open.png");
 		game.load.image("cog_chain", 		"assets/menu/cog-chain.png");
@@ -150,13 +152,7 @@ class BootState extends Phaser.State
 
 	startPlay()
 	{
-		var obj = Utils.getQueryParams(),
-			level = Utils.getLevel(obj.level),
-			stage = obj.stage || 1;
-
-		global_config.stage = "S"+stage;
-		global_config.level = "L"+level;
-		global_config.world = "world0"+stage;
+		
 		
 		if(typeof local_config != "undefined"){
 			global_config = Utils.merge_objects(global_config,local_config);
@@ -164,6 +160,7 @@ class BootState extends Phaser.State
 		
 		global_config = Utils.merge_objects(global_config,this.game.cache.getJSON('app'));
 		global_config = Utils.merge_objects(global_config, this.game.cache.getJSON('Language'));
+		Utils.setGameData(this.game.cache.getJSON('gameData'));
 
 		/*
 		var bmd = this.game.make.bitmapData(200, 20);
@@ -179,10 +176,18 @@ class BootState extends Phaser.State
 		this.game.onGameStart 		= new Phaser.Signal();
 		this.game.onGameEnd 		= new Phaser.Signal();
 		this.game.onClockTick		= new Phaser.Signal();
+		this.game.onItziDestroy		= new Phaser.Signal();
 
 		if(global_config.init_screen == 1){
 			this.game.state.add("Menu", new MenuState(),true);
 		}else if(global_config.init_screen == 2){
+			var obj = Utils.getQueryParams(),
+			level = Utils.getLevel(obj.level),
+			stage = obj.stage || 1;
+
+			global_config.stage = "S"+stage;
+			global_config.level = "L"+level;
+			global_config.world = "world0"+stage;
 			this.game.state.add("Play", new PlayState(global_config.level,global_config.stage),true);
 		}else if(global_config.init_screen == -1){
 			this.game.state.add("Menu", new TestState(),true);

@@ -6,7 +6,6 @@ class GameFail extends BasePanel
 		this.game = game;
 		this.updateTitle();
 		this.drawPanelAssets();
-		
 	}
 
 	drawPanelAssets()
@@ -35,10 +34,13 @@ class GameFail extends BasePanel
 	updateTitle()
 	{
 		var game = this.game,
-			title = global_config.Language.level_failed,
-			subTitle = global_config.Language.level_failed_cause_damage;
-
+			title = global_config.Language.level_failed;
 		this.titleText.text = title;
-		this.subTitleText.text = subTitle;
+	}
+
+	toggle(msg)
+	{
+		this.subTitleText.text = msg;
+		super.toggle();
 	}
 }

@@ -12,39 +12,42 @@ class MenuState extends Phaser.State
 		var game = this.game,
 			clock = global_config.Images.ClockOpen,
 			posx = global_config.Positions.StageButton.x,
-			posY = global_config.Positions.StageButton.y;
+			posY = global_config.Positions.StageButton.y,
+			gameData = global_config.gameData.gameData;
 
 		game.add.image(0,0,"menu");
 		game.add.image(clock.x, clock.y, clock.frame, clock.frameName);
 		this.drawArrow();
 		this.drawBanners();
 
-		for(var i=1;i<=6;i++)
+		for(var i=1;i<=global_config.Config.StageCount;i++)
 		{
-			var btn = new StageButton(game,posx[i-1],posY[i-1],i);
-			btn.scale.set(0.8,0.8);
-			this.add.existing(btn);
-			btn.onInputUp.add(function(event){
-				for(var i in this.stageBtns){
-					this.stageBtns[i].disableClick();
-				}
-				event.enableClick();
-				var stage = event.index;
-				global_config.stage = "S"+stage;
-				global_config.world = "world0"+stage;
-				this.deleteLevelButtons();
-				this.drawSeleceButtons();
-				this.sideArrow.position.set(30,event.position.y);
-				this.updateUserData(stage);
-    		}.bind(this));
-    		this.stageBtns.push(btn);
-    		if(i == 1){
-    			btn.enableClick();
-    			global_config.stage = "S1";
-				global_config.world = "world01";
-				this.sideArrow.position.set(50,btn.position.y);
-				this.updateUserData(1);
-    		}
+			if(gameData["stage"]["S"+i]){
+				var btn = new StageButton(game,posx[i-1],posY[i-1],i);
+				btn.scale.set(0.8,0.8);
+				this.add.existing(btn);
+				btn.onInputUp.add(function(event){
+					for(var i in this.stageBtns){
+						this.stageBtns[i].disableClick();
+					}
+					event.enableClick();
+					var stage = event.index;
+					global_config.stage = "S"+stage;
+					global_config.world = "world0"+stage;
+					this.deleteLevelButtons();
+					this.drawSeleceButtons();
+					this.sideArrow.position.set(30,event.position.y);
+					this.updateUserData(stage);
+	    		}.bind(this));
+	    		this.stageBtns.push(btn);
+	    		if(i == 1){
+	    			btn.enableClick();
+	    			global_config.stage = "S1";
+					global_config.world = "world01";
+					this.sideArrow.position.set(50,btn.position.y);
+					this.updateUserData(1);
+	    		}
+			}
 		}
 		this.drawSeleceButtons();
 		
@@ -57,9 +60,14 @@ class MenuState extends Phaser.State
 
 	drawBanners()
 	{
-		var topBanner = this.game.add.sprite(246,0,"top_banner",0),
-			bottomBanner = this.game.add.sprite(246,530,"bottom_banner",0),
-			
+		
+
+		var game = this.game,
+			topBanner = game.add.sprite(246,0,"top_banner",0),
+			bottomBanner = game.add.sprite(246,530,"bottom_banner",0),
+			totalScore = global_config.Config.digit4SeparatorEnabled == true ? Utils.addSeperater(Utils.getUserTotalScore()) : Utils.getUserTotalScore(),
+			stageScore = global_config.Config.digit4SeparatorEnabled == true ? Utils.addSeperater(Utils.getUserStageScore()) : Utils.getUserStageScore(),
+
 			selectLevelStyle = {fill:'#000000',font: "bold 32px Arial",stroke : '#FFFFFF',strokeThickness : 3},
 			selectLevelText = global_config.Language["title_level_select"],
 			selectLevel = this.game.add.text(246+topBanner.width/2,10,selectLevelText,selectLevelStyle),
@@ -74,11 +82,19 @@ class MenuState extends Phaser.State
 			
 			totalScoreStyle = {fill:'#000000',font: "bold 14px Arial",stroke : '#FFFFFF',strokeThickness : 2},
 			totalScoreText = global_config.Language["lvlselect_totalscore"],
-			totalScoreLevel = this.game.add.text(520, bottomBanner.y+15,totalScoreText,totalScoreStyle);
+			totalScoreLevel = this.game.add.text(520, bottomBanner.y+15,totalScoreText,totalScoreStyle),
+
+			totalScoreStyle1 = {fill:'#7B0102',font: "bold 30px Arial",stroke : '#FFFFFF',strokeThickness: 2},
+			totalScoreText1 = totalScore,
+			totalScoreLevel1 = this.game.add.text(590, bottomBanner.y+15,totalScoreText1,totalScoreStyle1),
+
+			stageScoreText = stageScore,
+			stageScoreLevel = this.game.add.text(380, bottomBanner.y+15,stageScoreText,totalScoreStyle1);
+
 
 		selectLevel.anchor.set(0.5,0);
 		worldLevel.anchor.set(0.5,0);
-		//totalScoreLevel.lineSpacing = -4;
+		
 		this.topBannerText = worldLevel;
 	}
 
@@ -121,6 +137,7 @@ class MenuState extends Phaser.State
 			posx = global_config.Positions.LevelButton.x,
 			posy = global_config.Positions.LevelButton.y,
 			ii = 0;
+			
 		var selectBtns = [],
 			levelButtons = this.levelButtons;
 		
@@ -136,7 +153,6 @@ class MenuState extends Phaser.State
 						}, 100, Phaser.Easing.Linear.NONE, true);
 					game.add.existing(btn);
 					levelButtons.push(btn);
-					btn.openBtn();
 					fun();
 				}
 			},50);
@@ -154,8 +170,13 @@ class MenuState extends Phaser.State
 			ii++;
 			selectbtn.onInputUp.add(function(event){
 				global_config.level = event.myIndex;
+				game.state.remove("Play");
+				game.onGameStart.removeAll();
+				game.onGameEnd.removeAll();
+				game.onClockTick.removeAll();
+				game.onItziDestroy.removeAll();
 				game.state.add("Play", new PlayState(global_config.level,global_config.stage),true);
-			}.bind(this));
+			}, this);
 		}
 		selectBtns.reverse();
 		fun();

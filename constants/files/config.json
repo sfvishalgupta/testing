@@ -1,14 +1,17 @@
 {
 	"Config" : {
-		"angleDefaultColor" : "0x9F9F9F",
-		"shapeDefaultColor" : "0x9F9F9F",
-		"scale" : 2.7,
-		"lineWidth" : 3,
-		"angleTextboxRadius" : 30,
-		"disableLineTime" : 3000,
-		"LaserLineOffTime" : 2000,
-		"LaserLineOnTime" : 2000,
-		"LaserLineInitDelay" : 0,
-		"PanelToggleTime" : 500
+		"angleDefaultColor" 	: "0x9F9F9F",
+		"shapeDefaultColor" 	: "0x9F9F9F",
+		"scale" 				: 2.7,
+		"lineWidth" 			: 3,
+		"angleTextboxRadius" 	: 30,
+		"disableLineTime" 		: 3000,
+		"LaserLineOffTime" 		: 2000,
+		"LaserLineOnTime" 		: 2000,
+		"LaserLineInitDelay" 	: 0,
+		"PanelToggleTime" 		: 500,
+		"StageCount" 			: 6,
+		"digit4SeparatorEnabled" : true,
+		"separator"				: ","
 	}
 }

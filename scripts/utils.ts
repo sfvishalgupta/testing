@@ -111,7 +111,84 @@ class Utils
 		}
 		return str;	
 	}
+
+	static setGameData(data){
+		if(!data.gameData.stage){
+			data.gameData.stage = {};
+			data.gameData.stage["S1"] = {};
+			data.gameData.stage["S1"]["L1"] = {"score":-1};
+		}else{
+			for(var i in data.gameData.stage){
+				var stage = data.gameData.stage[i],
+					level = stage["L"+Object.keys(stage).length];
+				if(level.score > -1){
+					data.gameData.stage[i]["L"+(Object.keys(stage).length+1)] = {score:-1};
+				}
+			}
+		}
+		
+		global_config.gameData = data;
+	}
+
+	static getRank(ranks,score){
+		var style = {fill:'#000000', font: "bold 20px Arial",stroke : '#000000',strokeThickness: 2},
+			rank = "--";
+		if(score >= ranks.c && score < ranks.b){
+			rank = "C";
+			style.fill = "#07EFFD";
+		}else if(score >= ranks.b && score < ranks.a){
+			rank = "B";
+			style.fill = "#8DD70B";
+		}else if(score >= ranks.a && score < ranks.s){
+			rank = "A";
+			style.fill = "#F3AD00";
+		}else if(score >= ranks.s){
+			rank = "S";
+			style.fill = "#FB3008";
+		}
+		return {rank:rank, style : style};
+	}
+
+	static getUserTotalScore()
+	{
+		var gameData = global_config.gameData.gameData,
+			totalScore = 0;
+		for(var i in gameData.stage){
+			for(var j in gameData.stage[i]){
+				var score = gameData.stage[i][j]["score"];
+				if(score>0){
+					totalScore += score;	
+				}
+			}
+		}
+		return totalScore;
+	}
+
+	static getUserStageScore()
+	{
+		var stage = global_config.stage || "S1",
+			gameData = global_config.gameData.gameData.stage[stage],
+			totalScore = 0;
+		for(var j in gameData){
+			var score = gameData[j]["score"];
+			if(score>0){
+				totalScore += score;	
+			}
+		}
+
+		return totalScore;
+	}
+
+	static addSeperater(txt)
+	{
+		var rgx = /(\d+)(\d{3})/;
+    	while (rgx.test(txt)) {
+        	txt = txt.toString().replace(rgx, '$1' + global_config.Config.separator + '$2');
+    	}
+    	return txt;
+	}
 }
 
 var Phaser = Phaser || {},
 	global_config = global_config || {};
+

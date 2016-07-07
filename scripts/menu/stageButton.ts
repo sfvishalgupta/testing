@@ -33,13 +33,14 @@ class StageButton extends Phaser.Button
 		var game = this.game,
 			style1 = this.defaultStyle1,
 			style2 = this.defaultStyle2,
-			txt = global_config.Language.worldbtn_stage;
+			txt = global_config.Language.worldbtn_stage,
+			stageIndex = global_config.Language["num_"+this.index];
 		this.textLabel1 = new Phaser.Text(game,0,0,txt,style1);
-		this.textLabel1.anchor.set(0.5,0.5);
+		this.textLabel1.anchor.set(0.5, 0.5);
 		this.addChild(this.textLabel1);
 
-		this.textLabel2 = new Phaser.Text(game,0,30,this.index,style2);
-		this.textLabel2.anchor.set(0.5,0.5);
+		this.textLabel2 = new Phaser.Text(game, 0, 30, stageIndex, style2);
+		this.textLabel2.anchor.set(0.5, 0.5);
 		this.addChild(this.textLabel2);
 	}
 

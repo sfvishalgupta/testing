@@ -82,4 +82,10 @@ class CanvasObjects extends Phaser.Sprite
 			this.loadMenuScreen();
 		},this);
 	}
+
+	loadMenuScreen()
+	{
+		this.game.state.add("Menu", new MenuState(),true);
+		//window.location.reload();
+	}
 }

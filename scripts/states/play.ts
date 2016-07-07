@@ -8,6 +8,7 @@ class PlayState extends Phaser.State
 		this.blueFlies = [];
 		this.goldFlies = [];
 		this.oLines = [];
+		this.springPads = [];
 		this.blueBeeCollected = 0;
 		this.goldBeeCollected = 0;
 		this.isGameRunning = false;
@@ -21,20 +22,27 @@ class PlayState extends Phaser.State
 	    this.addGamePanels();
 
 	    var game = this.game;
-	    game.onGameStart.add(function(timeLimit){
+	    game.onGameStart.addOnce(function(timeLimit){
 	    	this.timeRemaining = timeLimit;
 	    	this.startClockTick();
 	    },this);
 	    
-	    game.onGameEnd.add(function(){
-	    	this.cursor = null;
+	    game.onGameEnd.addOnce(function(reason){
+	    	this.endGame(reason);
 	    },this);
 
-	    if(global_config.panel_show){
-	    	this.gameStartPanel.toggle();
-	    }else{
-	    	this.startGame();
-	    }
+	    game.onItziDestroy.addOnce(function(){
+	    	if(this.timeRemaining >= -1000){
+	    		//this.timeRemaining = -1000;
+	    		this.game.onGameEnd.dispatch(global_config.GameEndType.Itzy_fried);
+	    	}
+	    },this);
+
+	    
+	    this.fireSprite = new FireSprite(game);
+		this.add.existing(this.fireSprite);
+
+		this.gameStartPanel.toggle();
 	}
 
 	addCanvasObjects()
@@ -50,39 +58,16 @@ class PlayState extends Phaser.State
 
 	addCogWheel()
 	{
-		this.game.physics.box2d.restitution = 1.5;
-	    this.game.physics.box2d.friction = 100;
-		
-		this.smallCog = new SideCog(this.game);
-		this.game.add.existing(this.smallCog);
-		
-		var game = this.game,
-			cx = game.world.centerX,
-	    	cy = game.world.centerY,
-	    	polygonPoints = [],
-	    	theta = 0,
-			cog_circle = new Phaser.Physics.Box2D.Body(game, null, cx, cy, 100),
-			cog = game.add.sprite(cx,cy,"cog"),
-			radius = (cog.width/2) - 25;
-		var delta = 2 * Math.PI / 80;
-		var i = 0;
-		for (theta = 0; theta <= 2 * Math.PI; theta += delta) 
-		{
-			var newTheta = theta + 0.2,
-				radius1 = radius-10,
-        		angle1 = newTheta + delta/2;
-        	polygonPoints.push((radius * Math.cos(newTheta)));
-        	polygonPoints.push((radius * Math.sin(newTheta)));
-        	
-        	polygonPoints.push((radius1 * Math.cos(angle1)));
-        	polygonPoints.push((radius1 * Math.sin(angle1)));
-        }
+		var game = this.game;
 
-		cog.anchor.set(0.5,0.5);
-		cog_circle.setChain(polygonPoints);
-		this.rotatingElements.push(cog);
-		this.rotatingElements.push(cog_circle);
-		this.cog_circle = cog_circle;
+		game.physics.box2d.restitution = 1.5;
+	    game.physics.box2d.friction = 100;
+		
+		this.smallCog = new SideCog(game);
+		game.add.existing(this.smallCog);
+
+		this.mainCog = new MainCog(game);
+		game.add.existing(this.mainCog);
 	}
 
 	addGamePanels()
@@ -91,6 +76,9 @@ class PlayState extends Phaser.State
 
 		this.gameFailPanel = new GameFail(game,0,300);
 		game.add.existing(this.gameFailPanel);
+		this.gameFailPanel.selectBtn.events.onInputUp.add(function(){
+			game.state.start("Menu");
+		},this);
 
 		this.gamePausedPanel = new GamePause(game,0,300);
 		game.add.existing(this.gamePausedPanel);
@@ -113,26 +101,45 @@ class PlayState extends Phaser.State
 
 		// Variables
 		this.gameTimeLimit = level.time*1000 || 200000;
-		
+		//this.gameTimeLimit = 6000;
 		game.physics.box2d.gravity.y = 500;
 	    game.physics.box2d.restitution = 0.1
 	    game.physics.box2d.friction = 300;
 
 		// Objects
-		this.addItzi(level.itzi);
+		this.addBlueFlies(level.blueFlies);
+		this.addGoldFlies(level.goldFlies);
+		
 		this.addLines(level.lines);
 		this.addAngles(level.angles);
 		this.addLevelShapes(level.levelShape);
 		this.addInfoCircle(level.infoCircle);
 		this.addAnnotationText(level.annotationText);
 	    this.addGate(level.gate,blueFlyLength);
-	    this.addBlueFlies(level.blueFlies);
-	    this.addGoldFlies(level.goldFlies);
 	    this.addSpikeBall(level.spikeBall);
 	    this.addSpringPad(level.springPad);
 	    this.addHintPanel(level.hintImageID,level.hintTextID)
 
-	    this.itzi.skin.setBodyContactCallback(this.gate.skin,this.onAllFliesCollected,this);
+	    this.addItzi(level.itzi);
+	    this.itzi.body.setBodyContactCallback(this.gate.skin,this.onAllFliesCollected,this);
+	    
+
+	    for(var i in this.blueFlies){
+	    	var fly = this.blueFlies[i];
+	    	this.itzi.body.setBodyContactCallback(fly.skin,this.onBlueFileCollected,this);	
+	    }
+
+	    for(var i in this.goldFlies){
+	    	var fly = this.goldFlies[i];
+	    	this.itzi.body.setBodyContactCallback(fly.skin,this.onBlueFileCollected,this);	
+	    }
+
+	    for(var i in this.springPads){
+	    	this.itzi.body.setBodyContactCallback(this.springPads[i],this.onItziOnSpringPad,this);
+		}
+
+		this.itzi.body.setBodyContactCallback(this.mainCog,this.onItziBoundryTouch,this);
+	    
 	}
 
 	hideLevelObjects()
@@ -140,17 +147,21 @@ class PlayState extends Phaser.State
 		for(var i in this.rotatingElements){
 			this.rotatingElements[i].visible = false;
 		}
-		this.gameFailPanel.toggle();
+		this.itzi.destroy();
+		this.itzi.visible = false;
+		this.fireSprite.destroy();
+		this.canvasObjects.visible = false;
 	}
 
 	startGame()
 	{
+		var game = this.game;
 		if(global_config.panel_show){
 			this.gameStartPanel.toggle(function(){
 				this.isGameRunning = true;
 				this.addLevelObjects();
 		    	this.addCanvasObjects();
-		    	this.game.onGameStart.dispatch(this.gameTimeLimit);
+		    	game.onGameStart.dispatch(this.gameTimeLimit);
 		    	this.cursor = this.input.keyboard.createCursorKeys();
 			}.bind(this));
 		}else{
@@ -165,18 +176,30 @@ class PlayState extends Phaser.State
 	startClockTick()
 	{
 		this.timeRemaining -= 1000;
-		this.game.onClockTick.dispatch(this.timeRemaining);
-		if(this.timeRemaining > 1){
+		if(this.timeRemaining >= 0){
+			this.game.onClockTick.dispatch(this.timeRemaining);
 			setTimeout(this.startClockTick.bind(this),1000);
 		}else{
-			this.endGame();
+			this.game.onGameEnd.dispatch(global_config.GameEndType.Times_UP);
 		}
 	}
 
-	endGame()
+	endGame(reason)
 	{
-		this.timeRemaining = -1;
-		this.game.onGameEnd.dispatch();
+		var game = this.game;
+		this.cursor = null;
+		this.hideLevelObjects();
+		switch(reason){
+			case global_config.GameEndType.Fly_Collected:
+			break;
+			case global_config.GameEndType.Itzy_fried:
+				this.gameFailPanel.toggle(global_config.Language.level_failed_cause_damage);
+			break;
+			case global_config.GameEndType.Times_UP:
+				this.gameFailPanel.toggle(global_config.Language.level_failed_cause_time);
+			break;
+		}
+		this.canvasObjects.updateEnergy(0);
 	}
 
 	setupGame()
@@ -192,12 +215,6 @@ class PlayState extends Phaser.State
 	    game.physics.box2d.friction = 300;
 	}
 
-	loadMenuScreen()
-	{
-		this.game.state.add("Menu", new MenuState(),true);
-		//window.location.reload();
-	}
-
 	render() 
 	{
 		 //this.game.debug.box2dWorld();
@@ -206,7 +223,7 @@ class PlayState extends Phaser.State
 	update()
 	{
 		if(!this.isGameRunning) return;
-
+		
 		if(this.cursor){
 			var angularSpeed = 0;
 
@@ -217,17 +234,28 @@ class PlayState extends Phaser.State
 				angularSpeed += +1;
 			}
 
-			var backupVel = this.itzi.skin.velocity.x;
-			this.itzi.skin.velocity.x = backupVel + 0.0001;
-			this.itzi.skin.velocity.x = backupVel;
+			var backupVel = this.itzi.body.velocity.x;
+			this.itzi.body.velocity.x = backupVel + 0.0001;
+			this.itzi.body.velocity.x = backupVel;
 
 			for(var i in this.rotatingElements){
 				this.rotatingElements[i].angle += angularSpeed;
 			}
 			this.smallCog.updateAngle(angularSpeed);
-			//this.itzi.angle = Math.max(Math.min(this.itzi.angle, 30), -30);
+			this.mainCog.body.angle += angularSpeed;
+			//this.itzi.angle = 0;//Math.max(Math.min(this.itzi.angle, 30), -30);
 			this.canvasObjects.updateEnergy(this.itzi.health);
+
+			
+	    	//this.fireSprite.updateAngle(this.mainCog.body.angle);
+	    	//this.fireSprite.angle +=1;
 		}
+	}
+
+	addToRotatingElements(obj){
+		var game = this.game;
+		game.add.existing(obj);
+		this.rotatingElements.push(obj);
 	}
 
 	// Level Objects
@@ -246,8 +274,7 @@ class PlayState extends Phaser.State
 	    	}
 
 	    	var ang = new Angle(game,oAngle,this.oLines,color);
-	    	game.add.existing(ang);
-    		this.rotatingElements.push(ang);
+	    	this.addToRotatingElements(ang);
 	    }
 	}
 
@@ -256,22 +283,21 @@ class PlayState extends Phaser.State
 		var game = this.game;
 		for(var i in annotationText){
 	    	var annotationText = new AnnotationText(game,annotationText[i]);
-	    	game.add.existing(annotationText);
-	    	this.rotatingElements.push(annotationText);
+	    	this.addToRotatingElements(annotationText);
 	    }
 	}
 
 	addBlueFlies(blueFlies)
 	{
-		var game = this.game;
-		for(var i in blueFlies)
-	    {
-	    	var bFly = blueFlies[i],
-	    		fly = new BlueFly(game,bFly);
+		var game = this.game,
+			i = null,
+			bFly = null,
+			fly = null;
+		for(i in blueFlies){
+	    	bFly = blueFlies[i];
+	    	fly = new BlueFly(game,bFly);
 	    	this.blueFlies.push(fly);
-	    	game.add.existing(fly);
-	    	this.rotatingElements.push(fly);
-	    	this.itzi.skin.setBodyContactCallback(fly.skin,this.onBlueFileCollected,this);
+	    	this.addToRotatingElements(fly);
 	    }
 	}
 
@@ -280,8 +306,7 @@ class PlayState extends Phaser.State
 		var game = this.game;
 		for(var i in levelShape){
 	    	var levelShape = new LevelShape(game,levelShape[i]);
-	    	game.add.existing(levelShape);
-	    	this.rotatingElements.push(levelShape);
+	    	this.addToRotatingElements(levelShape);
 	    }
 	}
 
@@ -289,8 +314,7 @@ class PlayState extends Phaser.State
 	{
 		var game = this.game;
 		this.gate = new Gate(game, gate, blueFlyLength);
-	    game.add.existing(this.gate);
-	    this.rotatingElements.push(this.gate);
+	    this.addToRotatingElements(this.gate);
 	}
 
 	addGoldFlies(goldFlies)
@@ -301,9 +325,7 @@ class PlayState extends Phaser.State
 	    	var gFly = goldFlies[i],
 	    		fly = new GoldFly(game,gFly);
 	    	this.goldFlies.push(fly);
-	    	game.add.existing(fly);
-	    	this.rotatingElements.push(fly);
-	    	this.itzi.skin.setBodyContactCallback(fly.skin,this.onGoldFileCollected,this);
+	    	this.addToRotatingElements(fly);
 	    }
 	}
 
@@ -321,18 +343,15 @@ class PlayState extends Phaser.State
 		var game = this.game;
 		for(var i in infoCircle){
 	    	var infoCircle = new InfoCircle(game,infoCircle[i]);
-	    	game.add.existing(infoCircle);
-	    	this.rotatingElements.push(infoCircle);
+	    	this.addToRotatingElements(infoCircle);
 	    }
 	}
 
-	addItzi(itzi)
+	addItzi(cnfItzi)
 	{
 		var game = this.game;
-		this.itzi = new Itzi(game,itzi);
+		this.itzi = new Itzi(game,cnfItzi);
 	    game.add.existing(this.itzi);
-
-	    this.itzi.skin.setBodyContactCallback(this.cog_circle,this.onItziBoundryTouch,this);
 	}
 
 	addLines(lines)
@@ -361,13 +380,11 @@ class PlayState extends Phaser.State
 	    	}
 
 	    	this.oLines[lineCnf.id] = line;
-	    	game.add.existing(line);
-    		this.rotatingElements.push(line);
+    		this.addToRotatingElements(line);
 
     		if(global_config.debug){
 	    		var text = new DebugText(game, lineCnf, lineCnf.id);
-    			game.add.existing(text);
-    			this.rotatingElements.push(text);
+    			this.addToRotatingElements(text);
 	    	}
 	    }
 	}
@@ -380,11 +397,9 @@ class PlayState extends Phaser.State
 	    		spikeBall = new SpikeBall(game, config),
 	    		spikeBallPath = new SpikeBallPath(game,config);
 
-	    	game.add.existing(spikeBallPath);
-	    	game.add.existing(spikeBall);
-	    	this.rotatingElements.push(spikeBall);
 	    	this.rotatingElements.push(spikeBall.skin);
-	    	this.rotatingElements.push(spikeBallPath);
+	    	this.addToRotatingElements(spikeBallPath);
+	    	this.addToRotatingElements(spikeBall);
 	    }
 	}
 
@@ -394,11 +409,10 @@ class PlayState extends Phaser.State
 		for(var i in springPads){
 	    	var config = springPads[i],
 	    		springPad = new SpringPad(game, config);
-	    	game.add.existing(springPad);
-	    	this.rotatingElements.push(springPad);
-	    	this.rotatingElements.push(springPad.skin);
 	    	springPad.skin.sprite = springPad;
-	    	this.itzi.skin.setBodyContactCallback(springPad.skin,this.onItziOnSpringPad,this);
+	    	this.springPads.push(springPad.skin);
+	    	this.addToRotatingElements(springPad);
+	    	this.rotatingElements.push(springPad.skin);
 	    }
 	}
 
@@ -444,9 +458,9 @@ class PlayState extends Phaser.State
 	    }
 
 	    if(this.gate.isOpenable){
-	    	this.endGame();
+	    	this.game.onGameEnd.dispatch(global_config.GameEndType.Fly_Collected);
 		    this.gate.skin.destroy();
-		    this.itzi.skin.destroy();
+		    //this.itzi.skin.destroy();
 		    var tween1 = this.game.add.tween(this.itzi).to({
 		    	x:this.gate.world.x,
 		    	y:this.gate.world.y,
@@ -463,11 +477,16 @@ class PlayState extends Phaser.State
 	    }
 	}
 
-	onItziBoundryTouch(body1, body2, fixture1, fixture2, begin)
+	onItziBoundryTouch(body1, body2, fixture1, fixture2, begin, contact,impulse)
 	{
 		if (!begin){
 	        return;
 	    }
-	    this.itzi.playOuterCircleTouch();
+	    var angle = Phaser.Math.angleBetweenPoints(new Phaser.Point(400,300),new Phaser.Point(
+	    	this.itzi.x,this.itzi.y
+	    	));
+	    this.fireSprite.show(this.itzi.x,this.itzi.y,this.mainCog.angle);
+	    this.itzi.updateHealth();
+
 	}
 }
