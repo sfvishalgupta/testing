@@ -146,7 +146,10 @@ class BootState extends Phaser.State
 
 		// Game Scripts
 		//game.load.script('Utils',build+"utils.js");
-		
+		game.load.script('Glow',build+"filters/Glow.js");
+		game.load.script('BlurX',build+"filters/BlurX.js");
+		game.load.script('BlurY',build+"filters/BlurY.js");
+		game.load.script('Gray',build+"filters/Gray.js");
 		game.load.start();
 	}
 
@@ -178,9 +181,20 @@ class BootState extends Phaser.State
 		this.game.onClockTick		= new Phaser.Signal();
 		this.game.onItziDestroy		= new Phaser.Signal();
 
-		if(global_config.init_screen == 1){
-			this.game.state.add("Menu", new MenuState(),true);
-		}else if(global_config.init_screen == 2){
+		this.game.state.add("Title", new TitleState());
+		this.game.state.add("Menu", new MenuState());
+		this.game.state.add("Test", new TestState());
+
+		if(global_config.init_screen == 0)
+		{
+			this.game.state.start("Title");
+		}
+		else if(global_config.init_screen == 1)
+		{
+			this.game.state.start("Menu");
+		}
+		else if(global_config.init_screen == 2)
+		{
 			var obj = Utils.getQueryParams(),
 			level = Utils.getLevel(obj.level),
 			stage = obj.stage || 1;
@@ -189,8 +203,10 @@ class BootState extends Phaser.State
 			global_config.level = "L"+level;
 			global_config.world = "world0"+stage;
 			this.game.state.add("Play", new PlayState(global_config.level,global_config.stage),true);
-		}else if(global_config.init_screen == -1){
-			this.game.state.add("Menu", new TestState(),true);
+		}
+		else if(global_config.init_screen == -1)
+		{
+			this.game.state.start("Test");
 		}
 	}
 }

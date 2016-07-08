@@ -77,15 +77,5 @@ class CanvasObjects extends Phaser.Sprite
 		this.replayButton.inputEnabled = true;
 		this.replayButton.input.useHandCursor = true;
 		this.addChild(this.replayButton);
-
-		this.pauseButton.onInputUp.add(function(event){
-			this.loadMenuScreen();
-		},this);
-	}
-
-	loadMenuScreen()
-	{
-		this.game.state.add("Menu", new MenuState(),true);
-		//window.location.reload();
 	}
 }

@@ -14,7 +14,7 @@ class AnnotationText extends Phaser.Sprite
 	drawAnotationText()
 	{
 		var game = this.game,
-			style = {fill:'#FFFFFF',font: "bold 18px Arial"},
+			style = global_config.Styles.AnotationText,
 			x = this.cnf.pos.x*global_config.Config.scale,
 			y = this.cnf.pos.y*global_config.Config.scale;
 		
@@ -27,11 +27,4 @@ class AnnotationText extends Phaser.Sprite
 	{
 		this.textLabel.angle = -this.angle;
 	}
-
-	onGameEnd()
-	{
-		
-	}
-
-
 }

@@ -60,36 +60,34 @@ class MenuState extends Phaser.State
 
 	drawBanners()
 	{
-		
-
 		var game = this.game,
 			topBanner = game.add.sprite(246,0,"top_banner",0),
 			bottomBanner = game.add.sprite(246,530,"bottom_banner",0),
 			totalScore = global_config.Config.digit4SeparatorEnabled == true ? Utils.addSeperater(Utils.getUserTotalScore()) : Utils.getUserTotalScore(),
 			stageScore = global_config.Config.digit4SeparatorEnabled == true ? Utils.addSeperater(Utils.getUserStageScore()) : Utils.getUserStageScore(),
 
-			selectLevelStyle = {fill:'#000000',font: "bold 32px Arial",stroke : '#FFFFFF',strokeThickness : 3},
+			selectLevelStyle = global_config.Styles.MenuScreen.lvlSelect,
 			selectLevelText = global_config.Language["title_level_select"],
 			selectLevel = this.game.add.text(246+topBanner.width/2,10,selectLevelText,selectLevelStyle),
 			
-			worldStyle = {fill:'#000000',font: "bold 22px Arial",stroke : '#FFFFFF',strokeThickness : 2},
+			worldStyle = global_config.Styles.MenuScreen.worldName,
 			worldText = global_config.Language["world_name_1"],
 			worldLevel = this.game.add.text(246+topBanner.width/2,50,worldText,worldStyle),
 			
-			stgScoreStyle = {fill:'#000000',font: "bold 14px Arial",stroke : '#FFFFFF',strokeThickness : 2},
+			stgScoreStyle = global_config.Styles.MenuScreen.worldScore1,
 			stgScoreText = global_config.Language["lvlselect_worldscore"],
-			stgScoreLevel = this.game.add.text(310,bottomBanner.y+15,stgScoreText,stgScoreStyle),
+			stgScoreLevel = this.game.add.text(310,bottomBanner.y+20,stgScoreText,stgScoreStyle),
 			
-			totalScoreStyle = {fill:'#000000',font: "bold 14px Arial",stroke : '#FFFFFF',strokeThickness : 2},
+			totalScoreStyle = global_config.Styles.MenuScreen.worldScore1,
 			totalScoreText = global_config.Language["lvlselect_totalscore"],
-			totalScoreLevel = this.game.add.text(520, bottomBanner.y+15,totalScoreText,totalScoreStyle),
+			totalScoreLevel = this.game.add.text(520, bottomBanner.y+20,totalScoreText,totalScoreStyle),
 
-			totalScoreStyle1 = {fill:'#7B0102',font: "bold 30px Arial",stroke : '#FFFFFF',strokeThickness: 2},
+			totalScoreStyle1 = global_config.Styles.MenuScreen.score,
 			totalScoreText1 = totalScore,
-			totalScoreLevel1 = this.game.add.text(590, bottomBanner.y+15,totalScoreText1,totalScoreStyle1),
+			totalScoreLevel1 = this.game.add.text(590, bottomBanner.y+20,totalScoreText1,totalScoreStyle1),
 
 			stageScoreText = stageScore,
-			stageScoreLevel = this.game.add.text(380, bottomBanner.y+15,stageScoreText,totalScoreStyle1);
+			stageScoreLevel = this.game.add.text(380, bottomBanner.y+20,stageScoreText,totalScoreStyle1);
 
 
 		selectLevel.anchor.set(0.5,0);
@@ -102,13 +100,13 @@ class MenuState extends Phaser.State
 	{
 		var game = this.game,
 			graphics = new Phaser.Graphics(game,0,0),
-			side = 20;
+			side = 40;
 		graphics.clear();
 		graphics.lineStyle(2,0x000000);
 		graphics.beginFill(0xFE0000);
-		graphics.moveTo(0,side);
-		graphics.lineTo(0,-side);
-		graphics.lineTo(1.71*side,0);
+		graphics.moveTo(32,side/2);
+		graphics.lineTo(0,side);
+		graphics.lineTo(0,0);
 		graphics.endFill();
 		
 		this.sideArrow = game.add.sprite(0,0);

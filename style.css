@@ -1,7 +1,29 @@
+@font-face {
+	font-family: 'gamefont';
+	src: url('fonts/DISTRO__.ttf');
+}
+@font-face {
+	font-family: 'handwritten';
+	src: url('fonts/KGFallForYouBold_DU.ttf');
+}
+@font-face {
+	font-family: 'arabic';
+	src: url('fonts/simpo.ttf');
+}
+@font-face {
+	font-family: 'timesItalic';
+	src: url('fonts/TimesNewRomanItalic.ttf');
+}
+
+.gamefont{font-size:10px;font-family:gamefont}
+.handwritten{font-size:10px;font-family:handwritten}
+.arabic{font-size:10px;font-family:arabic}
+.timesItalic{font-size:10px;font-family:timesItalic}
+
 body, html {
     margin: 0px;
     padding: 0;
-    background-color: #000000;
+    background-color: #000;
 }
 #container {
     margin: 0 auto;

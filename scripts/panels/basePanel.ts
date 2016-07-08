@@ -33,7 +33,7 @@ class BasePanel extends Phaser.Sprite
 		graphics.drawRect(-400,-300,800,600);
 		graphics.endFill();
 		graphics.inputEnabled = true;
-		graphics.alpha = 0.1;
+		graphics.alpha = 0.5;
 		graphics.visible = false;
 		this.addChild(graphics);
 		this.graphics = graphics;
@@ -58,19 +58,26 @@ class BasePanel extends Phaser.Sprite
 	drawTitle()
 	{
 		var game = this.game,
-			style = {fill:'#000000',font: "bold 45px Arial", stroke : '#FFFFFF',strokeThickness :  1};
+			style = global_config.Styles.Panels.BasePanel.Title;
 
-
-		this.titleText = new Phaser.Text(game,0,20,"Title",style);
+		this.titleText = new Phaser.Text(game,0,25,"Title",style);
 		this.titleText.anchor.set(0.5, 0);
 		this.baseImage.addChild(this.titleText);
 		this.titleText.position.y -= this.baseImage.height/2;
 	}
 
+	updateTitleStyle(style){
+		this.titleText.style = style;
+	}
+
+	updateSubTitleStyle(style){
+		this.subTitleText.style = style;
+	}
+
 	drawSubTitle()
 	{
 		var game = this.game,
-			style = {fill:'#000000',font: "bold 35px Arial", stroke : '#FFFFFF',strokeThickness :  1};
+			style = global_config.Styles.Panels.BasePanel.SubTitle;
 
 		this.subTitleText = new Phaser.Text(game,0,80,"Sub Title",style);
 		this.subTitleText.anchor.set(0.5, 0);
@@ -96,7 +103,7 @@ class BasePanel extends Phaser.Sprite
 	{
 		var game = this.game,
 			startBtn = new Phaser.Sprite(game,x,y,'btn_smallup'),
-			style = {fill:'#000000',font: "25px Arial"},
+			style = global_config.Styles.Panels.BasePanel.ThinButton,
 			text = new Phaser.Text(game, 0, 0, txt, style);
 		startBtn.anchor.set(0.5,0);
 		startBtn.inputEnabled = true;

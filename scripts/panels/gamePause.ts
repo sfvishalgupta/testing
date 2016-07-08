@@ -11,9 +11,9 @@ class GamePause extends BasePanel
 	drawPanelAssets()
 	{
 		var game = this.game;
-		this.startBtn = this.addButton(0,0,global_config.Language.btn_resume);
-		this.startBtn = this.addButton(0,60,global_config.Language.btn_level_select);
-		this.startBtn = this.addButton(0,120,global_config.Language.btn_quit);
+		this.resumeBtn = this.addButton(0,0,global_config.Language.btn_resume);
+		this.lvlSelectBtn = this.addButton(0,60,global_config.Language.btn_level_select);
+		this.quitBtn = this.addButton(0,120,global_config.Language.btn_quit);
 	}
 
 	updateTitle()

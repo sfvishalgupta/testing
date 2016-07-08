@@ -20,7 +20,6 @@ class Itzi extends Phaser.Sprite
 	    this.scale.set(0.6,0.6);
 	    this.anchor.set(0.5,0.5);
 
-
 	    this.gameEnd = false;
 
 		game.onGameStart.addOnce(function(){
@@ -35,7 +34,7 @@ class Itzi extends Phaser.Sprite
 
 	updateHealth()
 	{
-		this.health -= 5;
+		this.health -= 2.5;
 		if(this.health<=0){
 			this.game.onItziDestroy.dispatch();
 		}

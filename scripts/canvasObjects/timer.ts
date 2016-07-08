@@ -12,7 +12,7 @@ class Timer extends Phaser.Sprite
 		this.game.onClockTick.add(function(timeLimit){
 			timeLimit = timeLimit/1000;
 			var min = parseInt(timeLimit/60),
-				sec = (timeLimit%60);
+				sec = (timeLimit%60)+"";
 			if(sec.length < 2) sec = "0"+sec;
 			this.counter.text = min + ":" + sec;
 	    },this);

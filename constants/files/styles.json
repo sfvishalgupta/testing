@@ -1,0 +1,67 @@
+{
+	"Styles" : {
+		"TitleScreen" : {},
+		"MenuScreen" : {
+			"lvlSelect" : {
+				"font"	: "bold 32px gamefont"
+			},
+			"worldName" : {
+				"font"	: "bold 20px gamefont"
+			},
+			"score" : {
+				"fill"	: "#7B0002",
+				"font"	: "bold 26px gamefont"
+			},
+			"worldScore1" : {
+				"font"	: "bold 14px gamefont"
+			},
+			"worldButtonStage" : {
+				"fill":"#FFFFFF",
+				"font": "bold 18px gamefont",
+				"stroke" : "#000000",
+				"strokeThickness" :  5
+			},
+			"worldButtonStageNum" : {
+				"fill":"#FFFFFF",
+				"font": "bold 40px gamefont",
+				"stroke" : "#000000",
+				"strokeThickness" :  5
+			}
+		},
+		"PlayScreen" : {},
+		"Panels" : {
+			"BasePanel" : {
+				"Title" : {
+					"font": "bold 50px gamefont", 
+					"stroke" : "#FFFFFF",
+					"strokeThickness" :  2
+				},
+				"SubTitle" : {
+					"font": "bold 36px gamefont", 
+					"stroke" : "#FFFFFF",
+					"strokeThickness" :  1.5
+				},
+				"ThinButton" : {
+					"font": "bold 20px gamefont"
+				},
+				"FatButton" : {}
+			},
+			"FailPanel" : {
+				"Title" : {
+					"font": "bold 40px gamefont", 
+					"stroke" : "#FFFFFF",
+					"strokeThickness" :  2
+				},
+				"SubTitle" : {
+					"font": "bold 26px gamefont", 
+					"stroke" : "#FFFFFF",
+					"strokeThickness" :  1.5
+				}
+			}
+		},
+		"AnotationText" : {
+			"fill":"#FFFFFF",
+			"font" : "15px handwritten"
+		}
+	}
+}

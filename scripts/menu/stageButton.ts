@@ -7,14 +7,14 @@ class StageButton extends Phaser.Button
 		this.game = game;
 		this.inputEnabled = true;
 		this.input.useHandCursor = true;
-		this.defaultStyle1 = {fill:'#FFFFFF',font: "bold 18px Arial",stroke : '#000000',strokeThickness :  5};
-		this.defaultStyle2 = {fill:'#FFFFFF',font: "bold 40px Arial",stroke : '#000000',strokeThickness :  5};
+		this.defaultStyle1 = JSON.parse(JSON.stringify(global_config.Styles.MenuScreen.worldButtonStage));
+		this.defaultStyle2 = JSON.parse(JSON.stringify(global_config.Styles.MenuScreen.worldButtonStageNum));
 		this.drawText();
 		this.onInputOver.add(function(sprite){
 			var game = this.game,
 				style1 = this.defaultStyle1,
 				style2 = this.defaultStyle2;
-			style1.fill = style2.fill = "#FEE300";
+			style1.fill = style2.fill = "#ffe400";
 			this.textLabel1.setStyle(style1);
 			this.textLabel2.setStyle(style2);
 		},this);
